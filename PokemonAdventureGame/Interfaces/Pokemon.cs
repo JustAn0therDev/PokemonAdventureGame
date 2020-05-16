@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PokemonAdventureGame.Enums;
+using System.Collections.Generic;
 
 namespace PokemonAdventureGame
 {
@@ -12,13 +13,11 @@ namespace PokemonAdventureGame
         int SpecialDefensePoints { get; set; }
         int SpeedPoints { get; set; }
         /* Sera um enumerador posteriormente e vou ter que verificar o status do Pokemon a cada final de rodada de ataque - Saber se esta Burned, PSN, asleep... */
-        string Status { get; set; }
+        StatusCondition Status { get; set; }
         List<IMove> Moves { get; set; }
         /* Um type pode ser imune a outro */
-        List<Enums.Type> Types { get; set; }
-
+        List<Type> Types { get; set; }
         void InitializePokemonProperties();
-
         void ReceiveDamage(int damageReceived);
     }
 }

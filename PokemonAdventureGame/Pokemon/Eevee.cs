@@ -1,7 +1,7 @@
-﻿using PokemonAdventureGame.Moves.Electric;
-using PokemonAdventureGame.Moves.Normal;
+﻿using System.Text;
 using System.Collections.Generic;
-using System.Text;
+using PokemonAdventureGame.Moves.Normal;
+using PokemonAdventureGame.Enums;
 
 namespace PokemonAdventureGame.Pokemon
 {
@@ -13,9 +13,9 @@ namespace PokemonAdventureGame.Pokemon
         public int SpecialAttackPoints { get; set; }
         public int SpecialDefensePoints { get; set; }
         public int SpeedPoints { get; set; }
-        public string Status { get; set; }
+        public StatusCondition Status { get; set; }
         public List<IMove> Moves { get; set; }
-        public List<Enums.Type> Types { get; set; }
+        public List<Type> Types { get; set; }
 
         public void InitializePokemonProperties()
         {
@@ -25,8 +25,9 @@ namespace PokemonAdventureGame.Pokemon
             SpecialAttackPoints = 45;
             SpecialDefensePoints = 65;
             SpeedPoints = 55;
+            Status = StatusCondition.OK;
             Moves = new List<IMove> { new Leer(), new Tackle() };
-            Types = new List<Enums.Type> { Enums.Type.NORMAL };
+            Types = new List<Type> { Type.NORMAL };
         }
 
         /* Deal damage? */

@@ -17,10 +17,10 @@ namespace PokemonAdventureGame
 
             IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
 
-            Console.WriteLine("Pikachu: ");
-            Console.WriteLine(pikachu.HealthPoints);
-            pikachu.ReceiveDamage(10);
-            Console.WriteLine(pikachu.HealthPoints);
+            Console.WriteLine("Eevee: ");
+            Console.WriteLine(eevee.HealthPoints);
+            eevee.ReceiveDamage(pikachu.Moves[2].Damage);
+            Console.WriteLine(eevee.HealthPoints);
         }
     }
 }
