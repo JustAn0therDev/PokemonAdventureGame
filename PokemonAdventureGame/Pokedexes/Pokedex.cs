@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokemonAdventureGame
+namespace PokemonAdventureGame.Pokedexes
 {
     public class Pokedex : IPokedex
     {

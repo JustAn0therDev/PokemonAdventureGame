@@ -1,4 +1,4 @@
-﻿namespace PokemonAdventureGame
+﻿namespace PokemonAdventureGame.Enums
 {
     public enum Type
     {

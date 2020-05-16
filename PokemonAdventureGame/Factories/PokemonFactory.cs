@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PokemonAdventureGame.Moves.Normal;
 using PokemonAdventureGame.Moves.Electric;
 
-namespace PokemonAdventureGame
+namespace PokemonAdventureGame.Factories
 {
     public static class PokemonFactory
     {
