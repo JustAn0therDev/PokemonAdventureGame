@@ -14,8 +14,8 @@ namespace PokemonAdventureGame.Pokemon
         public int SpecialDefensePoints { get; set; }
         public int SpeedPoints { get; set; }
         public string Status { get; set; }
-        public HashSet<IMove> Moves { get; set; }
-        public HashSet<Enums.Type> Types { get; set; }
+        public List<IMove> Moves { get; set; }
+        public List<Enums.Type> Types { get; set; }
 
         public void InitializePokemonProperties()
         {
@@ -25,8 +25,8 @@ namespace PokemonAdventureGame.Pokemon
             SpecialAttackPoints = 45;
             SpecialDefensePoints = 65;
             SpeedPoints = 55;
-            Moves = new HashSet<IMove> { new Leer(), new Tackle() };
-            Types = new HashSet<Enums.Type> { Enums.Type.NORMAL };
+            Moves = new List<IMove> { new Leer(), new Tackle() };
+            Types = new List<Enums.Type> { Enums.Type.NORMAL };
         }
 
         /* Deal damage? */
@@ -36,7 +36,7 @@ namespace PokemonAdventureGame.Pokemon
         {
             var sb = new StringBuilder();
 
-            foreach (var item in this.GetType().GetProperties())
+            foreach (var item in GetType().GetProperties())
             {
                 sb.AppendLine($"{item.Name}: {item.GetGetMethod()}");
             }

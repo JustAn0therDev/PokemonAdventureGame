@@ -14,8 +14,8 @@ namespace PokemonAdventureGame.Pokemon
         public int SpecialDefensePoints { get; set; }
         public int SpeedPoints { get; set; }
         public string Status { get; set; }
-        public HashSet<IMove> Moves { get; set; }
-        public HashSet<Enums.Type> Types { get; set; }
+        public List<IMove> Moves { get; set; }
+        public List<Enums.Type> Types { get; set; }
 
         public void InitializePokemonProperties()
         {
@@ -25,8 +25,8 @@ namespace PokemonAdventureGame.Pokemon
             SpecialAttackPoints = 50;
             SpecialDefensePoints = 40;
             SpeedPoints = 90;
-            Moves = new HashSet<IMove> { new TailWhip(), new Tackle(), new Thunderbolt() };
-            Types = new HashSet<Enums.Type> { Enums.Type.ELECTRIC };
+            Moves = new List<IMove> { new TailWhip(), new Tackle(), new Thunderbolt() };
+            Types = new List<Enums.Type> { Enums.Type.ELECTRIC };
         }
 
         /* Deal damage? */

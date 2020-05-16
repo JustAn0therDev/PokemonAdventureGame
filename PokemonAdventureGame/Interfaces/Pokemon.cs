@@ -13,9 +13,9 @@ namespace PokemonAdventureGame
         int SpeedPoints { get; set; }
         /* Sera um enumerador posteriormente e vou ter que verificar o status do Pokemon a cada final de rodada de ataque - Saber se esta Burned, PSN, asleep... */
         string Status { get; set; }
-        HashSet<IMove> Moves { get; set; }
+        List<IMove> Moves { get; set; }
         /* Um type pode ser imune a outro */
-        HashSet<Enums.Type> Types { get; set; }
+        List<Enums.Type> Types { get; set; }
 
         void InitializePokemonProperties();
 
