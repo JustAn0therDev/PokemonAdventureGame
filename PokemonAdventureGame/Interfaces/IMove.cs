@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace PokemonAdventureGame
+﻿namespace PokemonAdventureGame
 {
     public interface IMove
     {
-        Type Type { get; }
+        Enums.Type Type { get; }
         int Damage { get; }
         int PowerPoints { get; }
         //int Ailment { get; set; }

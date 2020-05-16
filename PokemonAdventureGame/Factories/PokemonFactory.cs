@@ -7,20 +7,17 @@ namespace PokemonAdventureGame.Factories
 {
     public static class PokemonFactory
     {
-        //Criar IPokemon interface e separar todos os pokemon em classes diferentes.
-        public static Pokemon CreatePokemonStatsByIndex(int pokemonIndex)
+        //Create an IPokemon interface and separate each pokemon in different classes.
+        public static Pokemon CreatePokemonStatsByPokedexIndex(int pokemonIndex)
         {
             return pokemonIndex switch
             {
                 //Pikachu
-                23 => new Pokemon(35, 55, 30, 50, 40, 90, new HashSet<IMove>() { new TailWhip(), new Thunderbolt(), new Tackle() }, new HashSet<Type>() { Type.ELECTRIC }),
+                23 => new Pokemon(35, 55, 30, 50, 40, 90, new HashSet<IMove>() { new TailWhip(), new Thunderbolt(), new Tackle() }, new HashSet<Enums.Type>() { Enums.Type.ELECTRIC }),
                 //Eevee
-                133 => new Pokemon(55, 55, 50, 45, 65, 55, new HashSet<IMove>() { new Leer(), new Tackle() }, new HashSet<Type>() { Type.NORMAL }),
+                133 => new Pokemon(55, 55, 50, 45, 65, 55, new HashSet<IMove>() { new Leer(), new Tackle() }, new HashSet<Enums.Type>() { Enums.Type.NORMAL }),
                 _ => throw new NotImplementedException(),
             };
         }
-
-        public static Pokemon GetPokemonByIndex(int pokemonIndex) 
-            => CreatePokemonStatsByIndex(pokemonIndex);
     }
 }

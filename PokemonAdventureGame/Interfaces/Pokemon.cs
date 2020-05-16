@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PokemonAdventureGame
 {
@@ -22,9 +20,9 @@ namespace PokemonAdventureGame
 
         /* Sera um enumerador posteriormente, comparar o tipo do ataque com o tipo do pokemon. A propriedade "Type" nao sera exclusiva de Pokemon (moves tambem terao um type) */
         /* Um type pode ser imune a outro */
-        public HashSet<Type> Types { get; set; }
+        public HashSet<Enums.Type> Types { get; set; }
 
-        public Pokemon(int healthPoints, int attackPoints, int defensePoints, int specialAttackPoints, int specialDefensePoints, int speedPoints, HashSet<IMove> moves, HashSet<Type> type)
+        public Pokemon(int healthPoints, int attackPoints, int defensePoints, int specialAttackPoints, int specialDefensePoints, int speedPoints, HashSet<IMove> moves, HashSet<Enums.Type> type)
         {
             HealthPoints = healthPoints;
             AttackPoints = attackPoints;
@@ -38,6 +36,7 @@ namespace PokemonAdventureGame
 
         public override string ToString()
         {
+            //WIP - ToString method should envolve more things than just return a description of the pokemon object.
             return $"Health Points: {HealthPoints}, Type: {Types.First().ToString()}";
         }
     }

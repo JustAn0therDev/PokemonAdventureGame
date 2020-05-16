@@ -1,10 +1,9 @@
 ﻿using PokemonAdventureGame.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PokemonAdventureGame.Pokedexes
 {
+    //Will I use this?
     public class Pokedex : IPokedex
     {
         private Dictionary<int, string> _pokedexDictionary { get; set; }

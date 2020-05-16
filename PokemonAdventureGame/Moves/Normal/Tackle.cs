@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PokemonAdventureGame.Interfaces;
-
-namespace PokemonAdventureGame.Moves.Normal
+﻿namespace PokemonAdventureGame.Moves.Normal
 {
     public class Tackle : IMove
     {
-        public Type Type { get => Type.NORMAL; }
+        public Enums.Type Type { get => Enums.Type.NORMAL; }
         public int Damage { get => 10; }
         public int PowerPoints { get => 30;  }
     }

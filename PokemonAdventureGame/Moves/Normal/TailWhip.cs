@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PokemonAdventureGame.Moves.Normal
+﻿namespace PokemonAdventureGame.Moves.Normal
 {
     public class TailWhip : IMove
     {
-        public Type Type { get => Type.NORMAL; }
+        public Enums.Type Type { get => Enums.Type.NORMAL; }
         public int Damage { get => 0; }
         public int PowerPoints { get => 40; }
     }
