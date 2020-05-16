@@ -1,5 +1,6 @@
 ﻿using System;
 using PokemonAdventureGame.Factories;
+using PokemonAdventureGame.Pokemon;
 
 namespace PokemonAdventureGame
 {
@@ -12,14 +13,14 @@ namespace PokemonAdventureGame
             //Criar comandos para atacar (depois trocar de pokemon) e dar itens ao pokemon
             //Sistema final de batalha, com ataques que sejam super-efetivos, normais, nao efetivos, status ailments, etc...
 
-            //23 - Pikachu
-            Pokemon pikachu = PokemonFactory.CreatePokemonStatsByPokedexIndex(23);
+            IPokemon pikachu = PokemonFactory.CreatePokemon<Pikachu>();
 
-            //133 - Eevee
-            Pokemon eevee = PokemonFactory.CreatePokemonStatsByPokedexIndex(133);
+            IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
 
-            Console.WriteLine(pikachu.ToString());
-            Console.WriteLine(eevee.ToString());
+            Console.WriteLine("Pikachu: ");
+            Console.WriteLine(pikachu.HealthPoints);
+            pikachu.ReceiveDamage(10);
+            Console.WriteLine(pikachu.HealthPoints);
         }
     }
 }
