@@ -1,28 +1,41 @@
 ﻿using System;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Enums;
+using PokemonAdventureGame.Trainers;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 
 namespace PokemonAdventureGame.BattleSystem
 {
+    //TODO: be able to switch first and second pokemon by passing a pokemon list in the constructor.
     public class Battle
     {
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
-        //Might be better to change this implementation afterwards...
-        //And it might be changed by the help of a "Console manager" class
-        private bool _pokemonOneHasMoved { get; set; }
-        public IPokemon PokemonOne { get; set; }
-        public IPokemon PokemonTwo { get; set; }
 
-        public Battle(IPokemon pokemonOne, IPokemon pokemonTwo)
+        private ITrainer _player { get; set; }
+        private ITrainer _enemyTrainer { get; set; }
+
+        public Battle(ITrainer player, ITrainer enemyTrainer)
         {
-            PokemonOne = pokemonOne;
-            PokemonTwo = pokemonTwo;
+            _player = player;
+            _enemyTrainer = enemyTrainer;
         }
 
-        public void MainBattleMenu()
+        //Make both trainers send out their pokemons.
+        //And then start the battle.
+        //If the one of the trainers have more than one pokemon, the battle should continue by making the player with remaining pokemons send theirs.
+
+        public void StartBattle()
+        {
+            _player.SetFirstAvailablePokemonAsCurrent();
+            _enemyTrainer.SetFirstAvailablePokemonAsCurrent();
+
+            ConsoleBattleInfo.SendPokemon(_player, _player.GetCurrentPokemon());
+            ConsoleBattleInfo.SendPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
+        }
+
+        private void MainBattleMenu()
         {
             //Console.WriteLine("START BATTLE!!");
             //Console.WriteLine(string.Empty);
@@ -45,7 +58,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         //Since a lot of code might be repeated for each pokemon, we might want to separate it in different classes so we can manage the console 
         //in a different class for showing the "UI" to the user while we manage the whole state of the current happening pokemon battle here.
-        public void ShowBothPokemonStats()
+        private void ShowBothPokemonStats()
         {
             Console.WriteLine($"{PokemonOne.GetType().Name} - HP: {PokemonOne.CurrentHealthPoints}/{PokemonOne.HealthPoints}");
             Console.WriteLine($"{PokemonTwo.GetType().Name} - HP: {PokemonTwo.CurrentHealthPoints}/{PokemonTwo.HealthPoints}");
@@ -53,7 +66,7 @@ namespace PokemonAdventureGame.BattleSystem
         }
 
         //Can we NOT repeat code here? 
-        public void PokemonOneMove()
+        private void PokemonOneMove()
         {
             Console.WriteLine("What are you going to do next?");
             ShowAvailableCommandsOnConsole();
@@ -73,7 +86,7 @@ namespace PokemonAdventureGame.BattleSystem
             }
         }
 
-        public void PokemonTwoMove()
+        private void PokemonTwoMove()
         {
             var rand = new Random();
             List<int> listOfPokemonTwoMoves = PokemonTwo.Moves.Select((s, index) => index).ToList();
@@ -91,7 +104,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         //TODO: Use the command or memento pattern to undo the action of coming to this menu. 
         //The player might send "1" by accident and want to return to give the pokemon an item...
-        public void ShowPokemonAvailableAttacks(IPokemon pokemon)
+        private void ShowPokemonAvailableAttacks(IPokemon pokemon)
         {
             int chosenMove = -1;
             Console.WriteLine("Choose your attack!");
@@ -106,13 +119,13 @@ namespace PokemonAdventureGame.BattleSystem
             AttackWithChosenMove(pokemon, chosenMove);
         }
 
-        public void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
+        private void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
             for (int i = 0; i < pokemon.Moves.Count; i++)
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name}");
         }
 
-        public void AttackWithChosenMove(IPokemon pokemon, int chosenMove)
+        private void AttackWithChosenMove(IPokemon pokemon, int chosenMove)
         {
             IMove move = pokemon.Moves[chosenMove];
             Console.WriteLine($"{pokemon.GetType().Name} used {move.GetType().Name}!");

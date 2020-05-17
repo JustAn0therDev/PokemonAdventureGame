@@ -1,8 +1,8 @@
 ﻿using System;
 using PokemonAdventureGame.Factories;
-using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.BattleSystem;
+using PokemonAdventureGame.Trainers;
 
 namespace PokemonAdventureGame
 {
@@ -12,15 +12,13 @@ namespace PokemonAdventureGame
         {
             try
             {
-                IPokemon pikachu = PokemonFactory.CreatePokemon<Pikachu>();
+                ITrainer player = TrainerFactory.CreateTrainer<Player>();
 
-                IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
+                ITrainer computer = TrainerFactory.CreateTrainer<Gary>();
 
-                //TODO: be able to switch first and second pokemon.
-                //The Battle class might receive two lists of IPokemon implementations to manage both player's teams
-                Battle battle = new Battle(pikachu, eevee);
+                Battle battle = new Battle(player, computer);
 
-                battle.MainBattleMenu();
+                battle.StartBattle();
             }
             catch (Exception ex)
             {
