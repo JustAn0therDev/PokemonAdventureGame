@@ -9,6 +9,7 @@ namespace PokemonAdventureGame.Pokemon
     public class Eevee : IPokemon
     {
         public int HealthPoints { get; set; }
+        public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
         public int SpecialAttackPoints { get; set; }
@@ -21,6 +22,7 @@ namespace PokemonAdventureGame.Pokemon
         public void InitializePokemonProperties()
         {
             HealthPoints = 55;
+            CurrentHealthPoints = HealthPoints;
             AttackPoints = 55;
             DefensePoints = 50;
             SpecialAttackPoints = 45;
@@ -32,7 +34,7 @@ namespace PokemonAdventureGame.Pokemon
         }
 
         /* Deal damage? */
-        public void ReceiveDamage(int damageReceived) => HealthPoints -= damageReceived;
+        public void ReceiveDamage(int damageReceived) => CurrentHealthPoints -= damageReceived;
 
         public override string ToString()
         {

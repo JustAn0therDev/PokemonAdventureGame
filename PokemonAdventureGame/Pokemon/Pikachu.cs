@@ -10,6 +10,7 @@ namespace PokemonAdventureGame.Pokemon
     public class Pikachu : IPokemon
     {
         public int HealthPoints { get; set; }
+        public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
         public int SpecialAttackPoints { get; set; }
@@ -22,6 +23,8 @@ namespace PokemonAdventureGame.Pokemon
         public void InitializePokemonProperties()
         {
             HealthPoints = 35;
+            CurrentHealthPoints = HealthPoints;
+
             AttackPoints = 55;
             DefensePoints = 30;
             SpecialAttackPoints = 50;
@@ -33,7 +36,7 @@ namespace PokemonAdventureGame.Pokemon
         }
 
         /* Deal damage? */
-        public void ReceiveDamage(int damageReceived) => HealthPoints -= damageReceived;
+        public void ReceiveDamage(int damageReceived) => CurrentHealthPoints -= damageReceived;
 
         public override string ToString()
         {

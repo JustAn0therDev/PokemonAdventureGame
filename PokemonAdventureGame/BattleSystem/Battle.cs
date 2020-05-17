@@ -7,6 +7,9 @@ namespace PokemonAdventureGame.BattleSystem
     public class Battle
     {
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
+        //Might be better to change this implementation afterwards...
+        //And it might be changed by the help of a "Console manager" class
+        private bool _pokemonOneHasMoved { get; set; } 
         public IPokemon PokemonOne { get; set; }
         public IPokemon PokemonTwo { get; set; }
 
@@ -21,14 +24,24 @@ namespace PokemonAdventureGame.BattleSystem
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("START BATTLE!!");
+            Console.WriteLine(string.Empty);
             Console.ResetColor();
+            ShowCurrentBattleStats();
+        }
+
+        //Since a lot of code might be repeated for each pokemon, we might want to separate it in different classes so we can manage the console 
+        //in a different class for showing the "UI" to the user while we manage the whole state of the current happening pokemon battle here.
+        //TODO: While loop to check if any pokemon in the battle had it's HP dropped to 0.
+        public void ShowCurrentBattleStats()
+        {
+            Console.WriteLine($"{PokemonOne.GetType().Name} - HP: {PokemonOne.CurrentHealthPoints}/{PokemonOne.HealthPoints}");
+            Console.WriteLine($"{PokemonTwo.GetType().Name} - HP: {PokemonTwo.CurrentHealthPoints}/{PokemonTwo.HealthPoints}");
+            Console.WriteLine("");
         }
 
         //Make the PokemonOneMove and PokemonTwoMove circle around each other until one of them has it's HP set to 0.
 
-
-
-        //Can I NOT repeat code here? 
+        //Can we NOT repeat code here? 
         public void PokemonOneMove(Command command)
         {
             switch (command)
@@ -74,20 +87,38 @@ namespace PokemonAdventureGame.BattleSystem
                 Console.Clear();
             }
 
-            CheckChosenMove(chosenMove);
+            CheckChosenMove(pokemon, chosenMove);
         }
 
         public void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
             for (int i = 0; i < pokemon.Moves.Count; i++)
-            {
                 Console.WriteLine($"{i + 1}: {pokemon.Moves[i].GetType().Name}");
-            }
         }
 
-        public void CheckChosenMove(int chosenMove)
+        public void CheckChosenMove(IPokemon pokemon, int chosenMove)
         {
+            IMove move = pokemon.Moves[chosenMove - 1];
+            Console.WriteLine($"{pokemon.GetType().Name} used {move.GetType().Name}!");
 
+            if (_pokemonOneHasMoved)
+            {
+                //Change the way we access the damage property?
+                PokemonOne.ReceiveDamage(move.Damage);
+
+                Console.WriteLine($"{PokemonOne.GetType().Name} received {move.Damage} damage!");
+            }
+            else
+            {
+                PokemonTwo.ReceiveDamage(move.Damage);
+
+                Console.WriteLine($"{PokemonTwo.GetType().Name} received {move.Damage} damage!");
+
+                _pokemonOneHasMoved = true;
+            }
+
+            Console.Clear();
+            ShowCurrentBattleStats();
         }
 
         //two pokemon.

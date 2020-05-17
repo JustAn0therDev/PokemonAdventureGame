@@ -19,7 +19,7 @@ namespace PokemonAdventureGame
 
             IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
 
-            //TODO: Switch first and second pokemon.
+            //TODO: be able to switch first and second pokemon.
             Battle battle = new Battle(pikachu, eevee);
 
             battle.PokemonOneMove(Enums.Command.ATTACK);
