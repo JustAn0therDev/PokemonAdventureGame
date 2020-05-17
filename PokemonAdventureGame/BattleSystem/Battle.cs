@@ -12,7 +12,7 @@ namespace PokemonAdventureGame.BattleSystem
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         //Might be better to change this implementation afterwards...
         //And it might be changed by the help of a "Console manager" class
-        private bool _pokemonOneHasMoved { get; set; } 
+        private bool _pokemonOneHasMoved { get; set; }
         public IPokemon PokemonOne { get; set; }
         public IPokemon PokemonTwo { get; set; }
 
@@ -78,13 +78,13 @@ namespace PokemonAdventureGame.BattleSystem
             var rand = new Random();
             List<int> listOfPokemonTwoMoves = PokemonTwo.Moves.Select((s, index) => index).ToList();
 
-            AttackWithChosenMove(PokemonTwo, rand.Next(0, listOfPokemonTwoMoves.Count));
+            AttackWithChosenMove(PokemonTwo, 1);
         }
 
         private void ShowAvailableCommandsOnConsole()
         {
             Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK.ToString()}");
-            //Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString()}");
+            //Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString().Replace("_", " ")}");
             //Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS.ToString()}");
             //Console.WriteLine($"{(int)Command.RUN}: {Command.RUN.ToString()}");
         }
@@ -93,10 +93,10 @@ namespace PokemonAdventureGame.BattleSystem
         //The player might send "1" by accident and want to return to give the pokemon an item...
         public void ShowPokemonAvailableAttacks(IPokemon pokemon)
         {
-            int chosenMove = 0;
+            int chosenMove = -1;
             Console.WriteLine("Choose your attack!");
 
-            while (chosenMove == 0 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON)
+            while (chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON)
             {
                 WriteAllAvailableAttacksOnConsole(pokemon);
                 int.TryParse(Console.ReadLine(), out chosenMove);
@@ -138,8 +138,6 @@ namespace PokemonAdventureGame.BattleSystem
 
                 _pokemonOneHasMoved = true;
             }
-
-            MainBattleMenu();
         }
 
         private void FinishBattle(IPokemon faintedPokemon, IPokemon standingPokemon)
