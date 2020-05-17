@@ -10,15 +10,22 @@ namespace PokemonAdventureGame
     {
         static void Main()
         {
-            IPokemon pikachu = PokemonFactory.CreatePokemon<Pikachu>();
+            try
+            {
+                IPokemon pikachu = PokemonFactory.CreatePokemon<Pikachu>();
 
-            IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
+                IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
 
-            //TODO: be able to switch first and second pokemon.
-            //The Battle class might receive two lists of IPokemon implementations to manage both player's actions
-            Battle battle = new Battle(pikachu, eevee);
+                //TODO: be able to switch first and second pokemon.
+                //The Battle class might receive two lists of IPokemon implementations to manage both player's teams
+                Battle battle = new Battle(pikachu, eevee);
 
-            battle.PokemonOneMove(Enums.Command.ATTACK);
+                battle.MainBattleMenu();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Something bad happened in the game! Please report the error. Error: {ex.Message}");
+            }
         }
     }
 }

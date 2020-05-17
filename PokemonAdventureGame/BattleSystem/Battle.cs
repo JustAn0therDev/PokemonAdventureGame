@@ -1,6 +1,9 @@
 ﻿using System;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Enums;
+using System.Threading;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace PokemonAdventureGame.BattleSystem
 {
@@ -17,33 +20,46 @@ namespace PokemonAdventureGame.BattleSystem
         {
             PokemonOne = pokemonOne;
             PokemonTwo = pokemonTwo;
-            StartBattle(); //Call it manually or keep it here?
         }
 
-        public void StartBattle()
+        public void MainBattleMenu()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("START BATTLE!!");
-            Console.WriteLine(string.Empty);
-            Console.ResetColor();
-            ShowCurrentBattleStats();
+            //Console.WriteLine("START BATTLE!!");
+            //Console.WriteLine(string.Empty);
+
+            while (PokemonOne.CurrentHealthPoints > 0 && PokemonTwo.CurrentHealthPoints > 0)
+            {
+                ShowBothPokemonStats();
+
+                if (_pokemonOneHasMoved)
+                    PokemonTwoMove();
+                else
+                    PokemonOneMove();
+            }
+
+            if (PokemonOne.CurrentHealthPoints <= 0)
+                FinishBattle(PokemonOne, PokemonTwo);
+            else
+                FinishBattle(PokemonTwo, PokemonOne);
         }
 
         //Since a lot of code might be repeated for each pokemon, we might want to separate it in different classes so we can manage the console 
         //in a different class for showing the "UI" to the user while we manage the whole state of the current happening pokemon battle here.
-        //TODO: While loop to check if any pokemon in the battle had it's HP dropped to 0.
-        public void ShowCurrentBattleStats()
+        public void ShowBothPokemonStats()
         {
             Console.WriteLine($"{PokemonOne.GetType().Name} - HP: {PokemonOne.CurrentHealthPoints}/{PokemonOne.HealthPoints}");
             Console.WriteLine($"{PokemonTwo.GetType().Name} - HP: {PokemonTwo.CurrentHealthPoints}/{PokemonTwo.HealthPoints}");
             Console.WriteLine("");
         }
 
-        //Make the PokemonOneMove and PokemonTwoMove circle around each other until one of them has it's HP set to 0.
-
         //Can we NOT repeat code here? 
-        public void PokemonOneMove(Command command)
+        public void PokemonOneMove()
         {
+            Console.WriteLine("What are you going to do next?");
+            ShowAvailableCommandsOnConsole();
+
+            Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
+
             switch (command)
             {
                 case Command.ATTACK:
@@ -57,19 +73,20 @@ namespace PokemonAdventureGame.BattleSystem
             }
         }
 
-        public void PokemonTwoMove(Command command)
+        public void PokemonTwoMove()
         {
-            switch (command)
-            {
-                case Command.ATTACK:
-                    ShowPokemonAvailableAttacks(PokemonTwo);
-                    break;
-                case Command.SWITCH_POKEMON:
-                case Command.ITEMS:
-                case Command.RUN:
-                default:
-                    throw new NotImplementedException();
-            }
+            var rand = new Random();
+            List<int> listOfPokemonTwoMoves = PokemonTwo.Moves.Select((s, index) => index).ToList();
+
+            AttackWithChosenMove(PokemonTwo, rand.Next(0, listOfPokemonTwoMoves.Count));
+        }
+
+        private void ShowAvailableCommandsOnConsole()
+        {
+            Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK.ToString()}");
+            //Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString()}");
+            //Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS.ToString()}");
+            //Console.WriteLine($"{(int)Command.RUN}: {Command.RUN.ToString()}");
         }
 
         //TODO: Use the command or memento pattern to undo the action of coming to this menu. 
@@ -77,7 +94,6 @@ namespace PokemonAdventureGame.BattleSystem
         public void ShowPokemonAvailableAttacks(IPokemon pokemon)
         {
             int chosenMove = 0;
-
             Console.WriteLine("Choose your attack!");
 
             while (chosenMove == 0 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON)
@@ -87,18 +103,18 @@ namespace PokemonAdventureGame.BattleSystem
                 Console.Clear();
             }
 
-            CheckChosenMove(pokemon, chosenMove);
+            AttackWithChosenMove(pokemon, chosenMove);
         }
 
         public void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
             for (int i = 0; i < pokemon.Moves.Count; i++)
-                Console.WriteLine($"{i + 1}: {pokemon.Moves[i].GetType().Name}");
+                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name}");
         }
 
-        public void CheckChosenMove(IPokemon pokemon, int chosenMove)
+        public void AttackWithChosenMove(IPokemon pokemon, int chosenMove)
         {
-            IMove move = pokemon.Moves[chosenMove - 1];
+            IMove move = pokemon.Moves[chosenMove];
             Console.WriteLine($"{pokemon.GetType().Name} used {move.GetType().Name}!");
 
             if (_pokemonOneHasMoved)
@@ -107,6 +123,10 @@ namespace PokemonAdventureGame.BattleSystem
                 PokemonOne.ReceiveDamage(move.Damage);
 
                 Console.WriteLine($"{PokemonOne.GetType().Name} received {move.Damage} damage!");
+
+                Thread.Sleep(1000);
+
+                _pokemonOneHasMoved = false;
             }
             else
             {
@@ -114,11 +134,19 @@ namespace PokemonAdventureGame.BattleSystem
 
                 Console.WriteLine($"{PokemonTwo.GetType().Name} received {move.Damage} damage!");
 
+                Thread.Sleep(1000);
+
                 _pokemonOneHasMoved = true;
             }
 
-            Console.Clear();
-            ShowCurrentBattleStats();
+            MainBattleMenu();
+        }
+
+        private void FinishBattle(IPokemon faintedPokemon, IPokemon standingPokemon)
+        {
+            Console.WriteLine($"{faintedPokemon.GetType().Name} fainted!");
+            Console.WriteLine("");
+            Console.WriteLine($"{standingPokemon.GetType().Name} wins!");
         }
 
         //two pokemon.
