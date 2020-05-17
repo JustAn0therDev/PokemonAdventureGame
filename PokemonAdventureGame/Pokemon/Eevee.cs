@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PokemonAdventureGame.Moves.Normal;
 using PokemonAdventureGame.Enums;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.Pokemon
 {

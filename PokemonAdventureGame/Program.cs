@@ -1,6 +1,8 @@
 ﻿using System;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
+using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.BattleSystem;
 
 namespace PokemonAdventureGame
 {
@@ -17,10 +19,10 @@ namespace PokemonAdventureGame
 
             IPokemon eevee = PokemonFactory.CreatePokemon<Eevee>();
 
-            Console.WriteLine("Eevee: ");
-            Console.WriteLine(eevee.HealthPoints);
-            eevee.ReceiveDamage(pikachu.Moves[2].Damage);
-            Console.WriteLine(eevee.HealthPoints);
+            //TODO: Switch first and second pokemon.
+            Battle battle = new Battle(pikachu, eevee);
+
+            battle.PokemonOneMove(Enums.Command.ATTACK);
         }
     }
 }

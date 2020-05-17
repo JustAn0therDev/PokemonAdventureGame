@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PokemonAdventureGame.Moves.Normal;
-using PokemonAdventureGame.Moves.Electric;
+﻿using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.Factories
 {
