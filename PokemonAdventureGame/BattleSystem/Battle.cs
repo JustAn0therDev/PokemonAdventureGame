@@ -1,8 +1,6 @@
 ﻿using System;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Enums;
-using PokemonAdventureGame.Trainers;
-using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -22,61 +20,54 @@ namespace PokemonAdventureGame.BattleSystem
             _enemyTrainer = enemyTrainer;
         }
 
-        //Make both trainers send out their pokemons.
-        //And then start the battle.
-        //If the one of the trainers have more than one pokemon, the battle should continue by making the player with remaining pokemons send theirs.
-
         public void StartBattle()
         {
             _player.SetFirstAvailablePokemonAsCurrent();
             _enemyTrainer.SetFirstAvailablePokemonAsCurrent();
 
-            ConsoleBattleInfo.SendPokemon(_player, _player.GetCurrentPokemon());
-            ConsoleBattleInfo.SendPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
+            ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
+            ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
+
+            //Maintain the battle inside the while loop (to check if there are any more pokémon available in the team)
+            //Do the thing
+
+            //Things could happen only inside this function (and other being called by it).
+            MainBattle();
         }
 
-        private void MainBattleMenu()
+        private void MainBattle()
         {
-            //Console.WriteLine("START BATTLE!!");
-            //Console.WriteLine(string.Empty);
-
-            while (PokemonOne.CurrentHealthPoints > 0 && PokemonTwo.CurrentHealthPoints > 0)
+            while (TrainerHasPokemonLeftToBattle(_player) && TrainerHasPokemonLeftToBattle(_enemyTrainer))
             {
-                ShowBothPokemonStats();
+                ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
 
-                if (_pokemonOneHasMoved)
-                    PokemonTwoMove();
-                else
-                    PokemonOneMove();
+                //Let the player move
+                GetPlayerCommand();
+
+                EnemyMove();
+
+                //if ()
+                //{
+
+                //}
             }
 
-            if (PokemonOne.CurrentHealthPoints <= 0)
-                FinishBattle(PokemonOne, PokemonTwo);
-            else
-                FinishBattle(PokemonTwo, PokemonOne);
+            //Check if both pokémon still got HP left.
+            //Make the player change pokémon for one available if the current one faints. The enemy should automatically do it.
+            //Show the player that no other pokémon is left (that goes for the computer too)
         }
 
-        //Since a lot of code might be repeated for each pokemon, we might want to separate it in different classes so we can manage the console 
-        //in a different class for showing the "UI" to the user while we manage the whole state of the current happening pokemon battle here.
-        private void ShowBothPokemonStats()
-        {
-            Console.WriteLine($"{PokemonOne.GetType().Name} - HP: {PokemonOne.CurrentHealthPoints}/{PokemonOne.HealthPoints}");
-            Console.WriteLine($"{PokemonTwo.GetType().Name} - HP: {PokemonTwo.CurrentHealthPoints}/{PokemonTwo.HealthPoints}");
-            Console.WriteLine("");
-        }
-
-        //Can we NOT repeat code here? 
-        private void PokemonOneMove()
+        private void GetPlayerCommand()
         {
             Console.WriteLine("What are you going to do next?");
-            ShowAvailableCommandsOnConsole();
+            ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
 
             switch (command)
             {
                 case Command.ATTACK:
-                    ShowPokemonAvailableAttacks(PokemonOne);
+                    PromptTrainerForPokemonMove();
                     break;
                 case Command.SWITCH_POKEMON:
                 case Command.ITEMS:
@@ -86,82 +77,54 @@ namespace PokemonAdventureGame.BattleSystem
             }
         }
 
-        private void PokemonTwoMove()
-        {
-            var rand = new Random();
-            List<int> listOfPokemonTwoMoves = PokemonTwo.Moves.Select((s, index) => index).ToList();
-
-            AttackWithChosenMove(PokemonTwo, 1);
-        }
-
-        private void ShowAvailableCommandsOnConsole()
-        {
-            Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK.ToString()}");
-            //Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString().Replace("_", " ")}");
-            //Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS.ToString()}");
-            //Console.WriteLine($"{(int)Command.RUN}: {Command.RUN.ToString()}");
-        }
-
         //TODO: Use the command or memento pattern to undo the action of coming to this menu. 
         //The player might send "1" by accident and want to return to give the pokemon an item...
-        private void ShowPokemonAvailableAttacks(IPokemon pokemon)
+        private void PromptTrainerForPokemonMove()
         {
             int chosenMove = -1;
-            Console.WriteLine("Choose your attack!");
+            IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
 
+            //Should this while loop be a responsability of the battle class or the BattleConsoleInfo class?
             while (chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON)
             {
-                WriteAllAvailableAttacksOnConsole(pokemon);
-                int.TryParse(Console.ReadLine(), out chosenMove);
-                Console.Clear();
+                ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
+                chosenMove = ConsoleBattleInfo.GetPlayerChosenMove(Console.ReadLine());
             }
 
-            AttackWithChosenMove(pokemon, chosenMove);
+            PokemonAttack(playerCurrentPokemon, _enemyTrainer.GetCurrentPokemon(), chosenMove);
         }
 
-        private void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
+        private void PokemonAttack(IPokemon attackingPokemon, IPokemon targetPokemon, int chosenMove)
         {
-            for (int i = 0; i < pokemon.Moves.Count; i++)
-                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name}");
+            IMove move = attackingPokemon.Moves[chosenMove];
+
+            ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
+
+            //Create deal damage method that will receive another pokemon as a parameter? Sounds like a bad idea..
+            targetPokemon.ReceiveDamage(move.Damage);
+
+            ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, move.Damage);
+            ConsoleBattleInfo.ClearScreen();
         }
 
-        private void AttackWithChosenMove(IPokemon pokemon, int chosenMove)
+        private void EnemyMove() => EnemyPokemonMove();
+
+        private void EnemyPokemonMove()
         {
-            IMove move = pokemon.Moves[chosenMove];
-            Console.WriteLine($"{pokemon.GetType().Name} used {move.GetType().Name}!");
+            var rand = new Random();
+            IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
 
-            if (_pokemonOneHasMoved)
-            {
-                //Change the way we access the damage property?
-                PokemonOne.ReceiveDamage(move.Damage);
-
-                Console.WriteLine($"{PokemonOne.GetType().Name} received {move.Damage} damage!");
-
-                Thread.Sleep(1000);
-
-                _pokemonOneHasMoved = false;
-            }
-            else
-            {
-                PokemonTwo.ReceiveDamage(move.Damage);
-
-                Console.WriteLine($"{PokemonTwo.GetType().Name} received {move.Damage} damage!");
-
-                Thread.Sleep(1000);
-
-                _pokemonOneHasMoved = true;
-            }
+            List<int> listOfPokemonTwoMoves = enemyPokemon.Moves.Select((s, index) => index).ToList();
+            PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), rand.Next(0, enemyPokemon.Moves.Count));
         }
 
-        private void FinishBattle(IPokemon faintedPokemon, IPokemon standingPokemon)
+        private void FinishBattle(IPokemon faintedPokemon, ITrainer winningTrainer)
         {
-            Console.WriteLine($"{faintedPokemon.GetType().Name} fainted!");
-            Console.WriteLine("");
-            Console.WriteLine($"{standingPokemon.GetType().Name} wins!");
+            ConsoleBattleInfo.ShowPokemonFainted(faintedPokemon);
+            ConsoleBattleInfo.ShowTrainerWins(winningTrainer);
         }
 
-        //two pokemon.
-        // "AI" for the enemy pokemon. (rnd.next(1, moves.Count)) - Choose the movement randomly.
-        //a round, by a move from the first player and ending with a move from the second player.
+        private bool TrainerHasPokemonLeftToBattle(ITrainer trainer)
+            => trainer.PokemonTeam.Where(w => !w.Fainted).Count() > 0;
     }
 }
