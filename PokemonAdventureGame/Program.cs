@@ -13,11 +13,8 @@ namespace PokemonAdventureGame
             try
             {
                 ITrainer player = TrainerFactory.CreateTrainer<Player>();
-
                 ITrainer computer = TrainerFactory.CreateTrainer<Gary>();
-
                 Battle battle = new Battle(player, computer);
-
                 battle.StartBattle();
             }
             catch (Exception ex)

@@ -29,6 +29,8 @@ namespace PokemonAdventureGame.BattleSystem
             ClearScreen();
         }
 
+        public static void TrainerDrawsbackPokemon(IPokemon pokemon) => Console.WriteLine($"{pokemon.GetType().Name}, come back!");
+
         public static void SkipLine() => Console.WriteLine(string.Empty);
 
         public static void ShowBothPokemonStats(IPokemon playerPokemon, IPokemon enemyPokemon)
@@ -87,6 +89,12 @@ namespace PokemonAdventureGame.BattleSystem
         public static void ShowTrainerWins(ITrainer trainer)
         {
             Console.WriteLine($"{trainer.GetType().Name} wins!");
+            SkipLine();
+        }
+
+        public static void TrainerHasNoPokemonLeft(ITrainer trainer)
+        {
+            Console.WriteLine($"{trainer.GetType().Name} has no other pokemon left to battle...");
             SkipLine();
         }
     }

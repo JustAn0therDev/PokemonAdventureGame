@@ -33,19 +33,16 @@ namespace PokemonAdventureGame.Pokemon
             Types = new List<Type> { Type.NORMAL };
         }
 
-        /* Deal damage? */
-        public void ReceiveDamage(int damageReceived) => CurrentHealthPoints -= damageReceived;
-
-        public override string ToString()
+        public void ReceiveDamage(int damageReceived)
         {
-            var sb = new StringBuilder();
+            CurrentHealthPoints -= damageReceived;
 
-            foreach (var item in GetType().GetProperties())
-            {
-                sb.AppendLine($"{item.Name}: {item.GetGetMethod()}");
-            }
-
-            return sb.ToString();
+            if (HasFainted())
+                CurrentHealthPoints = 0;
         }
+
+        public void UseMove(int moveIndex) => Moves[moveIndex].PowerPoints -= 1;
+
+        public bool HasFainted() => CurrentHealthPoints <= 0;
     }
 }

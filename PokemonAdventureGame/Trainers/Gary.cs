@@ -1,8 +1,8 @@
-﻿using PokemonAdventureGame.Factories;
+﻿using System.Linq;
+using System.Collections.Generic;
+using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 using PokemonAdventureGame.PokemonTeam;
 
 namespace PokemonAdventureGame.Trainers
@@ -13,28 +13,35 @@ namespace PokemonAdventureGame.Trainers
 
         public void InitializeTrainerTeam()
         {
-            PokemonTeam = new List<TrainerPokemon> 
-            { 
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Eevee>(), true) 
+            PokemonTeam = new List<TrainerPokemon>
+            {
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Eevee>(), true)
             };
         }
 
-        public IPokemon GetCurrentPokemon()
-            => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
-        public void SetPokemonAsCurrent(TrainerPokemon trainerPokemon)
+        public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
+
+        public void SetPokemonAsCurrent(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn => 
-            { 
-                if (pkmn.Current) 
+            PokemonTeam.ForEach(pkmn =>
+            {
+                if (pkmn.Current)
                     pkmn.Current = false;
 
-                if (pkmn.GetType().Name == trainerPokemon.GetType().Name)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
                     pkmn.Current = true;
             });
         }
+        public IPokemon GetNextAvailablePokemon() => PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
+        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Select(s => s).Count() > 0;
 
-        public void SetFirstAvailablePokemonAsCurrent()
-            => SetPokemonAsCurrent(PokemonTeam.Where(pkmn => !pkmn.Fainted).FirstOrDefault());
-
+        public void SetPokemonAsFainted(IPokemon pokemon)
+        {
+            PokemonTeam.ForEach(pkmn => 
+            {
+                if (pkmn.Pokemon == pokemon)
+                    pkmn.Fainted = true;
+            });
+        }
     }
 }

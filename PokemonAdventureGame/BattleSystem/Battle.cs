@@ -1,8 +1,8 @@
 ﻿using System;
-using PokemonAdventureGame.Interfaces;
-using PokemonAdventureGame.Enums;
 using System.Linq;
 using System.Collections.Generic;
+using PokemonAdventureGame.Enums;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem
 {
@@ -10,7 +10,6 @@ namespace PokemonAdventureGame.BattleSystem
     public class Battle
     {
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
-
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
 
@@ -22,42 +21,66 @@ namespace PokemonAdventureGame.BattleSystem
 
         public void StartBattle()
         {
-            _player.SetFirstAvailablePokemonAsCurrent();
-            _enemyTrainer.SetFirstAvailablePokemonAsCurrent();
+            _player.SetPokemonAsCurrent(_player.GetNextAvailablePokemon());
+            _enemyTrainer.SetPokemonAsCurrent(_enemyTrainer.GetNextAvailablePokemon());
 
             ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
             ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
 
-            //Maintain the battle inside the while loop (to check if there are any more pokémon available in the team)
-            //Do the thing
-
-            //Things could happen only inside this function (and other being called by it).
             MainBattle();
         }
 
         private void MainBattle()
         {
-            while (TrainerHasPokemonLeftToBattle(_player) && TrainerHasPokemonLeftToBattle(_enemyTrainer))
+            IPokemon currentBattlingPlayerPokemon = _player.GetCurrentPokemon();
+            IPokemon currentBattlingEnemyPokemon = _enemyTrainer.GetCurrentPokemon();
+
+            while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
                 ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
 
-                //Let the player move
-                GetPlayerCommand();
+                if (currentBattlingPlayerPokemon.CurrentHealthPoints <= 0)
+                {
+                    _player.SetPokemonAsFainted(currentBattlingPlayerPokemon);
 
-                EnemyMove();
+                    ConsoleBattleInfo.TrainerDrawsbackPokemon(_player.GetCurrentPokemon());
 
-                //if ()
-                //{
+                    if (_player.GetNextAvailablePokemon() != null)
+                    {
+                        currentBattlingPlayerPokemon = _player.GetNextAvailablePokemon();
 
-                //}
+                        _player.SetPokemonAsCurrent(currentBattlingPlayerPokemon);
+                        ConsoleBattleInfo.PlayerSendsPokemon(currentBattlingPlayerPokemon);
+                    }
+                }
+                else
+                    PlayerMove();
+
+                if (currentBattlingEnemyPokemon.CurrentHealthPoints <= 0)
+                {
+                    _enemyTrainer.SetPokemonAsFainted(currentBattlingEnemyPokemon);
+
+                    ConsoleBattleInfo.TrainerDrawsbackPokemon(_enemyTrainer.GetCurrentPokemon());
+
+                    if (_enemyTrainer.GetNextAvailablePokemon() != null)
+                    {
+                        currentBattlingEnemyPokemon = _enemyTrainer.GetNextAvailablePokemon();
+
+                        _enemyTrainer.SetPokemonAsCurrent(currentBattlingEnemyPokemon);
+                        ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, currentBattlingEnemyPokemon);
+                    }
+                }
+                else
+                    EnemyMove();
             }
 
-            //Check if both pokémon still got HP left.
-            //Make the player change pokémon for one available if the current one faints. The enemy should automatically do it.
-            //Show the player that no other pokémon is left (that goes for the computer too)
+            if (_player.HasAvailablePokemon())
+                FinishBattle(_player, _enemyTrainer);
+            else
+                FinishBattle(_enemyTrainer, _player);
         }
 
-        private void GetPlayerCommand()
+        private void PlayerMove()
         {
             Console.WriteLine("What are you going to do next?");
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
@@ -100,7 +123,6 @@ namespace PokemonAdventureGame.BattleSystem
 
             ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
-            //Create deal damage method that will receive another pokemon as a parameter? Sounds like a bad idea..
             targetPokemon.ReceiveDamage(move.Damage);
 
             ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, move.Damage);
@@ -118,13 +140,10 @@ namespace PokemonAdventureGame.BattleSystem
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), rand.Next(0, enemyPokemon.Moves.Count));
         }
 
-        private void FinishBattle(IPokemon faintedPokemon, ITrainer winningTrainer)
+        private void FinishBattle(ITrainer winner, ITrainer loser)
         {
-            ConsoleBattleInfo.ShowPokemonFainted(faintedPokemon);
-            ConsoleBattleInfo.ShowTrainerWins(winningTrainer);
+            ConsoleBattleInfo.TrainerHasNoPokemonLeft(loser);
+            ConsoleBattleInfo.ShowTrainerWins(winner);
         }
-
-        private bool TrainerHasPokemonLeftToBattle(ITrainer trainer)
-            => trainer.PokemonTeam.Where(w => !w.Fainted).Count() > 0;
     }
 }

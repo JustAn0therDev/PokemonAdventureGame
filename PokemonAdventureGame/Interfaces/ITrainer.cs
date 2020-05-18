@@ -10,8 +10,10 @@ namespace PokemonAdventureGame.Interfaces
         List<TrainerPokemon> PokemonTeam { get; set; }
         void InitializeTrainerTeam();
         IPokemon GetCurrentPokemon();
-        void SetPokemonAsCurrent(TrainerPokemon trainerPokemon);
-        void SetFirstAvailablePokemonAsCurrent();
+        void SetPokemonAsCurrent(IPokemon trainerPokemon);
+        bool HasAvailablePokemon();
+        IPokemon GetNextAvailablePokemon();
+        void SetPokemonAsFainted(IPokemon pokemon);
         //void InitializeTrainerItems();
     }
 }
