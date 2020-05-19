@@ -32,20 +32,29 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void MainBattle()
         {
+            ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
+            KeepBattleGoingWhileBothPlayersHavePokemonLeft();
+        }
+
+        private void KeepBattleGoingWhileBothPlayersHavePokemonLeft()
+        {
             IPokemon currentBattlingPlayerPokemon = _player.GetCurrentPokemon();
             IPokemon currentBattlingEnemyPokemon = _enemyTrainer.GetCurrentPokemon();
 
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
-                ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
-
-                if (currentBattlingPlayerPokemon.CurrentHealthPoints <= 0)
+                if (currentBattlingPlayerPokemon.CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
                     _player.SetPokemonAsFainted(currentBattlingPlayerPokemon);
 
                     ConsoleBattleInfo.TrainerDrawsbackPokemon(_player.GetCurrentPokemon());
 
-                    if (_player.GetNextAvailablePokemon() != null)
+                    if (_player.GetNextAvailablePokemon() == null)
+                    {
+                        FinishBattle(_enemyTrainer, _player);
+                        return;
+                    }
+                    else
                     {
                         currentBattlingPlayerPokemon = _player.GetNextAvailablePokemon();
 
@@ -56,13 +65,18 @@ namespace PokemonAdventureGame.BattleSystem
                 else
                     PlayerMove();
 
-                if (currentBattlingEnemyPokemon.CurrentHealthPoints <= 0)
+                if (currentBattlingEnemyPokemon.CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                 {
                     _enemyTrainer.SetPokemonAsFainted(currentBattlingEnemyPokemon);
 
                     ConsoleBattleInfo.TrainerDrawsbackPokemon(_enemyTrainer.GetCurrentPokemon());
 
-                    if (_enemyTrainer.GetNextAvailablePokemon() != null)
+                    if (_enemyTrainer.GetNextAvailablePokemon() == null)
+                    {
+                        FinishBattle(_player, _enemyTrainer);
+                        return;
+                    }
+                    else
                     {
                         currentBattlingEnemyPokemon = _enemyTrainer.GetNextAvailablePokemon();
 
@@ -72,12 +86,9 @@ namespace PokemonAdventureGame.BattleSystem
                 }
                 else
                     EnemyMove();
-            }
 
-            if (_player.HasAvailablePokemon())
-                FinishBattle(_player, _enemyTrainer);
-            else
-                FinishBattle(_enemyTrainer, _player);
+                ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
+            }
         }
 
         private void PlayerMove()
@@ -129,9 +140,7 @@ namespace PokemonAdventureGame.BattleSystem
             ConsoleBattleInfo.ClearScreen();
         }
 
-        private void EnemyMove() => EnemyPokemonMove();
-
-        private void EnemyPokemonMove()
+        private void EnemyMove()
         {
             var rand = new Random();
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
@@ -142,6 +151,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void FinishBattle(ITrainer winner, ITrainer loser)
         {
+            ConsoleBattleInfo.ClearScreen();
             ConsoleBattleInfo.TrainerHasNoPokemonLeft(loser);
             ConsoleBattleInfo.ShowTrainerWins(winner);
         }

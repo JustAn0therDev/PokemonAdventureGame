@@ -14,7 +14,7 @@ namespace PokemonAdventureGame.Interfaces
         int SpeedPoints { get; set; }
         StatusCondition Status { get; set; }
         List<IMove> Moves { get; set; }
-        /* Um type pode ser imune a outro */
+        //A type can be resistant or even imune to other types.
         List<Type> Types { get; set; }
         void InitializePokemonProperties();
         void ReceiveDamage(int damageReceived);

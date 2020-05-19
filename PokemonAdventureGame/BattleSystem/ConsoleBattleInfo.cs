@@ -9,7 +9,8 @@ namespace PokemonAdventureGame.BattleSystem
     //rather than managing the battle system in the terminal and how the information is being displayed.
     public static class ConsoleBattleInfo
     {
-        public static void ClearScreen() => Console.Clear();
+        public static void ClearScreen() 
+            => Console.Clear();
 
         public static void EnemyTrainerSendsPokemon(ITrainer trainer, IPokemon pokemon)
         {
