@@ -15,7 +15,8 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Eevee>(), true)
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Eevee>(), true),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Pikachu>())
             };
         }
 

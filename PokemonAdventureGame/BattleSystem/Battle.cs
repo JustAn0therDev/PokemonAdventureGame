@@ -38,12 +38,9 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void KeepBattleGoingWhileBothPlayersHavePokemonLeft()
         {
-            IPokemon currentBattlingPlayerPokemon = _player.GetCurrentPokemon();
-            IPokemon currentBattlingEnemyPokemon = _enemyTrainer.GetCurrentPokemon();
-
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
-                if (currentBattlingPlayerPokemon.CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
+                if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
                     if (CannotSendNextAvailablePokemon(_player))
                         return;
@@ -51,7 +48,7 @@ namespace PokemonAdventureGame.BattleSystem
                 else
                     PlayerMove();
 
-                if (currentBattlingEnemyPokemon.CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
+                if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                 {
                     if (CannotSendNextAvailablePokemon(_enemyTrainer, true))
                         return;
