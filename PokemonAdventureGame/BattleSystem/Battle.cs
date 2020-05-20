@@ -45,50 +45,54 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 if (currentBattlingPlayerPokemon.CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
-                    _player.SetPokemonAsFainted(currentBattlingPlayerPokemon);
-
-                    ConsoleBattleInfo.TrainerDrawsbackPokemon(_player.GetCurrentPokemon());
-
-                    if (_player.GetNextAvailablePokemon() == null)
-                    {
-                        FinishBattle(_enemyTrainer, _player);
+                    if (CannotSendNextAvailablePokemon(_player))
                         return;
-                    }
-                    else
-                    {
-                        currentBattlingPlayerPokemon = _player.GetNextAvailablePokemon();
-
-                        _player.SetPokemonAsCurrent(currentBattlingPlayerPokemon);
-                        ConsoleBattleInfo.PlayerSendsPokemon(currentBattlingPlayerPokemon);
-                    }
                 }
                 else
                     PlayerMove();
 
                 if (currentBattlingEnemyPokemon.CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                 {
-                    _enemyTrainer.SetPokemonAsFainted(currentBattlingEnemyPokemon);
-
-                    ConsoleBattleInfo.TrainerDrawsbackPokemon(_enemyTrainer.GetCurrentPokemon());
-
-                    if (_enemyTrainer.GetNextAvailablePokemon() == null)
-                    {
-                        FinishBattle(_player, _enemyTrainer);
+                    if (CannotSendNextAvailablePokemon(_enemyTrainer, true))
                         return;
-                    }
-                    else
-                    {
-                        currentBattlingEnemyPokemon = _enemyTrainer.GetNextAvailablePokemon();
-
-                        _enemyTrainer.SetPokemonAsCurrent(currentBattlingEnemyPokemon);
-                        ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, currentBattlingEnemyPokemon);
-                    }
                 }
                 else
                     EnemyMove();
 
                 ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
             }
+        }
+
+        private bool CannotSendNextAvailablePokemon(ITrainer trainer, bool isEnemyTrainer = false)
+        {
+            trainer.SetPokemonAsFainted(trainer.GetCurrentPokemon());
+
+            ConsoleBattleInfo.TrainerDrawsbackPokemon(trainer.GetCurrentPokemon());
+
+            if (trainer.GetNextAvailablePokemon() == null)
+            {
+                if (isEnemyTrainer)
+                    FinishBattle(_player, _enemyTrainer);
+                else
+                    FinishBattle(_enemyTrainer, _player);
+
+                return true;
+            }
+            else
+            {
+                SetCurrentToSendNextPokemon(trainer, isEnemyTrainer);
+                return false;
+            }
+        }
+
+        private void SetCurrentToSendNextPokemon(ITrainer trainer, bool isEnemyTrainer)
+        {
+            trainer.SetPokemonAsCurrent(trainer.GetNextAvailablePokemon());
+
+            if (isEnemyTrainer)
+                ConsoleBattleInfo.EnemyTrainerSendsPokemon(trainer, trainer.GetCurrentPokemon());
+            else
+                ConsoleBattleInfo.PlayerSendsPokemon(trainer.GetCurrentPokemon());
         }
 
         private void PlayerMove()
