@@ -100,6 +100,9 @@ namespace PokemonAdventureGame.BattleSystem
         }
 
         public static void MovementDidntAffectPokemon(IPokemon pokemon)
-            => Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
+        { 
+            Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
+            WaitOneSecond();
+        }
     }
 }

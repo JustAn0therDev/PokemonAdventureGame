@@ -72,7 +72,7 @@ namespace PokemonAdventureGame.Types
         //}
 
 
-        public static bool DoesNotMakeContact(List<Enums.Type> pokemonTypes, IMove move)
+        public static bool PokemonTypeDoesNotMakeContactWithMove(List<Enums.Type> pokemonTypes, IMove move)
         {
             if (pokemonTypes.Contains(Enums.Type.GHOST) && !move.Special)
                 return true;

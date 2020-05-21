@@ -135,11 +135,8 @@ namespace PokemonAdventureGame.BattleSystem
 
             ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
-            if (TypeComparer.DoesNotMakeContact(targetPokemon.Types, move))
-            {
+            if (TypeComparer.PokemonTypeDoesNotMakeContactWithMove(targetPokemon.Types, move))
                 ConsoleBattleInfo.MovementDidntAffectPokemon(targetPokemon);
-                return;
-            }
             else
             {
                 targetPokemon.ReceiveDamage(move.Damage);
