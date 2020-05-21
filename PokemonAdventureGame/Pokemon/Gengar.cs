@@ -1,7 +1,6 @@
 ﻿using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Moves.Ghost;
-using PokemonAdventureGame.Moves.Normal;
 using System.Collections.Generic;
 
 namespace PokemonAdventureGame.Pokemon

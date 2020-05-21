@@ -1,9 +1,8 @@
-﻿using System.Text;
-using System.Collections.Generic;
+﻿using PokemonAdventureGame.Enums;
+using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Moves.Electric;
 using PokemonAdventureGame.Moves.Normal;
-using PokemonAdventureGame.Enums;
-using PokemonAdventureGame.Interfaces;
+using System.Collections.Generic;
 
 namespace PokemonAdventureGame.Pokemon
 {

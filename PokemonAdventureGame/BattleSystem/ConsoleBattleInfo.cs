@@ -9,7 +9,7 @@ namespace PokemonAdventureGame.BattleSystem
     //rather than managing the battle system in the terminal and how the information is being displayed.
     public static class ConsoleBattleInfo
     {
-        public static void ClearScreen() 
+        public static void ClearScreen()
             => Console.Clear();
 
         public static void EnemyTrainerSendsPokemon(ITrainer trainer, IPokemon pokemon)
@@ -98,5 +98,8 @@ namespace PokemonAdventureGame.BattleSystem
             Console.WriteLine($"{trainer.GetType().Name} has no other pokemon left to battle...");
             SkipLine();
         }
+
+        public static void MovementDidntAffectPokemon(IPokemon pokemon)
+            => Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
     }
 }

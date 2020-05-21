@@ -3,10 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    //TODO: be able to switch first and second pokemon by passing a pokemon list in the constructor.
     public class Battle
     {
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
@@ -135,11 +135,21 @@ namespace PokemonAdventureGame.BattleSystem
 
             ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
-            targetPokemon.ReceiveDamage(move.Damage);
+            if (TypeComparer.DoesNotMakeContact(targetPokemon.Types, move))
+            {
+                ConsoleBattleInfo.MovementDidntAffectPokemon(targetPokemon);
+                return;
+            }
+            else
+            {
+                targetPokemon.ReceiveDamage(move.Damage);
+                ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, move.Damage);
+            }
 
-            ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, move.Damage);
             ConsoleBattleInfo.ClearScreen();
         }
+
+        private bool MovementIsSpecial(IMove move) => move.Special;
 
         private void EnemyMove()
         {
