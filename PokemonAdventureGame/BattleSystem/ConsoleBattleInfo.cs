@@ -5,8 +5,6 @@ using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    //TODO-ish: Make the class implement a console interface if it gets too big and used for many other things 
-    //rather than managing the battle system in the terminal and how the information is being displayed.
     public static class ConsoleBattleInfo
     {
         public static void ClearScreen()
