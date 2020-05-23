@@ -5,54 +5,54 @@ namespace PokemonAdventureGame.Types
 {
     public static class TypeComparer
     {
-        public static TypeEffect GetMoveEffectivenessBasedOnPokemonType(Enums.Type attackingPokemonType, Enums.Type targetPokemonType) 
+        public static TypeEffect GetMoveEffectivenessBasedOnPokemonType(Enums.Type attackingType, Enums.Type targetType) 
         {
-           switch (attackingPokemonType)
+           switch (attackingType)
            {
                case Enums.Type.NORMAL:
-                   return CompareNormalType(targetPokemonType);
+                   return CompareNormalType(targetType);
                case Enums.Type.FIGHTING:
-                   return CompareFightingType(targetPokemonType);
+                   return CompareFightingType(targetType);
                case Enums.Type.FLYING:
-                   return CompareFlyingType(targetPokemonType);
+                   return CompareFlyingType(targetType);
                case Enums.Type.POISON:
-                   return ComparePoisonType(targetPokemonType);
+                   return ComparePoisonType(targetType);
                case Enums.Type.GROUND:
-                   return CompareGroundType(targetPokemonType);
+                   return CompareGroundType(targetType);
                case Enums.Type.ROCK:
-                   return CompareRockType(targetPokemonType);
+                   return CompareRockType(targetType);
                case Enums.Type.BUG:
-                   return CompareBugType(targetPokemonType);
+                   return CompareBugType(targetType);
                case Enums.Type.GHOST:
-                   return CompareGhostType(targetPokemonType);
+                   return CompareGhostType(targetType);
                case Enums.Type.STEEL:
-                   return CompareSteelType(targetPokemonType);
+                   return CompareSteelType(targetType);
                case Enums.Type.FIRE:
-                   return CompareFireType(targetPokemonType);
+                   return CompareFireType(targetType);
                case Enums.Type.WATER:
-                   return CompareWaterType(targetPokemonType);
+                   return CompareWaterType(targetType);
                case Enums.Type.GRASS:
-                   return CompareGrassType(targetPokemonType);
+                   return CompareGrassType(targetType);
                case Enums.Type.ELECTRIC:
-                   return CompareElectricType(targetPokemonType);
+                   return CompareElectricType(targetType);
                case Enums.Type.PSYCHIC:
-                   return ComparePsychicType(targetPokemonType);
+                   return ComparePsychicType(targetType);
                case Enums.Type.ICE:
-                   return CompareIceType(targetPokemonType);
+                   return CompareIceType(targetType);
                case Enums.Type.DRAGON:
-                   return CompareDragonType(targetPokemonType);
+                   return CompareDragonType(targetType);
                case Enums.Type.FAIRY:
-                   return CompareFairyType(targetPokemonType);
+                   return CompareFairyType(targetType);
                case Enums.Type.DARK:
-                   return CompareDarkType(targetPokemonType);
+                   return CompareDarkType(targetType);
                default:
                    return TypeEffect.NEUTRAL;
             }
         }
 
-        public static TypeEffect CompareNormalType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareNormalType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.ROCK:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
@@ -63,9 +63,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareFightingType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareFightingType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.ICE:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -94,9 +94,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareFlyingType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareFlyingType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.ELECTRIC:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
@@ -115,9 +115,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect ComparePoisonType(Enums.Type targetPokemonType)
+        public static TypeEffect ComparePoisonType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.GRASS:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -138,9 +138,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareGroundType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareGroundType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -163,9 +163,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareRockType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareRockType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -186,9 +186,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareBugType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareBugType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
@@ -213,9 +213,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareGhostType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareGhostType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.PSYCHIC:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -230,9 +230,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareSteelType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareSteelType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
@@ -253,9 +253,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareFireType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareFireType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.GRASS:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -280,9 +280,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareWaterType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareWaterType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -301,9 +301,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareGrassType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareGrassType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
@@ -330,9 +330,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareElectricType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareElectricType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.WATER:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -353,9 +353,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect ComparePsychicType(Enums.Type targetPokemonType)
+        public static TypeEffect ComparePsychicType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.POISON:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -370,9 +370,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareIceType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareIceType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
@@ -395,9 +395,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareDragonType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareDragonType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.DRAGON:
                     return TypeEffect.SUPER_EFFECTIVE;
@@ -406,9 +406,9 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        public static TypeEffect CompareFairyType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareFairyType(Enums.Type targetType)
         {
-            switch (targetPokemonType)
+            switch (targetType)
             {
                 case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
