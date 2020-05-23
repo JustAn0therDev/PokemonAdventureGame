@@ -2,7 +2,8 @@ using PokemonAdventureGame.Types;
 using PokemonAdventureGame.Enums;
 using Xunit;
 
-namespace PokemonAdventureGame.Tests.Types {
+namespace PokemonAdventureGame.Tests.Types 
+{
     public class DarkTypeEffectTests 
     {
         private readonly Type darkType = Type.DARK;
