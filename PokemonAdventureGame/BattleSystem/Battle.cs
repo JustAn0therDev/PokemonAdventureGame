@@ -119,7 +119,7 @@ namespace PokemonAdventureGame.BattleSystem
             int chosenMove = -1;
             IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
 
-            //Should this while loop be a responsability of the battle class or the BattleConsoleInfo class?
+            //This should be implemented for the action commands as well, e.g. switch pokemon, items and run...
             while (chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON)
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
@@ -139,14 +139,15 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfo.MovementDidntAffectPokemon(targetPokemon);
             else
             {
-                targetPokemon.ReceiveDamage(move.Damage);
-                ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, move.Damage);
-            }
+                TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.First());
+                int finalMoveDamage = TypeDamageCalculator.CalculateDamageBasedOnTypeEffect(move.Damage, moveEffectOnPokemon);
+                targetPokemon.ReceiveDamage(finalMoveDamage);
+                ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, finalMoveDamage);
 
+                ConsoleBattleInfo.ShowHowEffectiveTheMoveWas(moveEffectOnPokemon, targetPokemon);
+            }
             ConsoleBattleInfo.ClearScreen();
         }
-
-        private bool MovementIsSpecial(IMove move) => move.Special;
 
         private void EnemyMove()
         {

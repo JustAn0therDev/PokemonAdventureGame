@@ -5,450 +5,296 @@ namespace PokemonAdventureGame.Types
 {
     public static class TypeComparer
     {
-        public static TypeEffect GetMoveEffectivenessBasedOnPokemonType(Enums.Type attackingType, Enums.Type targetType) 
+        public static TypeEffect GetMoveEffectivenessBasedOnPokemonType(Type attackingType, Type targetType) 
         {
-           switch (attackingType)
-           {
-               case Enums.Type.NORMAL:
-                   return CompareNormalType(targetType);
-               case Enums.Type.FIGHTING:
-                   return CompareFightingType(targetType);
-               case Enums.Type.FLYING:
-                   return CompareFlyingType(targetType);
-               case Enums.Type.POISON:
-                   return ComparePoisonType(targetType);
-               case Enums.Type.GROUND:
-                   return CompareGroundType(targetType);
-               case Enums.Type.ROCK:
-                   return CompareRockType(targetType);
-               case Enums.Type.BUG:
-                   return CompareBugType(targetType);
-               case Enums.Type.GHOST:
-                   return CompareGhostType(targetType);
-               case Enums.Type.STEEL:
-                   return CompareSteelType(targetType);
-               case Enums.Type.FIRE:
-                   return CompareFireType(targetType);
-               case Enums.Type.WATER:
-                   return CompareWaterType(targetType);
-               case Enums.Type.GRASS:
-                   return CompareGrassType(targetType);
-               case Enums.Type.ELECTRIC:
-                   return CompareElectricType(targetType);
-               case Enums.Type.PSYCHIC:
-                   return ComparePsychicType(targetType);
-               case Enums.Type.ICE:
-                   return CompareIceType(targetType);
-               case Enums.Type.DRAGON:
-                   return CompareDragonType(targetType);
-               case Enums.Type.FAIRY:
-                   return CompareFairyType(targetType);
-               case Enums.Type.DARK:
-                   return CompareDarkType(targetType);
-               default:
-                   return TypeEffect.NEUTRAL;
-            }
-        }
-
-        public static TypeEffect CompareNormalType(Enums.Type targetType)
-        {
-            switch (targetType)
+            return attackingType switch
             {
-                case Enums.Type.ROCK:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.NORMAL => CompareNormalType(targetType),
+                Type.FIGHTING => CompareFightingType(targetType),
+                Type.FLYING => CompareFlyingType(targetType),
+                Type.POISON => ComparePoisonType(targetType),
+                Type.GROUND => CompareGroundType(targetType),
+                Type.ROCK => CompareRockType(targetType),
+                Type.BUG => CompareBugType(targetType),
+                Type.GHOST => CompareGhostType(targetType),
+                Type.STEEL => CompareSteelType(targetType),
+                Type.FIRE => CompareFireType(targetType),
+                Type.WATER => CompareWaterType(targetType),
+                Type.GRASS => CompareGrassType(targetType),
+                Type.ELECTRIC => CompareElectricType(targetType),
+                Type.PSYCHIC => ComparePsychicType(targetType),
+                Type.ICE => CompareIceType(targetType),
+                Type.DRAGON => CompareDragonType(targetType),
+                Type.FAIRY => CompareFairyType(targetType),
+                Type.DARK => CompareDarkType(targetType),
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareFightingType(Enums.Type targetType)
+        public static TypeEffect CompareNormalType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.ICE:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.POISON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.BUG:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DARK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FAIRY:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.ROCK => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareFlyingType(Enums.Type targetType)
+        public static TypeEffect CompareFightingType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.ELECTRIC:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.BUG:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.ICE => TypeEffect.SUPER_EFFECTIVE,
+                Type.NORMAL => TypeEffect.SUPER_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.POISON => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FLYING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.PSYCHIC => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.BUG => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.ROCK => TypeEffect.SUPER_EFFECTIVE,
+                Type.DARK => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.SUPER_EFFECTIVE,
+                Type.FAIRY => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect ComparePoisonType(Enums.Type targetType)
+        public static TypeEffect CompareFlyingType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.GRASS:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.POISON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GROUND:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.IMMUNE;
-                case Enums.Type.FAIRY:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.ELECTRIC => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GRASS => TypeEffect.SUPER_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.SUPER_EFFECTIVE,
+                Type.BUG => TypeEffect.SUPER_EFFECTIVE,
+                Type.ROCK => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareGroundType(Enums.Type targetType)
+        public static TypeEffect ComparePoisonType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ELECTRIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.POISON:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.IMMUNE;
-                case Enums.Type.BUG:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.GRASS => TypeEffect.SUPER_EFFECTIVE,
+                Type.POISON => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GROUND => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.ROCK => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GHOST => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.STEEL => TypeEffect.IMMUNE,
+                Type.FAIRY => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareRockType(Enums.Type targetType)
+        public static TypeEffect CompareGroundType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ICE:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.GROUND:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.BUG:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.SUPER_EFFECTIVE,
+                Type.ELECTRIC => TypeEffect.SUPER_EFFECTIVE,
+                Type.GRASS => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.POISON => TypeEffect.SUPER_EFFECTIVE,
+                Type.FLYING => TypeEffect.IMMUNE,
+                Type.BUG => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.ROCK => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareBugType(Enums.Type targetType)
+        public static TypeEffect CompareRockType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.POISON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.GHOST:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.DARK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FAIRY:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.SUPER_EFFECTIVE,
+                Type.ICE => TypeEffect.SUPER_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FLYING => TypeEffect.SUPER_EFFECTIVE,
+                Type.GROUND => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.BUG => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareGhostType(Enums.Type targetType)
+        public static TypeEffect CompareBugType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GRASS => TypeEffect.SUPER_EFFECTIVE,
+                Type.POISON => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FLYING => TypeEffect.SUPER_EFFECTIVE,
+                Type.PSYCHIC => TypeEffect.SUPER_EFFECTIVE,
+                Type.GHOST => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.DARK => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FAIRY => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareSteelType(Enums.Type targetType)
+        public static TypeEffect CompareGhostType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.WATER:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.ELECTRIC:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.BUG:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FAIRY:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.PSYCHIC => TypeEffect.SUPER_EFFECTIVE,
+                Type.NORMAL => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GHOST => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareFireType(Enums.Type targetType)
+        public static TypeEffect CompareSteelType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.GRASS:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FIRE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.WATER:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.ICE:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.BUG:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.DRAGON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.WATER => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.ELECTRIC => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GRASS => TypeEffect.SUPER_EFFECTIVE,
+                Type.BUG => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FAIRY => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareWaterType(Enums.Type targetType)
+        public static TypeEffect CompareFireType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.WATER:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GROUND:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DRAGON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.GRASS => TypeEffect.SUPER_EFFECTIVE,
+                Type.FIRE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.WATER => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.ICE => TypeEffect.SUPER_EFFECTIVE,
+                Type.BUG => TypeEffect.SUPER_EFFECTIVE,
+                Type.ROCK => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.DRAGON => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.STEEL => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareGrassType(Enums.Type targetType)
+        public static TypeEffect CompareWaterType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.WATER:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.POISON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GROUND:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.BUG:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.ROCK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DRAGON:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.SUPER_EFFECTIVE,
+                Type.WATER => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GRASS => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GROUND => TypeEffect.SUPER_EFFECTIVE,
+                Type.ROCK => TypeEffect.SUPER_EFFECTIVE,
+                Type.DRAGON => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareElectricType(Enums.Type targetType)
+        public static TypeEffect CompareGrassType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.WATER:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ELECTRIC:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.GROUND:
-                    return TypeEffect.IMMUNE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DRAGON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.WATER => TypeEffect.SUPER_EFFECTIVE,
+                Type.GRASS => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.POISON => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GROUND => TypeEffect.SUPER_EFFECTIVE,
+                Type.FLYING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.BUG => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.ROCK => TypeEffect.SUPER_EFFECTIVE,
+                Type.DRAGON => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect ComparePsychicType(Enums.Type targetType)
+        public static TypeEffect CompareElectricType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.POISON:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.WATER => TypeEffect.SUPER_EFFECTIVE,
+                Type.ELECTRIC => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GRASS => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GHOST => TypeEffect.SUPER_EFFECTIVE,
+                Type.GROUND => TypeEffect.IMMUNE,
+                Type.FLYING => TypeEffect.SUPER_EFFECTIVE,
+                Type.DRAGON => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareIceType(Enums.Type targetType)
+        public static TypeEffect ComparePsychicType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.WATER:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GRASS:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.ICE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GROUND:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.FLYING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DRAGON:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.POISON => TypeEffect.SUPER_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.SUPER_EFFECTIVE,
+                Type.PSYCHIC => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareDragonType(Enums.Type targetType)
+        public static TypeEffect CompareIceType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.DRAGON:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.WATER => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GRASS => TypeEffect.SUPER_EFFECTIVE,
+                Type.ICE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.GROUND => TypeEffect.SUPER_EFFECTIVE,
+                Type.FLYING => TypeEffect.SUPER_EFFECTIVE,
+                Type.DRAGON => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareFairyType(Enums.Type targetType)
+        public static TypeEffect CompareDragonType(Type targetType)
         {
-            switch (targetType)
+            return targetType switch
             {
-                case Enums.Type.FIRE:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.POISON:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.DRAGON:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DARK:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.STEEL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.DRAGON => TypeEffect.SUPER_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static TypeEffect CompareDarkType(Enums.Type targetPokemonType)
+        public static TypeEffect CompareFairyType(Type targetType)
         {
-            switch (targetPokemonType)
+            return targetType switch
             {
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.GHOST:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.DARK:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FAIRY:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                default:
-                    return TypeEffect.NEUTRAL;
-            }
+                Type.FIRE => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FIGHTING => TypeEffect.SUPER_EFFECTIVE,
+                Type.POISON => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.DRAGON => TypeEffect.SUPER_EFFECTIVE,
+                Type.DARK => TypeEffect.SUPER_EFFECTIVE,
+                Type.STEEL => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
         }
 
-        public static bool PokemonTypeDoesNotMakeContactWithMove(List<Enums.Type> pokemonTypes, IMove move)
+        public static TypeEffect CompareDarkType(Type targetPokemonType)
         {
-            if (pokemonTypes.Contains(Enums.Type.GHOST) && !move.Special)
+            return targetPokemonType switch
+            {
+                Type.FIGHTING => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.PSYCHIC => TypeEffect.SUPER_EFFECTIVE,
+                Type.GHOST => TypeEffect.SUPER_EFFECTIVE,
+                Type.DARK => TypeEffect.NOT_VERY_EFFECTIVE,
+                Type.FAIRY => TypeEffect.NOT_VERY_EFFECTIVE,
+                _ => TypeEffect.NEUTRAL,
+            };
+        }
+
+        public static bool PokemonTypeDoesNotMakeContactWithMove(List<Type> pokemonTypes, IMove move)
+        {
+            if (pokemonTypes.Contains(Type.GHOST) && !move.Special)
                 return true;
 
             return false;

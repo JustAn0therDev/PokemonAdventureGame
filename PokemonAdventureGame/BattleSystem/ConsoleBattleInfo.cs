@@ -102,5 +102,29 @@ namespace PokemonAdventureGame.BattleSystem
             Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
             WaitOneSecond();
         }
+
+        private static void MovementIsNotVeryEffective()
+            => Console.WriteLine("It's not very effective...");
+
+        private static void MovementIsSuperEffective()
+            => Console.WriteLine("It's super effective!");
+
+        public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
+        {
+            switch (typeEffect)
+            {
+                case TypeEffect.IMMUNE:
+                    MovementDidntAffectPokemon(pokemon);
+                    break;
+                case TypeEffect.NOT_VERY_EFFECTIVE:
+                    MovementIsNotVeryEffective();
+                    WaitOneSecond();
+                    break;
+                case TypeEffect.SUPER_EFFECTIVE:
+                    MovementIsSuperEffective();
+                    WaitOneSecond();
+                    break;
+            }
+        }
     }
 }
