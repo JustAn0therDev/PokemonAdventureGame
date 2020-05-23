@@ -234,13 +234,19 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
+                case Enums.Type.FIRE:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.WATER:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.ELECTRIC:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.GRASS:
                     return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.BUG:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.STEEL:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
+                case Enums.Type.FAIRY:
                     return TypeEffect.SUPER_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
@@ -251,13 +257,23 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
+                case Enums.Type.GRASS:
                     return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.FIRE:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.WATER:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
                 case Enums.Type.FIGHTING:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
+                case Enums.Type.ICE:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.BUG:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.ROCK:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.DRAGON:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.STEEL:
                     return TypeEffect.SUPER_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
@@ -268,14 +284,18 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
+                case Enums.Type.FIRE:
                     return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.WATER:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
+                case Enums.Type.GRASS:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
+                case Enums.Type.GROUND:
                     return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.ROCK:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.DRAGON:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
             }
@@ -285,13 +305,25 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
+                case Enums.Type.FIRE:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.WATER:
                     return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.GRASS:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
+                case Enums.Type.POISON:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
+                case Enums.Type.GROUND:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.FLYING:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.BUG:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.ROCK:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.DRAGON:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.STEEL:
                     return TypeEffect.SUPER_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
@@ -302,14 +334,20 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
+                case Enums.Type.WATER:
                     return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.ELECTRIC:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
+                case Enums.Type.GRASS:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
                 case Enums.Type.GHOST:
                     return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.GROUND:
+                    return TypeEffect.IMMUNE;
+                case Enums.Type.FLYING:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.DRAGON:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
             }
@@ -319,14 +357,14 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
+                case Enums.Type.POISON:
                     return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
                     return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.PSYCHIC:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.STEEL:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
             }
@@ -336,14 +374,22 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
+                case Enums.Type.WATER:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
+                case Enums.Type.GRASS:
                     return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.ICE:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.GROUND:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.FLYING:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.DRAGON:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.STEEL:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
             }
@@ -353,13 +399,7 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
+                case Enums.Type.DRAGON:
                     return TypeEffect.SUPER_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
@@ -370,14 +410,18 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
+                case Enums.Type.FIRE:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
                 case Enums.Type.FIGHTING:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
-                case Enums.Type.GHOST:
                     return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.POISON:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.DRAGON:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.DARK:
+                    return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.STEEL:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
             }
@@ -387,14 +431,16 @@ namespace PokemonAdventureGame.Types
         {
             switch (targetPokemonType)
             {
-                case Enums.Type.PSYCHIC:
-                    return TypeEffect.SUPER_EFFECTIVE;
-                case Enums.Type.NORMAL:
-                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 case Enums.Type.FIGHTING:
                     return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.PSYCHIC:
+                    return TypeEffect.SUPER_EFFECTIVE;
                 case Enums.Type.GHOST:
                     return TypeEffect.SUPER_EFFECTIVE;
+                case Enums.Type.DARK:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
+                case Enums.Type.FAIRY:
+                    return TypeEffect.NOT_VERY_EFFECTIVE;
                 default:
                     return TypeEffect.NEUTRAL;
             }
