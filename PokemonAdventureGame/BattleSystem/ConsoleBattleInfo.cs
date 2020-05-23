@@ -70,7 +70,7 @@ namespace PokemonAdventureGame.BattleSystem
             SkipLine();
 
             for (int i = 0; i < pokemon.Moves.Count; i++)
-                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name}");
+                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].PowerPoints}");
         }
 
         public static int GetPlayerChosenMove(string userInput)

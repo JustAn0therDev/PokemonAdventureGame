@@ -141,6 +141,7 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.First());
                 int finalMoveDamage = TypeDamageCalculator.CalculateDamageBasedOnTypeEffect(move.Damage, moveEffectOnPokemon);
+                attackingPokemon.UseMove(chosenMove);
                 targetPokemon.ReceiveDamage(finalMoveDamage);
                 ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, finalMoveDamage);
 
