@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PokemonAdventureGame.Factories;
+﻿using PokemonAdventureGame.Factories;
 using Xunit;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
