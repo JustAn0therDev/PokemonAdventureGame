@@ -126,5 +126,7 @@ namespace PokemonAdventureGame.BattleSystem
                     break;
             }
         }
+        public static void MovementIsOutOfPowerPoints() 
+            => Console.WriteLine("The chosen move is out of Power Points!");
     }
 }

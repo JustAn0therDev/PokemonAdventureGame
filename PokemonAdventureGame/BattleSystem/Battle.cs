@@ -120,7 +120,7 @@ namespace PokemonAdventureGame.BattleSystem
             IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
 
             //This should be implemented for the action commands as well, e.g. switch pokemon, items and run...
-            while (chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON)
+            while ((chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON))
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
                 chosenMove = ConsoleBattleInfo.GetPlayerChosenMove(Console.ReadLine());
@@ -133,12 +133,20 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
+            while(move.PowerPoints == 0) {
+                ConsoleBattleInfo.MovementIsOutOfPowerPoints();
+                PromptTrainerForPokemonMove();
+                return;
+            }
+
             ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
             if (TypeComparer.PokemonTypeDoesNotMakeContactWithMove(targetPokemon.Types, move))
                 ConsoleBattleInfo.MovementDidntAffectPokemon(targetPokemon);
             else
             {
+                //In the future, we'll have to compare all Pokemon types and evaluate if a type should nullify another, since a pokemon
+                //can have more than one type...
                 TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.First());
                 int finalMoveDamage = TypeDamageCalculator.CalculateDamageBasedOnTypeEffect(move.Damage, moveEffectOnPokemon);
                 attackingPokemon.UseMove(chosenMove);
