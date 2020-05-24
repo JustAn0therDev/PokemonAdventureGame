@@ -73,7 +73,7 @@ namespace PokemonAdventureGame.BattleSystem
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].PowerPoints}");
         }
 
-        public static int GetPlayerChosenMove(string userInput)
+        public static int GetPlayerChosenInput(string userInput)
         {
             ClearScreen();
             return int.TryParse(userInput, out int chosenMove) ? chosenMove : -1;
@@ -98,7 +98,7 @@ namespace PokemonAdventureGame.BattleSystem
         }
 
         public static void MovementDidntAffectPokemon(IPokemon pokemon)
-        { 
+        {
             Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
             WaitOneSecond();
         }
@@ -126,7 +126,15 @@ namespace PokemonAdventureGame.BattleSystem
                     break;
             }
         }
-        public static void MovementIsOutOfPowerPoints() 
+        public static void MovementIsOutOfPowerPoints()
             => Console.WriteLine("The chosen move is out of Power Points!");
+
+        public static void ShowAllTrainersPokemon(ITrainer trainer)
+        {
+            for (int i = 0; i < trainer.PokemonTeam.Count; i++)
+                Console.WriteLine($"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name}");
+        }
+
+        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another");
     }
 }

@@ -40,22 +40,31 @@ namespace PokemonAdventureGame.BattleSystem
         {
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
+                //If the player is changing pokemon because the last one fainted, don't let the enemy
+                //attack.
+                bool playerHasJustChangedPokemon = false;
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
+                    playerHasJustChangedPokemon = true;
+
                     if (CannotSendNextAvailablePokemon(_player))
                         return;
                 }
                 else
                     PlayerMove();
 
-                if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
+                if (!playerHasJustChangedPokemon) 
                 {
-                    if (CannotSendNextAvailablePokemon(_enemyTrainer, true))
-                        return;
+                    if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
+                    {
+                        if (CannotSendNextAvailablePokemon(_enemyTrainer, true))
+                            return;
+                    }
+                    else
+                        EnemyMove();
                 }
-                else
-                    EnemyMove();
 
+                playerHasJustChangedPokemon = false;
                 ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
             }
         }
@@ -105,6 +114,8 @@ namespace PokemonAdventureGame.BattleSystem
                     PromptTrainerForPokemonMove();
                     break;
                 case Command.SWITCH_POKEMON:
+                    PromptPlayerToSelectPokemon();
+                    break;
                 case Command.ITEMS:
                 case Command.RUN:
                 default:
@@ -123,7 +134,7 @@ namespace PokemonAdventureGame.BattleSystem
             while ((chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON))
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
-                chosenMove = ConsoleBattleInfo.GetPlayerChosenMove(Console.ReadLine());
+                chosenMove = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
             }
 
             PokemonAttack(playerCurrentPokemon, _enemyTrainer.GetCurrentPokemon(), chosenMove);
@@ -133,7 +144,8 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            while(move.PowerPoints == 0) {
+            while (move.PowerPoints == 0)
+            {
                 ConsoleBattleInfo.MovementIsOutOfPowerPoints();
                 PromptTrainerForPokemonMove();
                 return;
@@ -147,7 +159,7 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 //In the future, we'll have to compare all Pokemon types and evaluate if a type should nullify another, since a pokemon
                 //can have more than one type...
-                TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.First());
+                TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.FirstOrDefault());
                 int finalMoveDamage = TypeDamageCalculator.CalculateDamageBasedOnTypeEffect(move.Damage, moveEffectOnPokemon);
                 attackingPokemon.UseMove(chosenMove);
                 targetPokemon.ReceiveDamage(finalMoveDamage);
@@ -158,11 +170,40 @@ namespace PokemonAdventureGame.BattleSystem
             ConsoleBattleInfo.ClearScreen();
         }
 
+        private void PromptPlayerToSelectPokemon()
+        {
+            int chosenPokemon = -1;
+
+            while (chosenPokemon == -1 || chosenPokemon > _player.PokemonTeam.Count)
+            {
+                ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
+                chosenPokemon = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+            }
+
+            SwitchCurrentPokemon(chosenPokemon);
+        }
+
+        private void SwitchCurrentPokemon(int chosenPokemon)
+        {
+            while (_player.PokemonTeam[chosenPokemon].Fainted)
+            {
+                ConsoleBattleInfo.PokemonUnavailable();
+                PromptPlayerToSelectPokemon();
+                return;
+            }
+
+            ConsoleBattleInfo.TrainerDrawsbackPokemon(_player.GetCurrentPokemon());
+
+            _player.SetPokemonAsCurrent(_player.PokemonTeam[chosenPokemon].Pokemon);
+
+            ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
+        }
+
         private void EnemyMove()
         {
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             List<int> listOfPokemonTwoMoves = enemyPokemon.Moves.Select((s, index) => index).ToList();
-            
+
             Random rand = new Random();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), rand.Next(0, enemyPokemon.Moves.Count));
         }
