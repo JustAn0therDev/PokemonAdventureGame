@@ -6,8 +6,8 @@ namespace PokemonAdventureGame.Types
 {
     public static class TypeDamageCalculator
     {
-        public static double SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50;
-        public static double NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35;
+        private static double SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50;
+        private static double NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35;
 
         public static int CalculateDamage(IPokemon attackingPokemon, IPokemon targetPokemon, int moveDamage, TypeEffect typeEffect) 
         {
