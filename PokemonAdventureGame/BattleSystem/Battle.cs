@@ -160,10 +160,10 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void EnemyMove()
         {
-            var rand = new Random();
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
-
             List<int> listOfPokemonTwoMoves = enemyPokemon.Moves.Select((s, index) => index).ToList();
+            
+            Random rand = new Random();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), rand.Next(0, enemyPokemon.Moves.Count));
         }
 
