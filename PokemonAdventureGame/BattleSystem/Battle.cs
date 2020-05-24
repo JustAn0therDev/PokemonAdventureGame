@@ -160,7 +160,7 @@ namespace PokemonAdventureGame.BattleSystem
                 //In the future, we'll have to compare all Pokemon types and evaluate if a type should nullify another, since a pokemon
                 //can have more than one type...
                 TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.FirstOrDefault());
-                int finalMoveDamage = TypeDamageCalculator.CalculateDamageBasedOnTypeEffect(move.Damage, moveEffectOnPokemon);
+                int finalMoveDamage = TypeDamageCalculator.CalculateDamage(attackingPokemon, targetPokemon, move.Damage, moveEffectOnPokemon);
                 attackingPokemon.UseMove(chosenMove);
                 targetPokemon.ReceiveDamage(finalMoveDamage);
                 ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, finalMoveDamage);

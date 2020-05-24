@@ -299,5 +299,7 @@ namespace PokemonAdventureGame.Types
 
             return false;
         }
+
+        //TODO: Create an enumerator and use it on moves to check if the move should only alter statuses or should deal damage. Or both.
     }
 }
