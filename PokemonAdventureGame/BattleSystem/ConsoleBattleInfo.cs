@@ -135,6 +135,14 @@ namespace PokemonAdventureGame.BattleSystem
                 Console.WriteLine($"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name}");
         }
 
-        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another");
+        public static void PokemonUnavailable() 
+            => Console.WriteLine("The chosen pokemon is not available, please select another");
+        
+        public static void ShowPlayerThereAreNoPokemonLeft() 
+        {
+            Console.WriteLine("There are no other pokemon left to battle!");
+            WaitOneSecond();
+            ClearScreen();
+        }
     }
 }

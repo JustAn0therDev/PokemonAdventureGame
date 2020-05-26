@@ -42,18 +42,20 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 //If the player is changing pokemon because the last one fainted, don't let the enemy
                 //attack.
-                bool playerHasJustChangedPokemon = false;
+                bool keepBattleGoing = false;
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
-                    playerHasJustChangedPokemon = true;
+                    keepBattleGoing = true;
 
                     if (CannotSendNextAvailablePokemon(_player))
                         return;
                 }
-                else
-                    PlayerMove();
+                else 
+                {
+                    keepBattleGoing = PlayerMove();
+                }
 
-                if (!playerHasJustChangedPokemon) 
+                if (keepBattleGoing) 
                 {
                     if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                     {
@@ -64,7 +66,7 @@ namespace PokemonAdventureGame.BattleSystem
                         EnemyMove();
                 }
 
-                playerHasJustChangedPokemon = false;
+                keepBattleGoing = false;
                 ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
             }
         }
@@ -101,8 +103,10 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfo.PlayerSendsPokemon(trainer.GetCurrentPokemon());
         }
 
-        private void PlayerMove()
+        private bool PlayerMove()
         {
+            bool keepBattleGoing = false;
+
             Console.WriteLine("What are you going to do next?");
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
@@ -112,15 +116,18 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 case Command.ATTACK:
                     PromptTrainerForPokemonMove();
+                    keepBattleGoing = true;
                     break;
                 case Command.SWITCH_POKEMON:
-                    PromptPlayerToSelectPokemon();
+                    keepBattleGoing = PromptPlayerToSelectPokemon();
                     break;
                 case Command.ITEMS:
                 case Command.RUN:
                 default:
                     throw new NotImplementedException();
             }
+
+            return keepBattleGoing;
         }
 
         //TODO: Use the command or memento pattern to undo the action of coming to this menu. 
@@ -170,9 +177,15 @@ namespace PokemonAdventureGame.BattleSystem
             ConsoleBattleInfo.ClearScreen();
         }
 
-        private void PromptPlayerToSelectPokemon()
+        private bool PromptPlayerToSelectPokemon()
         {
             int chosenPokemon = -1;
+
+            if (_player.PokemonTeam.Where(pkmn => pkmn.Fainted).Count() <= 1) 
+            {
+                ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeft();
+                return false;
+            }
 
             while (chosenPokemon == -1 || chosenPokemon > _player.PokemonTeam.Count)
             {
@@ -181,6 +194,8 @@ namespace PokemonAdventureGame.BattleSystem
             }
 
             SwitchCurrentPokemon(chosenPokemon);
+
+            return true;
         }
 
         private void SwitchCurrentPokemon(int chosenPokemon)
@@ -188,7 +203,7 @@ namespace PokemonAdventureGame.BattleSystem
             while (_player.PokemonTeam[chosenPokemon].Fainted)
             {
                 ConsoleBattleInfo.PokemonUnavailable();
-                PromptPlayerToSelectPokemon();
+                PlayerMove();
                 return;
             }
 
