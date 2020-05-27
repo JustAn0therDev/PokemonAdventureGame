@@ -1,5 +1,6 @@
 ﻿using PokemonAdventureGame.Enums;
 using System.Collections.Generic;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.Types
 {

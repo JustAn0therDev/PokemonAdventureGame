@@ -41,7 +41,13 @@ namespace PokemonAdventureGame.Pokemon
                 CurrentHealthPoints = 0;
         }
 
-        public void UseMove(int moveIndex) => Moves[moveIndex].PowerPoints -= 1;
+        public void UseMove(IMove move) 
+        {
+            IMove moveToRemovePowerPoints = Moves.Find(f => f == move);
+
+            if (moveToRemovePowerPoints != null) 
+                moveToRemovePowerPoints.PowerPoints -= 1;
+        }
 
         public bool HasFainted() => CurrentHealthPoints <= 0;
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Types;
+using PokemonAdventureGame.Statuses;
 
 namespace PokemonAdventureGame.BattleSystem
 {
@@ -40,8 +41,6 @@ namespace PokemonAdventureGame.BattleSystem
         {
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
-                //If the player is changing pokemon because the last one fainted, don't let the enemy
-                //attack.
                 bool keepBattleGoing = false;
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
@@ -163,18 +162,32 @@ namespace PokemonAdventureGame.BattleSystem
             if (TypeComparer.PokemonTypeDoesNotMakeContactWithMove(targetPokemon.Types, move))
                 ConsoleBattleInfo.MovementDidntAffectPokemon(targetPokemon);
             else
+                ProcessAttack(attackingPokemon, targetPokemon, move);
+
+            ConsoleBattleInfo.ClearScreen();
+        }
+
+        private void ProcessAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
+        {
+            TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.FirstOrDefault());
+            int calculatedDamage = TypeDamageCalculator.CalculateDamage(attackingPokemon, targetPokemon, move, moveEffectOnPokemon);
+
+            attackingPokemon.UseMove(move);
+
+            if (move.StatusMoves != null) 
             {
-                //In the future, we'll have to compare all Pokemon types and evaluate if a type should nullify another, since a pokemon
-                //can have more than one type...
-                TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.FirstOrDefault());
-                int calculatedDamage = TypeDamageCalculator.CalculateDamage(attackingPokemon, targetPokemon, move, moveEffectOnPokemon);
-                attackingPokemon.UseMove(chosenMove);
+                List<StatusMove> pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
+                if (move.MoveTarget.Value == StatusMoveTarget.SELF)
+                    ConsoleBattleInfo.ShowInflictedStatuses(attackingPokemon, pokemonAlteredStatuses);
+                else
+                    ConsoleBattleInfo.ShowInflictedStatuses(targetPokemon, pokemonAlteredStatuses);
+            }
+            else 
+            {
                 targetPokemon.ReceiveDamage(calculatedDamage);
                 ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, calculatedDamage);
-
                 ConsoleBattleInfo.ShowHowEffectiveTheMoveWas(moveEffectOnPokemon, targetPokemon);
             }
-            ConsoleBattleInfo.ClearScreen();
         }
 
         private bool PromptPlayerToSelectPokemon()

@@ -1,4 +1,6 @@
-﻿namespace PokemonAdventureGame
+﻿using System.Collections.Generic;
+using PokemonAdventureGame.Enums;
+namespace PokemonAdventureGame.Interfaces
 {
     public interface IMove
     {
@@ -6,6 +8,7 @@
         int Damage { get; }
         int PowerPoints { get; set; }
         bool Special { get; }
-        //int Ailment { get; set; }
+        List<StatusMove> StatusMoves { get; }
+        StatusMoveTarget? MoveTarget { get; }
     }
 }

@@ -18,7 +18,7 @@ namespace PokemonAdventureGame.Interfaces
         List<Type> Types { get; set; }
         void InitializePokemonProperties();
         void ReceiveDamage(int damageReceived);
-        void UseMove(int moveIndex);
+        void UseMove(IMove move);
         bool HasFainted();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Collections.Generic;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 
@@ -143,6 +144,49 @@ namespace PokemonAdventureGame.BattleSystem
             Console.WriteLine("There are no other pokemon left to battle!");
             WaitOneSecond();
             ClearScreen();
+        }
+
+        public static void ShowInflictedStatuses(IPokemon targetPokemon, List<StatusMove> statusMoves) 
+        {
+            for (int i = 0; i < statusMoves.Count; i++)
+            {
+                switch (statusMoves[i])
+                {
+                    case StatusMove.ATTACK_UP:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s attack went up!");
+                        break;
+                    case StatusMove.ATTACK_DOWN:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s attack went down!");
+                        break;
+                    case StatusMove.DEFENSE_UP:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s defense went up!");
+                        break;
+                    case StatusMove.DEFENSE_DOWN:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s defense went down!");
+                        break;
+                    case StatusMove.SPECIALATTACK_UP:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special attack went up!");
+                        break;
+                    case StatusMove.SPECIALATTACK_DOWN:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special attack went down!");
+                        break;
+                    case StatusMove.SPECIALDEFENSE_UP:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special defense went up!");
+                        break;
+                    case StatusMove.SPECIALDEFENSE_DOWN:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special defense went down!");
+                        break;
+                    case StatusMove.SPEED_UP:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s speed went up!");
+                        break;
+                    case StatusMove.SPEED_DOWN:
+                        Console.WriteLine($"{targetPokemon.GetType().Name}'s speed went down!");
+                        break;
+                    default:
+                        break;
+                }
+                WaitOneSecond();
+            }
         }
     }
 }
