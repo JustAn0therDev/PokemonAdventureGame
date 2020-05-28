@@ -35,7 +35,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         public static void ShowBothPokemonStats(IPokemon playerPokemon, IPokemon enemyPokemon)
         {
-            //Show status ailments in the future in front of the Pokémon's HP.
+            //TODO: Show status ailments in front of the Pokémon's HP.
             Console.WriteLine($"{enemyPokemon.GetType().Name} - HP: {enemyPokemon.CurrentHealthPoints}/{enemyPokemon.HealthPoints}");
             SkipLine();
             Console.WriteLine($"{playerPokemon.GetType().Name} - HP: {playerPokemon.CurrentHealthPoints}/{playerPokemon.HealthPoints}");
@@ -98,18 +98,6 @@ namespace PokemonAdventureGame.BattleSystem
             SkipLine();
         }
 
-        public static void MovementDidntAffectPokemon(IPokemon pokemon)
-        {
-            Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
-            WaitOneSecond();
-        }
-
-        private static void MovementIsNotVeryEffective()
-            => Console.WriteLine("It's not very effective...");
-
-        private static void MovementIsSuperEffective()
-            => Console.WriteLine("It's super effective!");
-
         public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
         {
             switch (typeEffect)
@@ -127,8 +115,16 @@ namespace PokemonAdventureGame.BattleSystem
                     break;
             }
         }
-        public static void MovementIsOutOfPowerPoints()
-            => Console.WriteLine("The chosen move is out of Power Points!");
+
+        public static void MovementDidntAffectPokemon(IPokemon pokemon)
+        {
+            Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
+            WaitOneSecond();
+        }
+
+        private static void MovementIsNotVeryEffective() => Console.WriteLine("It's not very effective...");
+        private static void MovementIsSuperEffective() => Console.WriteLine("It's super effective!");
+        public static void MovementIsOutOfPowerPoints() => Console.WriteLine("The chosen move is out of Power Points!");
 
         public static void ShowAllTrainersPokemon(ITrainer trainer)
         {
@@ -136,8 +132,7 @@ namespace PokemonAdventureGame.BattleSystem
                 Console.WriteLine($"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name}");
         }
 
-        public static void PokemonUnavailable() 
-            => Console.WriteLine("The chosen pokemon is not available, please select another");
+        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another");
         
         public static void ShowPlayerThereAreNoPokemonLeft() 
         {

@@ -41,7 +41,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
-                bool keepBattleGoing = false;
+                bool keepBattleGoing;
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
                     keepBattleGoing = true;
@@ -49,12 +49,12 @@ namespace PokemonAdventureGame.BattleSystem
                     if (CannotSendNextAvailablePokemon(_player))
                         return;
                 }
-                else 
+                else
                 {
                     keepBattleGoing = PlayerMove();
                 }
 
-                if (keepBattleGoing) 
+                if (keepBattleGoing)
                 {
                     if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                     {
@@ -64,8 +64,6 @@ namespace PokemonAdventureGame.BattleSystem
                     else
                         EnemyMove();
                 }
-
-                keepBattleGoing = false;
                 ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
             }
         }
@@ -90,6 +88,13 @@ namespace PokemonAdventureGame.BattleSystem
                 SetCurrentToSendNextPokemon(trainer, isEnemyTrainer);
                 return false;
             }
+        }
+
+        private void FinishBattle(ITrainer winner, ITrainer loser)
+        {
+            ConsoleBattleInfo.ClearScreen();
+            ConsoleBattleInfo.TrainerHasNoPokemonLeft(loser);
+            ConsoleBattleInfo.ShowTrainerWins(winner);
         }
 
         private void SetCurrentToSendNextPokemon(ITrainer trainer, bool isEnemyTrainer)
@@ -123,7 +128,8 @@ namespace PokemonAdventureGame.BattleSystem
                 case Command.ITEMS:
                 case Command.RUN:
                 default:
-                    throw new NotImplementedException();
+                    Environment.Exit(0);
+                    break;
             }
 
             return keepBattleGoing;
@@ -150,7 +156,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            while (move.PowerPoints == 0)
+            if (move.PowerPoints == 0)
             {
                 ConsoleBattleInfo.MovementIsOutOfPowerPoints();
                 PromptTrainerForPokemonMove();
@@ -174,15 +180,16 @@ namespace PokemonAdventureGame.BattleSystem
 
             attackingPokemon.UseMove(move);
 
-            if (move.StatusMoves != null) 
+            if (move.StatusMoves != null)
             {
                 List<StatusMove> pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
+
                 if (move.MoveTarget.Value == StatusMoveTarget.SELF)
                     ConsoleBattleInfo.ShowInflictedStatuses(attackingPokemon, pokemonAlteredStatuses);
                 else
                     ConsoleBattleInfo.ShowInflictedStatuses(targetPokemon, pokemonAlteredStatuses);
             }
-            else 
+            else
             {
                 targetPokemon.ReceiveDamage(calculatedDamage);
                 ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, calculatedDamage);
@@ -194,7 +201,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             int chosenPokemon = -1;
 
-            if (_player.PokemonTeam.Where(pkmn => pkmn.Fainted).Count() <= 1) 
+            if (_player.PokemonTeam.Where(pkmn => pkmn.Fainted).Count() <= 1)
             {
                 ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeft();
                 return false;
@@ -232,15 +239,7 @@ namespace PokemonAdventureGame.BattleSystem
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             List<int> listOfPokemonTwoMoves = enemyPokemon.Moves.Select((s, index) => index).ToList();
 
-            Random rand = new Random();
-            PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), rand.Next(0, enemyPokemon.Moves.Count));
-        }
-
-        private void FinishBattle(ITrainer winner, ITrainer loser)
-        {
-            ConsoleBattleInfo.ClearScreen();
-            ConsoleBattleInfo.TrainerHasNoPokemonLeft(loser);
-            ConsoleBattleInfo.ShowTrainerWins(winner);
+            PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
     }
 }
