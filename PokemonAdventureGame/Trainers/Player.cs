@@ -15,7 +15,7 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon (PokemonFactory.CreatePokemon<Gengar>(), true)
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Gengar>(), true)
             };
         }
 
@@ -33,7 +33,7 @@ namespace PokemonAdventureGame.Trainers
                     pkmn.Current = true;
             });
         }
-        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Select(s => s).Count() > 0;
+        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
         public IPokemon GetNextAvailablePokemon() => PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
         public void SetPokemonAsFainted(IPokemon pokemon)
         {

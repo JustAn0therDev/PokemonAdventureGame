@@ -1,45 +1,32 @@
 ﻿using System;
-using System.Threading;
 using System.Collections.Generic;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 
-namespace PokemonAdventureGame.BattleSystem
+namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public static class ConsoleBattleInfo
     {
-        public static void ClearScreen()
-            => Console.Clear();
+        private static PlayerMovement _playerMovement = new PlayerMovement();
+        private static EnemyMovement _enemyMovement = new EnemyMovement();
 
-        public static void EnemyTrainerSendsPokemon(ITrainer trainer, IPokemon pokemon)
-        {
-            WaitOneSecond();
-            Console.WriteLine($"{trainer.GetType().Name} sent out {pokemon.GetType().Name}!");
-            SkipLine();
+        public static void PlayerSendsPokemon(IPokemon pokemon) => _playerMovement.PlayerSendsPokemon(pokemon);
+        public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer, IPokemon pokemon) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer, pokemon);
+        public static void TrainerDrawsbackPokemon(IPokemon pokemon, bool isEnemyTrainer = false)
+        { 
+            if (isEnemyTrainer) 
+                _enemyMovement.EnemyTrainerChangesPokemon(pokemon);
+            else 
+                _playerMovement.PlayerChangesPokemon(pokemon);
         }
 
-        private static void WaitOneSecond() => Thread.Sleep(1000);
-        private static void WaitTwoSeconds() => Thread.Sleep(2000);
-
-        public static void PlayerSendsPokemon(IPokemon pokemon)
-        {
-            WaitOneSecond();
-            Console.WriteLine($"Go, {pokemon.GetType().Name}!");
-            WaitOneSecond();
-            ClearScreen();
-        }
-
-        public static void TrainerDrawsbackPokemon(IPokemon pokemon) => Console.WriteLine($"{pokemon.GetType().Name}, come back!");
-
-        public static void SkipLine() => Console.WriteLine(string.Empty);
+        public static void Clear() => ConsoleBattleUtils.ClearScreen();
 
         public static void ShowBothPokemonStats(IPokemon playerPokemon, IPokemon enemyPokemon)
         {
             //TODO: Show status ailments in front of the Pokémon's HP.
-            Console.WriteLine($"{enemyPokemon.GetType().Name} - HP: {enemyPokemon.CurrentHealthPoints}/{enemyPokemon.HealthPoints}");
-            SkipLine();
-            Console.WriteLine($"{playerPokemon.GetType().Name} - HP: {playerPokemon.CurrentHealthPoints}/{playerPokemon.HealthPoints}");
-            SkipLine();
+            ConsoleBattleUtils.TrainerAction<EnemyMovement>($"{enemyPokemon.GetType().Name} - HP: {enemyPokemon.CurrentHealthPoints}/{enemyPokemon.HealthPoints}");
+            ConsoleBattleUtils.TrainerAction<PlayerMovement>($"{playerPokemon.GetType().Name} - HP: {playerPokemon.CurrentHealthPoints}/{playerPokemon.HealthPoints}");
         }
 
         public static void ShowAvailableCommandsOnConsole()
@@ -53,22 +40,22 @@ namespace PokemonAdventureGame.BattleSystem
         public static void ShowPokemonUsedMove(IPokemon pokemon, string moveName)
         {
             Console.WriteLine($"{pokemon.GetType().Name} used {moveName}!");
-            WaitTwoSeconds();
-            SkipLine();
+            ConsoleBattleUtils.WaitTwoSeconds();
+            ConsoleBattleUtils.SkipLine();
         }
 
         public static void ShowPokemonReceivedDamage(IPokemon pokemon, int damage)
         {
             Console.WriteLine($"{pokemon.GetType().Name} took {damage} damage!");
-            WaitTwoSeconds();
-            SkipLine();
+            ConsoleBattleUtils.WaitTwoSeconds();
+            ConsoleBattleUtils.SkipLine();
         }
 
         public static void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
-            SkipLine();
+            ConsoleBattleUtils.SkipLine();
             Console.WriteLine("Choose your attack!");
-            SkipLine();
+            ConsoleBattleUtils.SkipLine();
 
             for (int i = 0; i < pokemon.Moves.Count; i++)
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].PowerPoints}");
@@ -76,26 +63,21 @@ namespace PokemonAdventureGame.BattleSystem
 
         public static int GetPlayerChosenInput(string userInput)
         {
-            ClearScreen();
+            ConsoleBattleUtils.ClearScreen();
             return int.TryParse(userInput, out int chosenMove) ? chosenMove : -1;
-        }
-
-        public static void ShowPokemonFainted(IPokemon pokemon)
-        {
-            Console.WriteLine($"{pokemon.GetType().Name} fainted!");
-            SkipLine();
         }
 
         public static void ShowTrainerWins(ITrainer trainer)
         {
             Console.WriteLine($"{trainer.GetType().Name} wins!");
-            SkipLine();
+            ConsoleBattleUtils.SkipLine();
         }
 
         public static void TrainerHasNoPokemonLeft(ITrainer trainer)
         {
+            ConsoleBattleUtils.ClearScreen();
             Console.WriteLine($"{trainer.GetType().Name} has no other pokemon left to battle...");
-            SkipLine();
+            ConsoleBattleUtils.SkipLine();
         }
 
         public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
@@ -107,23 +89,30 @@ namespace PokemonAdventureGame.BattleSystem
                     break;
                 case TypeEffect.NOT_VERY_EFFECTIVE:
                     MovementIsNotVeryEffective();
-                    WaitOneSecond();
                     break;
                 case TypeEffect.SUPER_EFFECTIVE:
                     MovementIsSuperEffective();
-                    WaitOneSecond();
                     break;
             }
+        }
+
+        private static void MovementIsNotVeryEffective()  
+        { 
+            Console.WriteLine("It's not very effective..."); 
+            ConsoleBattleUtils.WaitOneSecond();
+        }
+        private static void MovementIsSuperEffective() 
+        {
+            Console.WriteLine("It's super effective!"); 
+            ConsoleBattleUtils.WaitOneSecond();
         }
 
         public static void MovementDidntAffectPokemon(IPokemon pokemon)
         {
             Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
-            WaitOneSecond();
+            ConsoleBattleUtils.WaitOneSecond();
         }
 
-        private static void MovementIsNotVeryEffective() => Console.WriteLine("It's not very effective...");
-        private static void MovementIsSuperEffective() => Console.WriteLine("It's super effective!");
         public static void MovementIsOutOfPowerPoints() => Console.WriteLine("The chosen move is out of Power Points!");
 
         public static void ShowAllTrainersPokemon(ITrainer trainer)
@@ -132,13 +121,13 @@ namespace PokemonAdventureGame.BattleSystem
                 Console.WriteLine($"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name}");
         }
 
-        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another");
+        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another!");
         
         public static void ShowPlayerThereAreNoPokemonLeft() 
         {
             Console.WriteLine("There are no other pokemon left to battle!");
-            WaitOneSecond();
-            ClearScreen();
+            ConsoleBattleUtils.WaitOneSecond();
+            ConsoleBattleUtils.ClearScreen();
         }
 
         public static void ShowInflictedStatuses(IPokemon targetPokemon, List<StatusMove> statusMoves) 
@@ -180,8 +169,15 @@ namespace PokemonAdventureGame.BattleSystem
                     default:
                         break;
                 }
-                WaitOneSecond();
+                ConsoleBattleUtils.WaitOneSecond();
             }
         }
+
+        public static void ShowChosenPokemonIsAlreadyInBattle() 
+        {
+            Console.WriteLine("The chosen pokemon is already in battle!");
+            ConsoleBattleUtils.WaitOneSecond();
+            ConsoleBattleUtils.ClearScreen();
+        } 
     }
 }

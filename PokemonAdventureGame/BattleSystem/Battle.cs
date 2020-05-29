@@ -5,6 +5,7 @@ using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Types;
 using PokemonAdventureGame.Statuses;
+using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.BattleSystem
 {
@@ -33,7 +34,6 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void MainBattle()
         {
-            ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
             KeepBattleGoingWhileBothPlayersHavePokemonLeft();
         }
 
@@ -41,20 +41,22 @@ namespace PokemonAdventureGame.BattleSystem
         {
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
-                bool keepBattleGoing;
+                bool keepBattleGoing = false, isChangingToNextAvailablePokemon = false;
+
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
-                    keepBattleGoing = true;
-
                     if (CannotSendNextAvailablePokemon(_player))
                         return;
+                    else
+                        isChangingToNextAvailablePokemon = true;
                 }
                 else
                 {
+                    ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
                     keepBattleGoing = PlayerMove();
                 }
 
-                if (keepBattleGoing)
+                if (keepBattleGoing || !isChangingToNextAvailablePokemon)
                 {
                     if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                     {
@@ -64,7 +66,6 @@ namespace PokemonAdventureGame.BattleSystem
                     else
                         EnemyMove();
                 }
-                ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
             }
         }
 
@@ -72,7 +73,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             trainer.SetPokemonAsFainted(trainer.GetCurrentPokemon());
 
-            ConsoleBattleInfo.TrainerDrawsbackPokemon(trainer.GetCurrentPokemon());
+            ConsoleBattleInfo.TrainerDrawsbackPokemon(trainer.GetCurrentPokemon(), isEnemyTrainer);
 
             if (trainer.GetNextAvailablePokemon() == null)
             {
@@ -92,7 +93,6 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void FinishBattle(ITrainer winner, ITrainer loser)
         {
-            ConsoleBattleInfo.ClearScreen();
             ConsoleBattleInfo.TrainerHasNoPokemonLeft(loser);
             ConsoleBattleInfo.ShowTrainerWins(winner);
         }
@@ -135,14 +135,11 @@ namespace PokemonAdventureGame.BattleSystem
             return keepBattleGoing;
         }
 
-        //TODO: Use the command or memento pattern to undo the action of coming to this menu. 
-        //The player might send "1" by accident and want to return to give the pokemon an item...
         private void PromptTrainerForPokemonMove()
         {
             int chosenMove = -1;
             IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
 
-            //This should be implemented for the action commands as well, e.g. switch pokemon, items and run...
             while ((chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON))
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
@@ -170,7 +167,7 @@ namespace PokemonAdventureGame.BattleSystem
             else
                 ProcessAttack(attackingPokemon, targetPokemon, move);
 
-            ConsoleBattleInfo.ClearScreen();
+            ConsoleBattleInfo.Clear();
         }
 
         private void ProcessAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
@@ -201,7 +198,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             int chosenPokemon = -1;
 
-            if (_player.PokemonTeam.Where(pkmn => pkmn.Fainted).Count() <= 1)
+            if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
                 ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeft();
                 return false;
@@ -220,25 +217,27 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void SwitchCurrentPokemon(int chosenPokemon)
         {
-            while (_player.PokemonTeam[chosenPokemon].Fainted)
+            if (_player.PokemonTeam[chosenPokemon].Fainted)
             {
                 ConsoleBattleInfo.PokemonUnavailable();
                 PlayerMove();
                 return;
             }
+            else if (_player.PokemonTeam[chosenPokemon].Current)
+            {
+                ConsoleBattleInfo.ShowChosenPokemonIsAlreadyInBattle();
+                PlayerMove();
+                return;
+            }
 
             ConsoleBattleInfo.TrainerDrawsbackPokemon(_player.GetCurrentPokemon());
-
             _player.SetPokemonAsCurrent(_player.PokemonTeam[chosenPokemon].Pokemon);
-
             ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
         private void EnemyMove()
         {
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
-            List<int> listOfPokemonTwoMoves = enemyPokemon.Moves.Select((s, index) => index).ToList();
-
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
     }
