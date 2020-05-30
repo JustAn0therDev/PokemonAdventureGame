@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
+using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Types;
-using PokemonAdventureGame.Statuses;
-using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.BattleSystem
 {
@@ -14,11 +12,13 @@ namespace PokemonAdventureGame.BattleSystem
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
+        private BattleAux _battleAux { get; set; }
 
         public Battle(ITrainer player, ITrainer enemyTrainer)
         {
             _player = player;
             _enemyTrainer = enemyTrainer;
+            _battleAux = new BattleAux(player, enemyTrainer);
         }
 
         public void StartBattle()
@@ -32,10 +32,7 @@ namespace PokemonAdventureGame.BattleSystem
             MainBattle();
         }
 
-        private void MainBattle()
-        {
-            KeepBattleGoingWhileBothPlayersHavePokemonLeft();
-        }
+        private void MainBattle() => KeepBattleGoingWhileBothPlayersHavePokemonLeft();
 
         private void KeepBattleGoingWhileBothPlayersHavePokemonLeft()
         {
@@ -45,7 +42,7 @@ namespace PokemonAdventureGame.BattleSystem
 
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
-                    if (CannotSendNextAvailablePokemon(_player))
+                    if (_battleAux.CannotSendNextAvailablePokemon(_player))
                         return;
                     else
                         isChangingToNextAvailablePokemon = true;
@@ -56,55 +53,17 @@ namespace PokemonAdventureGame.BattleSystem
                     keepBattleGoing = PlayerMove();
                 }
 
-                if (keepBattleGoing || !isChangingToNextAvailablePokemon)
+                if (keepBattleGoing && !isChangingToNextAvailablePokemon)
                 {
                     if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                     {
-                        if (CannotSendNextAvailablePokemon(_enemyTrainer, true))
+                        if (_battleAux.CannotSendNextAvailablePokemon(_enemyTrainer, true))
                             return;
                     }
                     else
                         EnemyMove();
                 }
             }
-        }
-
-        private bool CannotSendNextAvailablePokemon(ITrainer trainer, bool isEnemyTrainer = false)
-        {
-            trainer.SetPokemonAsFainted(trainer.GetCurrentPokemon());
-
-            ConsoleBattleInfo.TrainerDrawsbackPokemon(trainer.GetCurrentPokemon(), isEnemyTrainer);
-
-            if (trainer.GetNextAvailablePokemon() == null)
-            {
-                if (isEnemyTrainer)
-                    FinishBattle(_player, _enemyTrainer);
-                else
-                    FinishBattle(_enemyTrainer, _player);
-
-                return true;
-            }
-            else
-            {
-                SetCurrentToSendNextPokemon(trainer, isEnemyTrainer);
-                return false;
-            }
-        }
-
-        private void FinishBattle(ITrainer winner, ITrainer loser)
-        {
-            ConsoleBattleInfo.TrainerHasNoPokemonLeft(loser);
-            ConsoleBattleInfo.ShowTrainerWins(winner);
-        }
-
-        private void SetCurrentToSendNextPokemon(ITrainer trainer, bool isEnemyTrainer)
-        {
-            trainer.SetPokemonAsCurrent(trainer.GetNextAvailablePokemon());
-
-            if (isEnemyTrainer)
-                ConsoleBattleInfo.EnemyTrainerSendsPokemon(trainer, trainer.GetCurrentPokemon());
-            else
-                ConsoleBattleInfo.PlayerSendsPokemon(trainer.GetCurrentPokemon());
         }
 
         private bool PlayerMove()
@@ -137,16 +96,8 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void PromptTrainerForPokemonMove()
         {
-            int chosenMove = -1;
-            IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
-
-            while ((chosenMove <= -1 || chosenMove > LIMIT_OF_MOVES_PER_POKEMON))
-            {
-                ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
-                chosenMove = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
-            }
-
-            PokemonAttack(playerCurrentPokemon, _enemyTrainer.GetCurrentPokemon(), chosenMove);
+            int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
+            PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
         }
 
         private void PokemonAttack(IPokemon attackingPokemon, IPokemon targetPokemon, int chosenMove)
@@ -178,14 +129,7 @@ namespace PokemonAdventureGame.BattleSystem
             attackingPokemon.UseMove(move);
 
             if (move.StatusMoves != null)
-            {
-                List<StatusMove> pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
-
-                if (move.MoveTarget.Value == StatusMoveTarget.SELF)
-                    ConsoleBattleInfo.ShowInflictedStatuses(attackingPokemon, pokemonAlteredStatuses);
-                else
-                    ConsoleBattleInfo.ShowInflictedStatuses(targetPokemon, pokemonAlteredStatuses);
-            }
+                _battleAux.ProcessStatusAttack(attackingPokemon, targetPokemon, move);
             else
             {
                 targetPokemon.ReceiveDamage(calculatedDamage);
@@ -209,7 +153,6 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
                 chosenPokemon = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
             }
-
             SwitchCurrentPokemon(chosenPokemon);
 
             return true;
@@ -229,10 +172,6 @@ namespace PokemonAdventureGame.BattleSystem
                 PlayerMove();
                 return;
             }
-
-            ConsoleBattleInfo.TrainerDrawsbackPokemon(_player.GetCurrentPokemon());
-            _player.SetPokemonAsCurrent(_player.PokemonTeam[chosenPokemon].Pokemon);
-            ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
         private void EnemyMove()
