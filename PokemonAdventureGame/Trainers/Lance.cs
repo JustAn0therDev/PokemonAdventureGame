@@ -15,7 +15,7 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Gyarados>(), true),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Gyarados>()),
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Dragonite>()),
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Dragonite>()),
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Dragonite>()),
@@ -37,8 +37,19 @@ namespace PokemonAdventureGame.Trainers
                     pkmn.Current = true;
             });
         }
-        public IPokemon GetNextAvailablePokemon() => PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
+
+        public IPokemon GetNextAvailablePokemon()
+        {
+            IPokemon firstAvailablePokemon = PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
+
+            if (firstAvailablePokemon != null)
+                SetPokemonAsCurrent(firstAvailablePokemon);
+
+            return firstAvailablePokemon;
+        }
+
         public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
+
         public void SetPokemonAsFainted(IPokemon pokemon)
         {
             PokemonTeam.ForEach(pkmn =>
