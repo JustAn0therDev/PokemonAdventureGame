@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
@@ -23,6 +25,8 @@ namespace PokemonAdventureGame.BattleSystem
 
         public void StartBattle()
         {
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+
             _player.SetPokemonAsCurrent(_player.GetNextAvailablePokemon());
             _enemyTrainer.SetPokemonAsCurrent(_enemyTrainer.GetNextAvailablePokemon());
 
@@ -160,18 +164,23 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void SwitchCurrentPokemon(int chosenPokemon)
         {
-            if (_player.PokemonTeam[chosenPokemon].Fainted)
+            TrainerPokemon pokemon = _player.PokemonTeam[chosenPokemon];
+
+            if (pokemon.Fainted)
             {
                 ConsoleBattleInfo.PokemonUnavailable();
                 PlayerMove();
                 return;
             }
-            else if (_player.PokemonTeam[chosenPokemon].Current)
+
+            if (pokemon.Current)
             {
                 ConsoleBattleInfo.ShowChosenPokemonIsAlreadyInBattle();
                 PlayerMove();
                 return;
             }
+
+            _battleAux.DrawbackThenSendPokemon(chosenPokemon);
         }
 
         private void EnemyMove()

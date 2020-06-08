@@ -7,26 +7,33 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public static class ConsoleBattleInfo
     {
-        private static PlayerMovement _playerMovement = new PlayerMovement();
-        private static EnemyMovement _enemyMovement = new EnemyMovement();
+        private static PlayerAction _playerMovement = new PlayerAction();
+        private static EnemyAction _enemyMovement = new EnemyAction();
 
         public static void PlayerSendsPokemon(IPokemon pokemon) => _playerMovement.PlayerSendsPokemon(pokemon);
         public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer, IPokemon pokemon) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer, pokemon);
         public static void TrainerDrawsbackPokemon(IPokemon pokemon, bool isEnemyTrainer = false)
-        { 
-            if (isEnemyTrainer) 
+        {
+            if (isEnemyTrainer)
                 _enemyMovement.EnemyTrainerChangesPokemon(pokemon);
-            else 
+            else
                 _playerMovement.PlayerChangesPokemon(pokemon);
         }
 
-        public static void Clear() => ConsoleBattleUtils.ClearScreen();
+        public static void Clear() => ConsoleUtils.ClearScreen();
+
+        public static void EnemyTrainerWantsToBattle(ITrainer enemyTrainer)
+        {
+            Console.WriteLine($"{enemyTrainer.GetType().Name} wants to battle!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
 
         public static void ShowBothPokemonStats(IPokemon playerPokemon, IPokemon enemyPokemon)
         {
             //TODO: Show status ailments in front of the Pokémon's HP.
-            ConsoleBattleUtils.TrainerAction<EnemyMovement>($"{enemyPokemon.GetType().Name} - HP: {enemyPokemon.CurrentHealthPoints}/{enemyPokemon.HealthPoints}");
-            ConsoleBattleUtils.TrainerAction<PlayerMovement>($"{playerPokemon.GetType().Name} - HP: {playerPokemon.CurrentHealthPoints}/{playerPokemon.HealthPoints}");
+            ConsoleUtils.TrainerAction<EnemyAction>($"{enemyPokemon.GetType().Name} - HP: {enemyPokemon.CurrentHealthPoints}/{enemyPokemon.HealthPoints}");
+            ConsoleUtils.TrainerAction<PlayerAction>($"{playerPokemon.GetType().Name} - HP: {playerPokemon.CurrentHealthPoints}/{playerPokemon.HealthPoints}");
         }
 
         public static void ShowAvailableCommandsOnConsole()
@@ -40,22 +47,22 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void ShowPokemonUsedMove(IPokemon pokemon, string moveName)
         {
             Console.WriteLine($"{pokemon.GetType().Name} used {moveName}!");
-            ConsoleBattleUtils.WaitTwoSeconds();
-            ConsoleBattleUtils.SkipLine();
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.SkipLine();
         }
 
         public static void ShowPokemonReceivedDamage(IPokemon pokemon, int damage)
         {
             Console.WriteLine($"{pokemon.GetType().Name} took {damage} damage!");
-            ConsoleBattleUtils.WaitTwoSeconds();
-            ConsoleBattleUtils.SkipLine();
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.SkipLine();
         }
 
         public static void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
-            ConsoleBattleUtils.SkipLine();
+            ConsoleUtils.SkipLine();
             Console.WriteLine("Choose your attack!");
-            ConsoleBattleUtils.SkipLine();
+            ConsoleUtils.SkipLine();
 
             for (int i = 0; i < pokemon.Moves.Count; i++)
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].PowerPoints}");
@@ -63,21 +70,21 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static int GetPlayerChosenInput(string userInput)
         {
-            ConsoleBattleUtils.ClearScreen();
+            ConsoleUtils.ClearScreen();
             return int.TryParse(userInput, out int chosenMove) ? chosenMove : -1;
         }
 
         public static void ShowTrainerWins(ITrainer trainer)
         {
             Console.WriteLine($"{trainer.GetType().Name} wins!");
-            ConsoleBattleUtils.SkipLine();
+            ConsoleUtils.SkipLine();
         }
 
         public static void TrainerHasNoPokemonLeft(ITrainer trainer)
         {
-            ConsoleBattleUtils.ClearScreen();
+            ConsoleUtils.ClearScreen();
             Console.WriteLine($"{trainer.GetType().Name} has no other pokemon left to battle...");
-            ConsoleBattleUtils.SkipLine();
+            ConsoleUtils.SkipLine();
         }
 
         public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
@@ -99,18 +106,18 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         private static void MovementIsNotVeryEffective()  
         { 
             Console.WriteLine("It's not very effective..."); 
-            ConsoleBattleUtils.WaitOneSecond();
+            ConsoleUtils.WaitOneSecond();
         }
         private static void MovementIsSuperEffective() 
         {
             Console.WriteLine("It's super effective!"); 
-            ConsoleBattleUtils.WaitOneSecond();
+            ConsoleUtils.WaitOneSecond();
         }
 
         public static void MovementDidntAffectPokemon(IPokemon pokemon)
         {
             Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
-            ConsoleBattleUtils.WaitOneSecond();
+            ConsoleUtils.WaitOneSecond();
         }
 
         public static void MovementIsOutOfPowerPoints() => Console.WriteLine("The chosen move is out of Power Points!");
@@ -126,8 +133,8 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void ShowPlayerThereAreNoPokemonLeft() 
         {
             Console.WriteLine("There are no other pokemon left to battle!");
-            ConsoleBattleUtils.WaitOneSecond();
-            ConsoleBattleUtils.ClearScreen();
+            ConsoleUtils.WaitOneSecond();
+            ConsoleUtils.ClearScreen();
         }
 
         public static void ShowInflictedStatuses(IPokemon targetPokemon, List<StatusMove> statusMoves) 
@@ -169,15 +176,15 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                     default:
                         break;
                 }
-                ConsoleBattleUtils.WaitOneSecond();
+                ConsoleUtils.WaitOneSecond();
             }
         }
 
         public static void ShowChosenPokemonIsAlreadyInBattle() 
         {
             Console.WriteLine("The chosen pokemon is already in battle!");
-            ConsoleBattleUtils.WaitOneSecond();
-            ConsoleBattleUtils.ClearScreen();
+            ConsoleUtils.WaitOneSecond();
+            ConsoleUtils.ClearScreen();
         } 
     }
 }

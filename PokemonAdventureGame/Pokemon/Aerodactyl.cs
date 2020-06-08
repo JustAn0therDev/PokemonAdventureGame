@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using PokemonAdventureGame.Moves.Normal;
-using PokemonAdventureGame.Enums;
+﻿using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.Moves.Flying;
+using PokemonAdventureGame.Moves.Rock;
+using System.Collections.Generic;
 
 namespace PokemonAdventureGame.Pokemon
 {
-    public class Eevee : IPokemon
+    public class Aerodactyl : IPokemon
     {
         public int HealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
@@ -20,16 +21,17 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 55;
+            HealthPoints = 80;
             CurrentHealthPoints = HealthPoints;
-            AttackPoints = 55;
-            DefensePoints = 50;
-            SpecialAttackPoints = 45;
-            SpecialDefensePoints = 65;
-            SpeedPoints = 55;
+
+            AttackPoints = 105;
+            DefensePoints = 85;
+            SpecialAttackPoints = 70;
+            SpecialDefensePoints = 95;
+            SpeedPoints = 150;
             Status = StatusCondition.OK;
-            Moves = new List<IMove> { new Leer(), new Tackle() };
-            Types = new List<Type> { Type.NORMAL };
+            Moves = new List<IMove> { new WingAttack(), new Peck(), new RockThrow(), new RockSlide() };
+            Types = new List<Type> { Type.ROCK, Type.FLYING };
         }
 
         public void ReceiveDamage(int damageReceived)
@@ -40,11 +42,11 @@ namespace PokemonAdventureGame.Pokemon
                 CurrentHealthPoints = 0;
         }
 
-        public void UseMove(IMove move) 
+        public void UseMove(IMove move)
         {
             IMove moveToRemovePowerPoints = Moves.Find(f => f == move);
 
-            if (moveToRemovePowerPoints != null) 
+            if (moveToRemovePowerPoints != null)
                 moveToRemovePowerPoints.PowerPoints -= 1;
         }
 

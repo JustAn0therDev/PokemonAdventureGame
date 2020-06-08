@@ -37,6 +37,17 @@ namespace PokemonAdventureGame.Types
         //This is the damage formula used for the Pokemon GO game. I didn't use the actual pokemon formula because it depends
         //on more stuff than what we got in this game, like weather, level, friendship levels, etc.
         public static int ApplyDamageFormulaToInitialDamage(IPokemon attackingPokemon, IPokemon targetPokemon, int modifier)
-            => Convert.ToInt32((0.5 * (modifier * (attackingPokemon.AttackPoints / targetPokemon.DefensePoints))) + 1);
+        {
+            decimal attackPointsInDecimal = Convert.ToDecimal(attackingPokemon.AttackPoints);
+            decimal defensePointsInDecimal = Convert.ToDecimal(targetPokemon.DefensePoints);
+
+            decimal productFromAttackAndTargetPokemonDefense = Math.Round(attackPointsInDecimal / defensePointsInDecimal, MidpointRounding.AwayFromZero);
+
+            decimal productWithModifier = modifier * productFromAttackAndTargetPokemonDefense;
+
+            decimal finalProduct = (productWithModifier / 2) + 1;
+
+            return (int)Math.Ceiling(finalProduct);
+        }
     }
 }

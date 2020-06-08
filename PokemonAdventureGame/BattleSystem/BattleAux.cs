@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
