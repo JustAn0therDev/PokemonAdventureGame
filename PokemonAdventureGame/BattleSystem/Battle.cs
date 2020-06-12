@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
@@ -9,7 +10,7 @@ using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    public class Battle
+    public class Battle : IDisposable
     {
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
@@ -187,6 +188,11 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

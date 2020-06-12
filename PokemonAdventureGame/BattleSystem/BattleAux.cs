@@ -8,6 +8,7 @@ using PokemonAdventureGame.Statuses;
 
 namespace PokemonAdventureGame.BattleSystem
 {
+    //This class contains every method that does not depend on an order of execution.
     public class BattleAux
     {
         private readonly ITrainer _player;
