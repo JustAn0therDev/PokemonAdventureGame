@@ -10,7 +10,7 @@ namespace PokemonAdventureGame.Tests
     public class BattleTests
     {
         private static readonly ITrainer _trainer = TrainerFactory.CreateTrainer<Player>();
-        private static readonly ITrainer _enemyTrainer = TrainerFactory.CreateTrainer<Gary>();
+        private static readonly ITrainer _enemyTrainer = TrainerFactory.CreateTrainer<Blue>();
 
         [Fact]
         public void BattleObjectShouldNotBeNull()

@@ -4,21 +4,43 @@ using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Trainers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PokemonAdventureGame.Story
 {
     public class MainStory
     {
         private readonly ITrainer _player;
+        private ITrainer _enemyTrainer;
 
-        //LOAD THE PLAYER FROM THE CONSTRUCTOR, USING A NEW ITRAINER OBJECT THAT MIGHT COME FROM A:
-        //1 - SAVE FILE
-        //2 - NEW GAME
         public MainStory(ITrainer player)
         {
             _player = player;
+        }
+
+        public void InitiateFirstBattle()
+        {
+            Console.WriteLine("Hey, welcome to the All-Stars Pokemon League!");
+            Console.WriteLine("My name's Brock. I'm the pewter city's gym leader, and your first challenge.");
+            ConsoleUtils.TrainerAction<EnemyAction>("I hope you give me a good challenge and we both have a lot of fun.");
+            _enemyTrainer = TrainerFactory.CreateTrainer<Blue>();
+
+            using var battle = new Battle(_player, _enemyTrainer);
+            battle.StartBattle();
+        }
+
+        public void InitiateSecondBattle()
+        {
+
+        }
+
+        public void InitiateThirdBattle()
+        {
+
+        }
+
+        public void InitiateFourthBattle()
+        {
+
         }
 
         public void InitiateFifthBattle()
@@ -34,10 +56,22 @@ namespace PokemonAdventureGame.Story
             ConsoleUtils.TrainerAction<EnemyAction>("MAY YOU WHO HAVE COME TO CHALLENGE ME, FULFILL MY DESIRE FOR A GOOD BATTLE!");
             ConsoleUtils.WaitTwoSeconds();
 
-            ITrainer enemyTrainer = TrainerFactory.CreateTrainer<Lance>();
+            _enemyTrainer = TrainerFactory.CreateTrainer<Lance>();
 
-            using var battle = new Battle(_player, enemyTrainer);
+            using var battle = new Battle(_player, _enemyTrainer);
             battle.StartBattle();
+        }
+
+        public void InitiateFinalBattle()
+        {
+            Console.WriteLine("...");
+            Console.WriteLine("...");
+            ConsoleUtils.WaitFiveSeconds();
+        }
+
+        public void HealPokemon()
+        {
+
         }
     }
 }

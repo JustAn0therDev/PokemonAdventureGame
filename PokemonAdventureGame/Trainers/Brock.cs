@@ -7,7 +7,7 @@ using PokemonAdventureGame.PokemonTeam;
 
 namespace PokemonAdventureGame.Trainers
 {
-    public class Gary : ITrainer
+    public class Brock : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
 
@@ -15,8 +15,8 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Eevee>()),
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Pikachu>())
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Golem>()),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Onix>())
             };
         }
 
@@ -29,11 +29,10 @@ namespace PokemonAdventureGame.Trainers
                 if (pkmn.Current)
                     pkmn.Current = false;
 
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && pkmn.Pokemon.CurrentHealthPoints > 0)
                     pkmn.Current = true;
             });
         }
-        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
 
         public IPokemon GetNextAvailablePokemon()
         {
@@ -45,9 +44,11 @@ namespace PokemonAdventureGame.Trainers
             return firstAvailablePokemon;
         }
 
+        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
+
         public void SetPokemonAsFainted(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn => 
+            PokemonTeam.ForEach(pkmn =>
             {
                 if (pkmn.Pokemon == pokemon)
                     pkmn.Fainted = true;

@@ -14,7 +14,7 @@ namespace PokemonAdventureGame.Tests
 
         [Fact]
         public void TrainerGaryCreationShouldNotReturnNull()
-            => Assert.NotNull(TrainerFactory.CreateTrainer<Gary>());
+            => Assert.NotNull(TrainerFactory.CreateTrainer<Blue>());
 
         [Fact]
         public void TrainerShouldNotHaveAnyPokemonLeftToBattle()
@@ -27,7 +27,7 @@ namespace PokemonAdventureGame.Tests
         [Fact]
         public void ShouldSetChosenPokemonAsCurrent()
         {
-            ITrainer trainer = TrainerFactory.CreateTrainer<Gary>();
+            ITrainer trainer = TrainerFactory.CreateTrainer<Blue>();
             trainer.PokemonTeam.First().SetAsCurrent();
             Assert.True(trainer.PokemonTeam.First().Current);
         }
