@@ -90,9 +90,9 @@ namespace PokemonAdventureGame.Story
             Console.WriteLine("...");
             ConsoleUtils.WaitFiveSeconds();
 
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+            _enemyTrainer = TrainerFactory.CreateTrainer<Red>();
 
-            //TODO: CREATE RED POKEMON TRAINER
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
 
             using var battle = new Battle(_player, _enemyTrainer);
             battle.StartBattle();
