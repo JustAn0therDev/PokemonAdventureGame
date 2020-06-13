@@ -12,7 +12,7 @@ namespace PokemonAdventureGame.BattleSystem
 {
     public class Battle : IDisposable
     {
-        private delegate void PokemonAttackDelegate();
+        private delegate bool PokemonAttackDelegate();
         private delegate bool SwitchPokemonDelegate();
         private delegate void EndProgramDelegate();
 
@@ -94,29 +94,24 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool PlayerMove()
         {
-            Console.WriteLine("What are you going to do next?"); 
+            Console.WriteLine("What are you going to do next?");
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
 
-            bool keepBattleGoing;
-            if (command == Command.ATTACK)
-            {
-                _commands[command].DynamicInvoke();
-                keepBattleGoing = true;
-            }
-            else
-            {
-                keepBattleGoing = (bool)_commands[command].DynamicInvoke();
-            }
+            bool keepBattleGoing = (bool)_commands[command].DynamicInvoke();
 
             return keepBattleGoing;
         }
 
-        private void PromptTrainerForPokemonMove()
+        private bool PromptTrainerForPokemonMove()
         {
             int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
+
+            //The battle NEEDS to keep going and pass the next movement to the enemy trainer if the command
+            //was just an attack
+            return true;
         }
 
         private void PokemonAttack(IPokemon attackingPokemon, IPokemon targetPokemon, int chosenMove)
