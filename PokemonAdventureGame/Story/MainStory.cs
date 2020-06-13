@@ -1,9 +1,9 @@
-﻿using PokemonAdventureGame.BattleSystem;
+﻿using System;
+using PokemonAdventureGame.BattleSystem;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Trainers;
-using System;
 
 namespace PokemonAdventureGame.Story
 {
@@ -21,8 +21,16 @@ namespace PokemonAdventureGame.Story
         {
             Console.WriteLine("Hey, welcome to the All-Stars Pokemon League!");
             Console.WriteLine("My name's Brock. I'm the pewter city's gym leader, and your first challenge.");
+            ConsoleUtils.WaitFourSeconds();
+
             ConsoleUtils.TrainerAction<EnemyAction>("I hope you give me a good challenge and we both have a lot of fun.");
-            _enemyTrainer = TrainerFactory.CreateTrainer<Blue>();
+            ConsoleUtils.WaitTwoSeconds();
+
+            _enemyTrainer = TrainerFactory.CreateTrainer<Brock>();
+
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+            ConsoleUtils.WaitOneSecond();
+            ConsoleUtils.ClearScreen();
 
             using var battle = new Battle(_player, _enemyTrainer);
             battle.StartBattle();
@@ -40,23 +48,37 @@ namespace PokemonAdventureGame.Story
 
         public void InitiateFourthBattle()
         {
+            Console.WriteLine("Hey, I'm Blue, former Pokemon League Champion. Since you got here, I hope you give me a good battle");
+            Console.WriteLine("because the last trainers that got here were really disapointing...");
+            Console.WriteLine("And you're ugly.");
+            ConsoleUtils.WaitFourSeconds();
 
+            ConsoleUtils.TrainerAction<EnemyAction>("So... are you ready to take a beating?");
+            ConsoleUtils.WaitTwoSeconds();
+
+            ConsoleUtils.ClearScreen();
+
+            _enemyTrainer = TrainerFactory.CreateTrainer<Blue>();
+
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+
+            using var battle = new Battle(_player, _enemyTrainer);
+            battle.StartBattle();
         }
 
         public void InitiateFifthBattle()
         {
-            Console.WriteLine("You enter a large room with a lot of 'Dragonite statues' looking up with their mouths open...");
-            Console.WriteLine("A smell of gas fills the room as you start to grasp for a bit more of air...");
-            ConsoleUtils.WaitFourSeconds();
-
-            Console.WriteLine("As soon as you notice the smell of gas is coming from the Dragonite statues, the gas turns into fire, reaching the top of the room!");
-            Console.WriteLine("In the distance... A man wearing a cape that resembles the wings of a dragon, shouts out:");
+            Console.WriteLine("Congratulations on getting all the way here, trainer.");
+            Console.WriteLine("You look strong and like someone who has faced a lot of tough battles.");
+            Console.WriteLine("And with that said...");
             ConsoleUtils.WaitFourSeconds();
 
             ConsoleUtils.TrainerAction<EnemyAction>("MAY YOU WHO HAVE COME TO CHALLENGE ME, FULFILL MY DESIRE FOR A GOOD BATTLE!");
             ConsoleUtils.WaitTwoSeconds();
 
             _enemyTrainer = TrainerFactory.CreateTrainer<Lance>();
+
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
 
             using var battle = new Battle(_player, _enemyTrainer);
             battle.StartBattle();
@@ -67,6 +89,13 @@ namespace PokemonAdventureGame.Story
             Console.WriteLine("...");
             Console.WriteLine("...");
             ConsoleUtils.WaitFiveSeconds();
+
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+
+            //TODO: CREATE RED POKEMON TRAINER
+
+            using var battle = new Battle(_player, _enemyTrainer);
+            battle.StartBattle();
         }
 
         public void HealPokemon()
