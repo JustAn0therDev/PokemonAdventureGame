@@ -1,6 +1,4 @@
 ﻿using System;
-using PokemonAdventureGame.BattleSystem;
-using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Story;
@@ -17,7 +15,7 @@ namespace PokemonAdventureGame
                 ITrainer player = TrainerFactory.CreateTrainer<Player>();
                 MainStory mainStory = new MainStory(player);
 
-                mainStory.InitiateFirstBattle();
+                mainStory.InitiateFifthBattle();
             }
             catch (Exception ex)
             {

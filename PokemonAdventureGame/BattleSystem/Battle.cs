@@ -12,16 +12,37 @@ namespace PokemonAdventureGame.BattleSystem
 {
     public class Battle : IDisposable
     {
+        private delegate void PokemonAttackDelegate();
+        private delegate bool SwitchPokemonDelegate();
+        private delegate void EndProgramDelegate();
+
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
         private BattleAux _battleAux { get; set; }
+        private Dictionary<Command, Delegate> _commands { get; set; }
 
         public Battle(ITrainer player, ITrainer enemyTrainer)
         {
             _player = player;
             _enemyTrainer = enemyTrainer;
             _battleAux = new BattleAux(player, enemyTrainer);
+            InitializeCommandDictionary();
+        }
+
+        private void InitializeCommandDictionary()
+        {
+            _commands = new Dictionary<Command, Delegate>();
+            PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
+            SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
+            EndProgramDelegate endProgramDelegate = EndProgram;
+
+            _commands.Add(Command.ATTACK, firstMethodForAttackDelegate);
+            _commands.Add(Command.SWITCH_POKEMON, switchPokemonDelegate);
+
+            //While both commands don't have a method of their own, they will end the program's execution on call.
+            _commands.Add(Command.ITEMS, endProgramDelegate);
+            _commands.Add(Command.RUN, endProgramDelegate);
         }
 
         public void StartBattle()
@@ -73,27 +94,20 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool PlayerMove()
         {
-            bool keepBattleGoing = false;
-
-            Console.WriteLine("What are you going to do next?");
+            Console.WriteLine("What are you going to do next?"); 
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
 
-            switch (command)
+            bool keepBattleGoing;
+            if (command == Command.ATTACK)
             {
-                case Command.ATTACK:
-                    PromptTrainerForPokemonMove();
-                    keepBattleGoing = true;
-                    break;
-                case Command.SWITCH_POKEMON:
-                    keepBattleGoing = PromptPlayerToSelectPokemon();
-                    break;
-                case Command.ITEMS:
-                case Command.RUN:
-                default:
-                    Environment.Exit(0);
-                    break;
+                _commands[command].DynamicInvoke();
+                keepBattleGoing = true;
+            }
+            else
+            {
+                keepBattleGoing = (bool)_commands[command].DynamicInvoke();
             }
 
             return keepBattleGoing;
@@ -158,6 +172,7 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
                 chosenPokemon = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
             }
+
             SwitchCurrentPokemon(chosenPokemon);
 
             return true;
@@ -173,8 +188,7 @@ namespace PokemonAdventureGame.BattleSystem
                 PlayerMove();
                 return;
             }
-
-            if (pokemon.Current)
+            else if (pokemon.Current)
             {
                 ConsoleBattleInfo.ShowChosenPokemonIsAlreadyInBattle();
                 PlayerMove();
@@ -189,6 +203,8 @@ namespace PokemonAdventureGame.BattleSystem
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
+
+        private void EndProgram() => Environment.Exit(0);
 
         public void Dispose()
         {

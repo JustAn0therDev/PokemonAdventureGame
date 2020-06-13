@@ -21,7 +21,7 @@ namespace PokemonAdventureGame.Story
             _player = player;
         }
 
-        public void InitiateFirstBattle()
+        public void InitiateFifthBattle()
         {
             Console.WriteLine("You enter a large room with a lot of 'Dragonite statues' looking up with their mouths open...");
             Console.WriteLine("A smell of gas fills the room as you start to grasp for a bit more of air...");
@@ -34,10 +34,9 @@ namespace PokemonAdventureGame.Story
             ConsoleUtils.TrainerAction<EnemyAction>("MAY YOU WHO HAVE COME TO CHALLENGE ME, FULFILL MY DESIRE FOR A GOOD BATTLE!");
             ConsoleUtils.WaitTwoSeconds();
 
-            ITrainer player = TrainerFactory.CreateTrainer<Player>();
-            ITrainer computer = TrainerFactory.CreateTrainer<Lance>();
+            ITrainer enemyTrainer = TrainerFactory.CreateTrainer<Lance>();
 
-            using var battle = new Battle(player, computer);
+            using var battle = new Battle(_player, enemyTrainer);
             battle.StartBattle();
         }
     }
