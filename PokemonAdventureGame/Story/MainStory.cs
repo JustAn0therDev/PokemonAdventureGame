@@ -38,12 +38,25 @@ namespace PokemonAdventureGame.Story
 
         public void InitiateSecondBattle()
         {
+            Console.WriteLine("Hello, trainer, and welcome to the new Pokemon League.");
+            Console.WriteLine("It takes a lot of courage to be here, and you must keep going strong to face the challenges up ahead.");
+            ConsoleUtils.WaitFourSeconds();
 
+            ConsoleUtils.TrainerAction<EnemyAction>("Do you think you can handle me and my Pokemon?");
+
+            ConsoleUtils.WaitTwoSeconds();
+            _enemyTrainer = TrainerFactory.CreateTrainer<Bruno>();
+
+            ConsoleUtils.ClearScreen();
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+
+            using var battle = new Battle(_player, _enemyTrainer);
+            battle.StartBattle();
         }
 
         public void InitiateThirdBattle()
         {
-
+            // TODO: MARYANN
         }
 
         public void InitiateFourthBattle()
