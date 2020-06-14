@@ -33,7 +33,7 @@ namespace PokemonAdventureGame.Story
         {
             _player = player;
             InitializeFinalDialoguesDictionary();
-            InitiateFirstBattle();
+            BeginStory();
         }
 
         private void InitializeFinalDialoguesDictionary()
@@ -52,6 +52,19 @@ namespace PokemonAdventureGame.Story
             _finalDialogues.Add("Blue", bluesDialogue);
             _finalDialogues.Add("Lance", lancesDialogue);
             _finalDialogues.Add("Red", redsDialogue);
+        }
+
+        private void BeginStory()
+        {
+            Console.WriteLine("You have come a long way with your Venusaur, battling all trainers you encountered,");
+            Console.WriteLine("just to get to the All-Stars Pokemon League.");
+
+            ConsoleUtils.WaitFourSeconds();
+            Console.WriteLine("As you enter a big hall full of Pokemon Statues, your first challenge is there, looking down at you...");
+
+            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.ClearScreen();
+            InitiateFirstBattle();
         }
 
         private void InitiateFirstBattle()
@@ -146,6 +159,19 @@ namespace PokemonAdventureGame.Story
             _enemyTrainer = TrainerFactory.CreateTrainer<Red>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
+
+            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            EndStory();
+        }
+
+        private void EndStory()
+        {
+            Console.WriteLine("Congratulations on beating the All-Stars Pokemon League! You have come a long way"); 
+            Console.WriteLine("just to get here. If you are a developer and liked the game, please consider giving it a star on GitHub,"); 
+            Console.WriteLine("just look up for PokemonAdventureGame in the repositories tab.");
+
+            ConsoleUtils.WaitFourSeconds();
+            Console.WriteLine("Once again, thank you for playing! :)");
         }
 
         #region Helper Methods
