@@ -62,6 +62,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool KeepBattleGoingWhileBothPlayersHavePokemonLeft()
         {
+            bool playerWon = false;
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
                 bool keepBattleGoing = false, isChangingToNextAvailablePokemon = false;
@@ -92,9 +93,11 @@ namespace PokemonAdventureGame.BattleSystem
             }
 
             if (_player.HasAvailablePokemon())
-                return true;
-            else
-                return false;
+            {
+                playerWon = true;
+            }
+
+            return playerWon;
         }
 
         private bool PlayerMove()
@@ -115,7 +118,9 @@ namespace PokemonAdventureGame.BattleSystem
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
 
             //The battle NEEDS to keep going and pass the next movement to the enemy trainer if the command
-            //was just an attack
+            //was just an attack.
+            //If the something happens that the Enemy Trainer should send another pokemon,
+            //other methods will take care of it.
             return true;
         }
 
