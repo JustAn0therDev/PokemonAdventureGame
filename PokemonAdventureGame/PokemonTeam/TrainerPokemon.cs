@@ -12,7 +12,6 @@ namespace PokemonAdventureGame.PokemonTeam
             Pokemon = pokemon;
         }
         public void SetAsCurrent() => Current = true;
-        public void Drawback() => Current = false;
         public void SetAsFainted() => Fainted = true;
     }
 }

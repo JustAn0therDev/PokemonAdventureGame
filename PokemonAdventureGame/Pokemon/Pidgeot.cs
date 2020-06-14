@@ -1,12 +1,12 @@
 ﻿using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
-using PokemonAdventureGame.Moves.Ghost;
-using PokemonAdventureGame.Moves.Psychic;
+using PokemonAdventureGame.Moves.Flying;
+using PokemonAdventureGame.Moves.Normal;
 using System.Collections.Generic;
 
 namespace PokemonAdventureGame.Pokemon
 {
-    public class Gengar : IPokemon
+    public class Pidgeot : IPokemon
     {
         public int HealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
@@ -21,17 +21,17 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 60;
+            HealthPoints = 83;
             CurrentHealthPoints = HealthPoints;
 
-            AttackPoints = 65;
-            DefensePoints = 60;
-            SpecialAttackPoints = 130;
-            SpecialDefensePoints = 75;
-            SpeedPoints = 75;
+            AttackPoints = 80;
+            DefensePoints = 75;
+            SpecialAttackPoints = 70;
+            SpecialDefensePoints = 70;
+            SpeedPoints = 101;
             Status = StatusCondition.OK;
-            Moves = new List<IMove> { new ShadowPunch(), new ShadowBall(), new Psychic() };
-            Types = new List<Type> { Type.GHOST };
+            Moves = new List<IMove> { new Gust(), new WingAttack(), new Tackle() };
+            Types = new List<Type> { Type.FLYING };
         }
 
         public void ReceiveDamage(int damageReceived)
@@ -42,11 +42,11 @@ namespace PokemonAdventureGame.Pokemon
                 CurrentHealthPoints = 0;
         }
 
-        public void UseMove(IMove move) 
+        public void UseMove(IMove move)
         {
             IMove moveToRemovePowerPoints = Moves.Find(f => f == move);
 
-            if (moveToRemovePowerPoints != null) 
+            if (moveToRemovePowerPoints != null)
                 moveToRemovePowerPoints.PowerPoints -= 1;
         }
 

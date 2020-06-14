@@ -14,8 +14,6 @@ namespace PokemonAdventureGame
             {
                 ITrainer player = TrainerFactory.CreateTrainer<Player>();
                 MainStory mainStory = new MainStory(player);
-
-                mainStory.InitiateFifthBattle();
             }
             catch (Exception ex)
             {

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using PokemonAdventureGame.Factories;
-using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Pokemon;
+using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
 
 namespace PokemonAdventureGame.Trainers
 {
-    public class Player : ITrainer
+    public class MaryAnn : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
 
@@ -15,12 +15,14 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Venusaur>())
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Machamp>()),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Hypno>()),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Alakazam>()),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Gengar>()),
             };
         }
 
-        public IPokemon GetCurrentPokemon()
-            => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
+        public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
@@ -29,11 +31,10 @@ namespace PokemonAdventureGame.Trainers
                 if (pkmn.Current)
                     pkmn.Current = false;
 
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && pkmn.Pokemon.CurrentHealthPoints > 0)
                     pkmn.Current = true;
             });
         }
-        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
 
         public IPokemon GetNextAvailablePokemon()
         {
@@ -44,6 +45,8 @@ namespace PokemonAdventureGame.Trainers
 
             return firstAvailablePokemon;
         }
+
+        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
 
         public void SetPokemonAsFainted(IPokemon pokemon)
         {

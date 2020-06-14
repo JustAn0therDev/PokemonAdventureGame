@@ -1,12 +1,15 @@
-﻿using PokemonAdventureGame.Enums;
+﻿using System.Collections.Generic;
+using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
-using PokemonAdventureGame.Moves.Ghost;
-using PokemonAdventureGame.Moves.Psychic;
-using System.Collections.Generic;
+using PokemonAdventureGame.Moves.Ground;
+using PokemonAdventureGame.Moves.Ice;
+using PokemonAdventureGame.Moves.Normal;
+using PokemonAdventureGame.Moves.Rock;
+using PokemonAdventureGame.Moves.Water;
 
 namespace PokemonAdventureGame.Pokemon
 {
-    public class Gengar : IPokemon
+    public class Snorlax : IPokemon
     {
         public int HealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
@@ -21,17 +24,17 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 60;
+            HealthPoints = 200;
             CurrentHealthPoints = HealthPoints;
 
-            AttackPoints = 65;
-            DefensePoints = 60;
-            SpecialAttackPoints = 130;
-            SpecialDefensePoints = 75;
-            SpeedPoints = 75;
+            AttackPoints = 110;
+            DefensePoints = 65;
+            SpecialAttackPoints = 65;
+            SpecialDefensePoints = 110;
+            SpeedPoints = 30;
             Status = StatusCondition.OK;
-            Moves = new List<IMove> { new ShadowPunch(), new ShadowBall(), new Psychic() };
-            Types = new List<Type> { Type.GHOST };
+            Moves = new List<IMove> { new Surf(), new Blizzard(), new Hyperbeam(), new Earthquake() };
+            Types = new List<Type> { Type.WATER, Type.ICE };
         }
 
         public void ReceiveDamage(int damageReceived)
@@ -42,11 +45,11 @@ namespace PokemonAdventureGame.Pokemon
                 CurrentHealthPoints = 0;
         }
 
-        public void UseMove(IMove move) 
+        public void UseMove(IMove move)
         {
             IMove moveToRemovePowerPoints = Moves.Find(f => f == move);
 
-            if (moveToRemovePowerPoints != null) 
+            if (moveToRemovePowerPoints != null)
                 moveToRemovePowerPoints.PowerPoints -= 1;
         }
 
