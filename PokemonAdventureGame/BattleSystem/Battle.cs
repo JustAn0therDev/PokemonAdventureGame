@@ -45,22 +45,23 @@ namespace PokemonAdventureGame.BattleSystem
             _commands.Add(Command.RUN, endProgramDelegate);
         }
 
-        public void StartBattle()
+        public bool StartBattle()
         {
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
+            BothTrainersSendPokemon();
+            return KeepBattleGoingWhileBothPlayersHavePokemonLeft();
+        }
 
+        private void BothTrainersSendPokemon()
+        {
             _player.SetPokemonAsCurrent(_player.GetNextAvailablePokemon());
             _enemyTrainer.SetPokemonAsCurrent(_enemyTrainer.GetNextAvailablePokemon());
 
             ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
             ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
-
-            MainBattle();
         }
 
-        private void MainBattle() => KeepBattleGoingWhileBothPlayersHavePokemonLeft();
-
-        private void KeepBattleGoingWhileBothPlayersHavePokemonLeft()
+        private bool KeepBattleGoingWhileBothPlayersHavePokemonLeft()
         {
             while (_player.HasAvailablePokemon() && _enemyTrainer.HasAvailablePokemon())
             {
@@ -69,7 +70,7 @@ namespace PokemonAdventureGame.BattleSystem
                 if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
                 {
                     if (_battleAux.CannotSendNextAvailablePokemon(_player))
-                        return;
+                        break;
                     else
                         isChangingToNextAvailablePokemon = true;
                 }
@@ -84,12 +85,17 @@ namespace PokemonAdventureGame.BattleSystem
                     if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
                     {
                         if (_battleAux.CannotSendNextAvailablePokemon(_enemyTrainer, true))
-                            return;
+                            break;
                     }
                     else
                         EnemyMove();
                 }
             }
+
+            if (_player.HasAvailablePokemon())
+                return true;
+            else
+                return false;
         }
 
         private bool PlayerMove()
@@ -201,9 +207,6 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void EndProgram() => Environment.Exit(0);
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
+        public void Dispose() => GC.SuppressFinalize(this);
     }
 }

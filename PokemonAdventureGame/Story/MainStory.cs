@@ -7,18 +7,48 @@ using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.Trainers;
 using PokemonAdventureGame.PokemonCenter;
+using System.Collections.Generic;
 
 namespace PokemonAdventureGame.Story
 {
     public class MainStory
     {
+        #region Delegates
+
+        private delegate void BrocksDialogue();
+        private delegate void BrunosDialogue();
+        private delegate void MaryAnnsDialogue();
+        private delegate void LancesDialogue();
+        private delegate void RedsDialogue();
+
+        #endregion
+
         private readonly ITrainer _player;
         private ITrainer _enemyTrainer;
+        private bool _playerWonBattle;
+        private Dictionary<string, Delegate> _finalDialogues;
 
         public MainStory(ITrainer player)
         {
             _player = player;
             InitiateFirstBattle();
+            InitializeFinalDialoguesDictionary();
+        }
+
+        private void InitializeFinalDialoguesDictionary()
+        {
+            _finalDialogues = new Dictionary<string, Delegate>();
+            BrocksDialogue brocksDialogue = BrocksFinalDialogue;
+            BrunosDialogue brunosDialogue = BrunosFinalDialogue;
+            MaryAnnsDialogue maryAnnsDialogue = MaryAnnsFinalDialogue;
+            LancesDialogue lancesDialogue = LancesFinalDialogue;
+            RedsDialogue redsDialogue = RedsFinalDialogue;
+
+            _finalDialogues.Add("Brock", brocksDialogue);
+            _finalDialogues.Add("Bruno", brunosDialogue);
+            _finalDialogues.Add("MaryAnn", maryAnnsDialogue);
+            _finalDialogues.Add("Lance", lancesDialogue);
+            _finalDialogues.Add("Red", redsDialogue);
         }
 
         private void InitiateFirstBattle()
@@ -33,14 +63,13 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             ConsoleUtils.WaitTwoSeconds();
 
-            using var battle = new Battle(_player, _enemyTrainer);
-            battle.StartBattle();
+            StartBattle();
 
-            //At the end of the battle, if the player wins, Brock you give her/him a Pidgeot.
             HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Pidgeot>());
 
-            //Final dialogue here
-            //InitiateSecondBattle()
+            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+
+            InitiateSecondBattle();
         }
 
         private void InitiateSecondBattle()
@@ -55,11 +84,10 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             ConsoleUtils.WaitTwoSeconds();
 
-            using var battle = new Battle(_player, _enemyTrainer);
-            battle.StartBattle();
+            StartBattle();
 
-            //If the player wins, Bruno gives the player a Gengar.
-            HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Gengar>());
+            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            InitiateThirdBattle();
         }
 
         private void InitiateThirdBattle()
@@ -75,11 +103,9 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             ConsoleUtils.WaitTwoSeconds();
 
-            using var battle = new Battle(_player, _enemyTrainer);
-            battle.StartBattle();
+            StartBattle();
 
-            //If the player wins, MaryAnn you give the player a Lapras.
-            HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Lapras>());
+            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
         }
 
         private void InitiateFourthBattle()
@@ -97,11 +123,9 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             ConsoleUtils.WaitTwoSeconds();
 
-            using var battle = new Battle(_player, _enemyTrainer);
-            battle.StartBattle();
+            StartBattle();
 
-            //If the player wins, Blue will give the player a Dragonite.
-            HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Dragonite>());
+            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
         }
 
         private void InitiateFifthBattle()
@@ -117,11 +141,9 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             ConsoleUtils.WaitTwoSeconds();
 
-            using var battle = new Battle(_player, _enemyTrainer);
-            battle.StartBattle();
+            StartBattle();
 
-            //At the end of a battle, if the player wins, Lance will give the player a Snorlax with more HP and earthquake.
-            HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Snorlax>());
+            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
         }
 
         private void InitiateFinalBattle()
@@ -132,21 +154,130 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             ConsoleUtils.WaitTwoSeconds();
 
-            using var battle = new Battle(_player, _enemyTrainer);
-            battle.StartBattle();
+            StartBattle();
+        }
+
+        #region Helper Methods
+
+        private void BrocksFinalDialogue()
+        {
+            if (_playerWonBattle)
+            {
+                Console.WriteLine("Wow, man, you are really tough!");
+                Console.WriteLine("But by no means I'm the strongest trainer in the League.");
+                Console.WriteLine("So to help you in the next battle, I'll heal your pokemon and give you this: ");
+                HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Pidgeot>());
+
+                Console.WriteLine("Good luck out there.");
+                ConsoleUtils.WaitFourSeconds();
+            }
+            else
+            {
+                Console.WriteLine("Hey man, losing happens. We get stronger when we lose.");
+                Console.WriteLine("Anytime you want to come back to battle, we'll be here.");
+
+                ConsoleUtils.TrainerAction<EnemyAction>("Good-bye!");
+                ConsoleUtils.WaitFourSeconds();
+                Environment.Exit(0);
+            }
+        }
+
+        private void BrunosFinalDialogue()
+        {
+            if (_playerWonBattle)
+            {
+                Console.WriteLine("You are really good! I like your energy and the way you treat your Pokemon");
+                Console.WriteLine("And keep that in mind when entering the next room. You will need that energy.");
+                HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Gengar>());
+
+                Console.WriteLine("Take care out there, kid");
+                ConsoleUtils.WaitFourSeconds();
+            }
+            else
+            {
+                Console.WriteLine("HAHAHA! You are really good, kid.");
+                Console.WriteLine("But I'm WAY STRONGER");
+                ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get tougher!!");
+                ConsoleUtils.WaitFourSeconds();
+                Environment.Exit(0);
+            }
+        }
+
+        private void MaryAnnsFinalDialogue()
+        {
+            if (_playerWonBattle)
+            {
+                Console.WriteLine("Hey, that was a great battle, congratulations on winning! Now, the next trainer is really tough.");
+                Console.WriteLine("Watch out and have this, you'll need it.");
+                HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Lapras>());
+
+                Console.WriteLine("And if you see my cat, please tell her to come back, I'm a bit worried...");
+                ConsoleUtils.WaitFourSeconds();
+            }
+            else
+            {
+                Console.WriteLine("I told you...");
+                Console.WriteLine("Come back when you get better.");
+                ConsoleUtils.TrainerAction<EnemyAction>("Or if you see my cat, I'm worried about her...");
+                ConsoleUtils.WaitFourSeconds();
+                Environment.Exit(0);
+            }
+        }
+
+        private void BluesFinalDialogue()
+        {
+            if (_playerWonBattle)
+            {
+                Console.WriteLine("Ok, I'll admit it, you're the real deal.");
+                Console.WriteLine("Have this Dragonite. Lance is really good, no wonder he is the Champion.");
+                HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Dragonite>());
+
+                Console.WriteLine("Good luck, you'll need it.");
+                ConsoleUtils.WaitFourSeconds();
+            }
+            else
+            {
+                ConsoleUtils.TrainerAction<EnemyAction>("Good-bye, joke.");
+                ConsoleUtils.WaitFourSeconds();
+                Environment.Exit(0);
+            }
+        }
+        private void LancesFinalDialogue()
+        {
+            if (_playerWonBattle)
+            {
+                Console.WriteLine("Congratulations! You beat me and you deserve every single moment of good feelings about yourself!");
+                Console.WriteLine("Now, the league does not end here... You need to face a final challenge. Have this: ");
+                HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Snorlax>());
+
+                Console.WriteLine("Watch out and think carefully about every. Single. Movement.");
+                ConsoleUtils.WaitFourSeconds();
+            }
+            else
+            {
+                Console.WriteLine("Hey, c'mon, I know you can do better than this!");
+                ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get stronger.");
+                ConsoleUtils.WaitFourSeconds();
+                Environment.Exit(0);
+            }
+        }
+
+        private void RedsFinalDialogue()
+        {
+            ConsoleUtils.TrainerAction<EnemyAction>("...");
+            ConsoleUtils.WaitFourSeconds();
         }
 
         private void HealPlayerTeamAndReward(IPokemon pokemon)
         {
-            ConsoleUtils.TrainerAction<PlayerAction>("You found out that after a battle, there is a Pokemon Center.");
+            ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} heals your Pokemon to prepare you for the next battle.");
             ConsoleUtils.TrainerAction<PlayerAction>("You go there and replenish all of your Pokemon's health");
-
             PokemonCenterClass.HealPlayerTeam(_player);
-            ConsoleUtils.WaitFourSeconds();
-            GivePokemonToPlayer(pokemon);
-        }
 
-        #region Helper Methods
+            GivePokemonToPlayer(pokemon);
+            ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} gave you a {pokemon.GetType().Name}!");
+            ConsoleUtils.WaitFourSeconds();
+        }
 
         private void GivePokemonToPlayer(IPokemon pokemon) => _player.PokemonTeam.Add(new TrainerPokemon(pokemon));
 
@@ -158,6 +289,12 @@ namespace PokemonAdventureGame.Story
             ConsoleUtils.WaitFourSeconds();
 
             ConsoleUtils.ClearScreen();
+        }
+
+        private void StartBattle()
+        {
+            using var battle = new Battle(_player, _enemyTrainer);
+            _playerWonBattle = battle.StartBattle();
         }
 
         #endregion
