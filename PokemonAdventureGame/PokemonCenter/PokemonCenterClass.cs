@@ -4,7 +4,7 @@ namespace PokemonAdventureGame.PokemonCenter
 {
     public static class PokemonCenterClass
     {
-        public static void HealAllPlayerPokemons(ITrainer player)
+        public static void HealPlayerTeam(ITrainer player)
         {
             player.PokemonTeam.ForEach(pkmn =>
             {
