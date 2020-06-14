@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PokemonAdventureGame.BattleSystem;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Factories;
@@ -7,7 +8,6 @@ using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.Trainers;
 using PokemonAdventureGame.PokemonCenter;
-using System.Collections.Generic;
 
 namespace PokemonAdventureGame.Story
 {
@@ -18,6 +18,7 @@ namespace PokemonAdventureGame.Story
         private delegate void BrocksDialogue();
         private delegate void BrunosDialogue();
         private delegate void MaryAnnsDialogue();
+        private delegate void BluesDialogue();
         private delegate void LancesDialogue();
         private delegate void RedsDialogue();
 
@@ -31,8 +32,8 @@ namespace PokemonAdventureGame.Story
         public MainStory(ITrainer player)
         {
             _player = player;
-            InitiateFirstBattle();
             InitializeFinalDialoguesDictionary();
+            InitiateFirstBattle();
         }
 
         private void InitializeFinalDialoguesDictionary()
@@ -41,12 +42,14 @@ namespace PokemonAdventureGame.Story
             BrocksDialogue brocksDialogue = BrocksFinalDialogue;
             BrunosDialogue brunosDialogue = BrunosFinalDialogue;
             MaryAnnsDialogue maryAnnsDialogue = MaryAnnsFinalDialogue;
+            BluesDialogue bluesDialogue = BluesFinalDialogue;
             LancesDialogue lancesDialogue = LancesFinalDialogue;
             RedsDialogue redsDialogue = RedsFinalDialogue;
 
             _finalDialogues.Add("Brock", brocksDialogue);
             _finalDialogues.Add("Bruno", brunosDialogue);
             _finalDialogues.Add("MaryAnn", maryAnnsDialogue);
+            _finalDialogues.Add("Blue", bluesDialogue);
             _finalDialogues.Add("Lance", lancesDialogue);
             _finalDialogues.Add("Red", redsDialogue);
         }
@@ -61,11 +64,7 @@ namespace PokemonAdventureGame.Story
 
             _enemyTrainer = TrainerFactory.CreateTrainer<Brock>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
-            ConsoleUtils.WaitTwoSeconds();
-
             StartBattle();
-
-            HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Pidgeot>());
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
 
@@ -82,8 +81,6 @@ namespace PokemonAdventureGame.Story
 
             _enemyTrainer = TrainerFactory.CreateTrainer<Bruno>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
-            ConsoleUtils.WaitTwoSeconds();
-
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
@@ -101,8 +98,6 @@ namespace PokemonAdventureGame.Story
 
             _enemyTrainer = TrainerFactory.CreateTrainer<MaryAnn>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
-            ConsoleUtils.WaitTwoSeconds();
-
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
@@ -121,8 +116,6 @@ namespace PokemonAdventureGame.Story
 
             _enemyTrainer = TrainerFactory.CreateTrainer<Blue>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
-            ConsoleUtils.WaitTwoSeconds();
-
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
@@ -139,11 +132,10 @@ namespace PokemonAdventureGame.Story
 
             _enemyTrainer = TrainerFactory.CreateTrainer<Lance>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
-            ConsoleUtils.WaitTwoSeconds();
-
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            InitiateFinalBattle();
         }
 
         private void InitiateFinalBattle()
@@ -152,8 +144,6 @@ namespace PokemonAdventureGame.Story
 
             _enemyTrainer = TrainerFactory.CreateTrainer<Red>();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
-            ConsoleUtils.WaitTwoSeconds();
-
             StartBattle();
         }
 
@@ -166,10 +156,12 @@ namespace PokemonAdventureGame.Story
                 Console.WriteLine("Wow, man, you are really tough!");
                 Console.WriteLine("But by no means I'm the strongest trainer in the League.");
                 Console.WriteLine("So to help you in the next battle, I'll heal your pokemon and give you this: ");
+                ConsoleUtils.WaitFourSeconds();
                 HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Pidgeot>());
 
                 Console.WriteLine("Good luck out there.");
                 ConsoleUtils.WaitFourSeconds();
+                ConsoleUtils.ClearScreen();
             }
             else
             {
@@ -188,10 +180,12 @@ namespace PokemonAdventureGame.Story
             {
                 Console.WriteLine("You are really good! I like your energy and the way you treat your Pokemon");
                 Console.WriteLine("And keep that in mind when entering the next room. You will need that energy.");
+                ConsoleUtils.WaitFourSeconds();
                 HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Gengar>());
 
                 Console.WriteLine("Take care out there, kid");
                 ConsoleUtils.WaitFourSeconds();
+                ConsoleUtils.ClearScreen();
             }
             else
             {
@@ -209,10 +203,12 @@ namespace PokemonAdventureGame.Story
             {
                 Console.WriteLine("Hey, that was a great battle, congratulations on winning! Now, the next trainer is really tough.");
                 Console.WriteLine("Watch out and have this, you'll need it.");
+                ConsoleUtils.WaitFourSeconds();
                 HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Lapras>());
 
                 Console.WriteLine("And if you see my cat, please tell her to come back, I'm a bit worried...");
                 ConsoleUtils.WaitFourSeconds();
+                ConsoleUtils.ClearScreen();
             }
             else
             {
@@ -230,10 +226,12 @@ namespace PokemonAdventureGame.Story
             {
                 Console.WriteLine("Ok, I'll admit it, you're the real deal.");
                 Console.WriteLine("Have this Dragonite. Lance is really good, no wonder he is the Champion.");
+                ConsoleUtils.WaitFourSeconds();
                 HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Dragonite>());
 
                 Console.WriteLine("Good luck, you'll need it.");
                 ConsoleUtils.WaitFourSeconds();
+                ConsoleUtils.ClearScreen();
             }
             else
             {
@@ -248,10 +246,12 @@ namespace PokemonAdventureGame.Story
             {
                 Console.WriteLine("Congratulations! You beat me and you deserve every single moment of good feelings about yourself!");
                 Console.WriteLine("Now, the league does not end here... You need to face a final challenge. Have this: ");
+                ConsoleUtils.WaitFourSeconds();
                 HealPlayerTeamAndReward(PokemonFactory.CreatePokemon<Snorlax>());
 
                 Console.WriteLine("Watch out and think carefully about every. Single. Movement.");
                 ConsoleUtils.WaitFourSeconds();
+                ConsoleUtils.ClearScreen();
             }
             else
             {
@@ -270,8 +270,8 @@ namespace PokemonAdventureGame.Story
 
         private void HealPlayerTeamAndReward(IPokemon pokemon)
         {
+            ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} heals your Pokemon to prepare you for the next battle.");
-            ConsoleUtils.TrainerAction<PlayerAction>("You go there and replenish all of your Pokemon's health");
             PokemonCenterClass.HealPlayerTeam(_player);
 
             GivePokemonToPlayer(pokemon);

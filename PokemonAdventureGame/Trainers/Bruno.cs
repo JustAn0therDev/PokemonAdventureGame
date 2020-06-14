@@ -16,12 +16,14 @@ namespace PokemonAdventureGame.Trainers
             PokemonTeam = new List<TrainerPokemon>
             {
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Onix>()),
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Machamp>()),
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Hitmonlee>())
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Machamp>())
             };
         }
 
-        public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
+        public IPokemon GetCurrentPokemon() 
+            => PokemonTeam
+            .Where(pkmn => pkmn.Current)
+            .Select(s => s.Pokemon).FirstOrDefault();
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
@@ -30,14 +32,17 @@ namespace PokemonAdventureGame.Trainers
                 if (pkmn.Current)
                     pkmn.Current = false;
 
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && pkmn.Pokemon.CurrentHealthPoints > 0)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name &&
+                    pkmn.Pokemon.CurrentHealthPoints > 0)
                     pkmn.Current = true;
             });
         }
 
         public IPokemon GetNextAvailablePokemon()
         {
-            IPokemon firstAvailablePokemon = PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
+            IPokemon firstAvailablePokemon = PokemonTeam
+                .Where(pkmn => !pkmn.Fainted)
+                .Select(pkmn => pkmn.Pokemon).FirstOrDefault();
 
             if (firstAvailablePokemon != null)
                 SetPokemonAsCurrent(firstAvailablePokemon);
@@ -45,7 +50,8 @@ namespace PokemonAdventureGame.Trainers
             return firstAvailablePokemon;
         }
 
-        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
+        public bool HasAvailablePokemon() => PokemonTeam
+            .Where(w => !w.Fainted).Count() > 0;
 
         public void SetPokemonAsFainted(IPokemon pokemon)
         {

@@ -47,7 +47,6 @@ namespace PokemonAdventureGame.BattleSystem
 
         public bool StartBattle()
         {
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             BothTrainersSendPokemon();
             return KeepBattleGoingWhileBothPlayersHavePokemonLeft();
         }
