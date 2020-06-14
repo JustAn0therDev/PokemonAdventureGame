@@ -67,7 +67,6 @@ namespace PokemonAdventureGame.Story
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
-
             InitiateSecondBattle();
         }
 
@@ -101,6 +100,7 @@ namespace PokemonAdventureGame.Story
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            InitiateFourthBattle();
         }
 
         private void InitiateFourthBattle()
@@ -119,6 +119,7 @@ namespace PokemonAdventureGame.Story
             StartBattle();
 
             _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            InitiateFifthBattle();
         }
 
         private void InitiateFifthBattle()
