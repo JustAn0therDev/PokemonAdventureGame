@@ -16,8 +16,6 @@ namespace PokemonAdventureGame.BattleSystem
         private delegate bool SwitchPokemonDelegate();
         private delegate void EndProgramDelegate();
 
-        private bool _disposed = false;
-
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
@@ -119,8 +117,8 @@ namespace PokemonAdventureGame.BattleSystem
 
             //The battle has to keep going and pass the next movement to the enemy trainer if the command
             //was just an attack.
-            //If the something happens that the Enemy Trainer should send another pokemon,
-            //other methods will take care of it.
+            //If something happens that the Enemy Trainer should send another pokemon,
+            //subsequent methods will handle those.
             return true;
         }
 
