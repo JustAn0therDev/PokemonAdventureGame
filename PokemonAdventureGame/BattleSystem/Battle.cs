@@ -112,6 +112,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool PromptTrainerForPokemonMove()
         {
+	    bool keepBattleGoing = true;
             int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
 
@@ -119,7 +120,7 @@ namespace PokemonAdventureGame.BattleSystem
             //was just an attack.
             //If something happens that the Enemy Trainer should send another pokemon,
             //subsequent methods will handle those.
-            return true;
+            return keepBattleGoing;
         }
 
         private void PokemonAttack(IPokemon attackingPokemon, IPokemon targetPokemon, int chosenMove)
@@ -191,7 +192,8 @@ namespace PokemonAdventureGame.BattleSystem
                 PlayerMove();
                 return;
             }
-            else if (pokemon.Current)
+
+            if (pokemon.Current)
             {
                 ConsoleBattleInfo.ShowChosenPokemonIsAlreadyInBattle();
                 PlayerMove();
