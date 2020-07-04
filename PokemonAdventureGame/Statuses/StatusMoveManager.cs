@@ -1,14 +1,12 @@
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Enums;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace PokemonAdventureGame.Statuses 
+namespace PokemonAdventureGame.Statuses
 {
     public static class StatusMoveManager
     {
-        private static int MODIFIER = 2;
-        public static List<StatusMove> ProcessStatusMove(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
+        private readonly static int MODIFIER = 2;
+        public static StatusMove[] ProcessStatusMove(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
         {
             IPokemon pokemonToChangeStatus = move.MoveTarget == StatusMoveTarget.SELF ? attackingPokemon : targetPokemon;
 
@@ -51,7 +49,7 @@ namespace PokemonAdventureGame.Statuses
                 }
             }
 
-            return move.StatusMoves;
+            return move.StatusMoves.ToArray();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PokemonAdventureGame.Enums;
+
 namespace PokemonAdventureGame.Interfaces
 {
     public interface IMove

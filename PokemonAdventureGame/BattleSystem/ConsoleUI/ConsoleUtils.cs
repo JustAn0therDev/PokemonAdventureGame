@@ -20,5 +20,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             SkipLine();
             ResetConsoleColors();
         }
+        public static void EndProgram() => Environment.Exit(0);
     }
 }

@@ -7,8 +7,8 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public static class ConsoleBattleInfo
     {
-        private static PlayerAction _playerMovement = new PlayerAction();
-        private static EnemyAction _enemyMovement = new EnemyAction();
+        private readonly static PlayerAction _playerMovement = new PlayerAction();
+        private readonly static EnemyAction _enemyMovement = new EnemyAction();
 
         public static void PlayerSendsPokemon(IPokemon pokemon) => _playerMovement.PlayerSendsPokemon(pokemon);
         public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer, IPokemon pokemon) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer, pokemon);
@@ -41,7 +41,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK.ToString()}");
             Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString().Replace("_", " ")}");
             Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS.ToString()}");
-            Console.WriteLine($"{(int)Command.RUN}: {Command.RUN.ToString()}");
         }
 
         public static void ShowPokemonUsedMove(IPokemon pokemon, string moveName)
@@ -137,9 +136,9 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ClearScreen();
         }
 
-        public static void ShowInflictedStatuses(IPokemon targetPokemon, List<StatusMove> statusMoves) 
+        public static void ShowInflictedStatuses(IPokemon targetPokemon, StatusMove[] statusMoves) 
         {
-            for (int i = 0; i < statusMoves.Count; i++)
+            for (int i = 0; i < statusMoves.Length; i++)
             {
                 switch (statusMoves[i])
                 {

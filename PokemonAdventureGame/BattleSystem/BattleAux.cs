@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
@@ -81,7 +80,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         public void ProcessStatusAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
         {
-            List<StatusMove> pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
+            StatusMove[] pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
 
             if (move.MoveTarget.Value == StatusMoveTarget.SELF)
                 ConsoleBattleInfo.ShowInflictedStatuses(attackingPokemon, pokemonAlteredStatuses);

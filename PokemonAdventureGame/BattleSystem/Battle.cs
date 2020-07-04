@@ -10,11 +10,11 @@ using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
 {
+    delegate bool PokemonAttackDelegate();
+    delegate bool SwitchPokemonDelegate();
+    delegate void EndProgramDelegate();
     public class Battle : IDisposable
     {
-        private delegate bool PokemonAttackDelegate();
-        private delegate bool SwitchPokemonDelegate();
-        private delegate void EndProgramDelegate();
 
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
@@ -35,14 +35,11 @@ namespace PokemonAdventureGame.BattleSystem
             _commands = new Dictionary<Command, Delegate>();
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
-            EndProgramDelegate endProgramDelegate = EndProgram;
+            EndProgramDelegate endProgramDelegate = ConsoleUtils.EndProgram;
 
             _commands.Add(Command.ATTACK, firstMethodForAttackDelegate);
             _commands.Add(Command.SWITCH_POKEMON, switchPokemonDelegate);
-
-            //While both commands don't have a method of their own, they will end the program's execution on call.
             _commands.Add(Command.ITEMS, endProgramDelegate);
-            _commands.Add(Command.RUN, endProgramDelegate);
         }
 
         public bool StartBattle()
@@ -104,7 +101,6 @@ namespace PokemonAdventureGame.BattleSystem
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
-
             bool keepBattleGoing = (bool)_commands[command].DynamicInvoke();
 
             return keepBattleGoing;
@@ -112,7 +108,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool PromptTrainerForPokemonMove()
         {
-	    bool keepBattleGoing = true;
+            bool keepBattleGoing = true;
             int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
 
@@ -208,9 +204,6 @@ namespace PokemonAdventureGame.BattleSystem
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
-
-        private void EndProgram()
-            => Environment.Exit(0);
 
         protected virtual void Dispose(bool disposing)
         {

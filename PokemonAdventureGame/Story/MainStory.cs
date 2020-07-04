@@ -11,18 +11,19 @@ using PokemonAdventureGame.PokemonCenter;
 
 namespace PokemonAdventureGame.Story
 {
+    #region Delegates
+
+    delegate void BrocksDialogue();
+    delegate void BrunosDialogue();
+    delegate void MaryAnnsDialogue();
+    delegate void BluesDialogue();
+    delegate void LancesDialogue();
+    delegate void RedsDialogue();
+
+    #endregion
+
     public class MainStory
     {
-        #region Delegates
-
-        private delegate void BrocksDialogue();
-        private delegate void BrunosDialogue();
-        private delegate void MaryAnnsDialogue();
-        private delegate void BluesDialogue();
-        private delegate void LancesDialogue();
-        private delegate void RedsDialogue();
-
-        #endregion
 
         private readonly ITrainer _player;
         private ITrainer _enemyTrainer;
@@ -55,6 +56,8 @@ namespace PokemonAdventureGame.Story
                 { "Red", redsDialogue }
             };
         }
+
+        #region Story Methods
 
         private void BeginStory()
         {
@@ -176,10 +179,9 @@ namespace PokemonAdventureGame.Story
             Console.WriteLine("Once again, thank you for playing! :)");
         }
 
-        #region Helper Methods
+        #endregion
 
-        private void ShowEnemyFinalDialogue(string enemyClassNameToString)
-            => _finalDialogues[enemyClassNameToString].DynamicInvoke();
+        #region Final Dialogue Methods
 
         private void BrocksFinalDialogue()
         {
@@ -202,7 +204,7 @@ namespace PokemonAdventureGame.Story
 
                 ConsoleUtils.TrainerAction<EnemyAction>("Good-bye!");
                 ConsoleUtils.WaitFourSeconds();
-                Environment.Exit(0);
+                ConsoleUtils.EndProgram();
             }
         }
 
@@ -225,7 +227,7 @@ namespace PokemonAdventureGame.Story
                 Console.WriteLine("But I'm WAY STRONGER");
                 ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get tougher!!");
                 ConsoleUtils.WaitFourSeconds();
-                Environment.Exit(0);
+                ConsoleUtils.EndProgram();
             }
         }
 
@@ -248,7 +250,7 @@ namespace PokemonAdventureGame.Story
                 Console.WriteLine("Come back when you get better.");
                 ConsoleUtils.TrainerAction<EnemyAction>("Or if you see my cat, I'm worried about her...");
                 ConsoleUtils.WaitFourSeconds();
-                Environment.Exit(0);
+                ConsoleUtils.EndProgram();
             }
         }
 
@@ -269,7 +271,7 @@ namespace PokemonAdventureGame.Story
             {
                 ConsoleUtils.TrainerAction<EnemyAction>("Good-bye, joke.");
                 ConsoleUtils.WaitFourSeconds();
-                Environment.Exit(0);
+                ConsoleUtils.EndProgram();
             }
         }
         private void LancesFinalDialogue()
@@ -290,7 +292,7 @@ namespace PokemonAdventureGame.Story
                 Console.WriteLine("Hey, c'mon, I know you can do better than this!");
                 ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get stronger.");
                 ConsoleUtils.WaitFourSeconds();
-                Environment.Exit(0);
+                ConsoleUtils.EndProgram();
             }
         }
 
@@ -300,8 +302,15 @@ namespace PokemonAdventureGame.Story
             if (_playerWonBattle)
                 ConsoleUtils.WaitFourSeconds();
             else
-                Environment.Exit(0);
+                ConsoleUtils.EndProgram();
         }
+
+        #endregion
+
+        #region Helper Methods
+
+        private void ShowEnemyFinalDialogue(string enemyClassNameToString)
+            => _finalDialogues[enemyClassNameToString].DynamicInvoke();
 
         private void HealPlayerTeamAndReward(IPokemon pokemon)
         {
