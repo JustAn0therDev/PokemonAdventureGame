@@ -16,6 +16,8 @@ namespace PokemonAdventureGame.BattleSystem
         private delegate bool SwitchPokemonDelegate();
         private delegate void EndProgramDelegate();
 
+        private bool _disposed = false;
+
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
@@ -93,9 +95,7 @@ namespace PokemonAdventureGame.BattleSystem
             }
 
             if (_player.HasAvailablePokemon())
-            {
                 playerWon = true;
-            }
 
             return playerWon;
         }
@@ -107,7 +107,7 @@ namespace PokemonAdventureGame.BattleSystem
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
 
-            bool keepBattleGoing = (bool)_commands[command].DynamicInvoke();
+            var keepBattleGoing = (bool)_commands[command].DynamicInvoke();
 
             return keepBattleGoing;
         }
@@ -117,7 +117,7 @@ namespace PokemonAdventureGame.BattleSystem
             int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
 
-            //The battle NEEDS to keep going and pass the next movement to the enemy trainer if the command
+            //The battle has to keep going and pass the next movement to the enemy trainer if the command
             //was just an attack.
             //If the something happens that the Enemy Trainer should send another pokemon,
             //other methods will take care of it.
@@ -209,8 +209,24 @@ namespace PokemonAdventureGame.BattleSystem
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
 
-        private void EndProgram() => Environment.Exit(0);
+        private void EndProgram()
+            => Environment.Exit(0);
 
-        public void Dispose() => GC.SuppressFinalize(this);
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose()
+        {
+            _player = null;
+            _enemyTrainer = null;
+            _battleAux = null;
+            _commands = null;
+        }
     }
 }

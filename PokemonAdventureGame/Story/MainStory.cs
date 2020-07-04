@@ -168,8 +168,8 @@ namespace PokemonAdventureGame.Story
 
         private void EndStory()
         {
-            Console.WriteLine("Congratulations on beating the All-Stars Pokemon League! You have come a long way"); 
-            Console.WriteLine("just to get here. If you are a developer and liked the game, please consider giving it a star on GitHub,"); 
+            Console.WriteLine("Congratulations on beating the All-Stars Pokemon League! You have come a long way");
+            Console.WriteLine("just to get here. If you are a developer and liked the game, please consider giving it a star on GitHub,");
             Console.WriteLine("just look up for PokemonAdventureGame in the repositories tab.");
 
             ConsoleUtils.WaitFourSeconds();
@@ -178,7 +178,7 @@ namespace PokemonAdventureGame.Story
 
         #region Helper Methods
 
-        private void ShowEnemyFinalDialogue(string enemyClassNameToString) 
+        private void ShowEnemyFinalDialogue(string enemyClassNameToString)
             => _finalDialogues[enemyClassNameToString].DynamicInvoke();
 
         private void BrocksFinalDialogue()
@@ -297,7 +297,10 @@ namespace PokemonAdventureGame.Story
         private void RedsFinalDialogue()
         {
             ConsoleUtils.TrainerAction<EnemyAction>("...");
-            ConsoleUtils.WaitFourSeconds();
+            if (_playerWonBattle)
+                ConsoleUtils.WaitFourSeconds();
+            else
+                Environment.Exit(0);
         }
 
         private void HealPlayerTeamAndReward(IPokemon pokemon)
