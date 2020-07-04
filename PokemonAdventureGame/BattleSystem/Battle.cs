@@ -13,6 +13,7 @@ namespace PokemonAdventureGame.BattleSystem
     delegate bool PokemonAttackDelegate();
     delegate bool SwitchPokemonDelegate();
     delegate void EndProgramDelegate();
+
     public class Battle : IDisposable
     {
 

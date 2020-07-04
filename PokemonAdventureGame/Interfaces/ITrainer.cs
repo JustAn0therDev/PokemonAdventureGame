@@ -14,6 +14,11 @@ namespace PokemonAdventureGame.Interfaces
         bool HasAvailablePokemon();
         IPokemon GetNextAvailablePokemon();
         void SetPokemonAsFainted(IPokemon pokemon);
+        void ShowTrainerDialogue();
+        void ShowFinalDialogueForVictory();
+        void ShowFinalDialogueForLoss();
+        IPokemon RewardPokemonForWinning { get; }
+
         //void InitializeTrainerItems();
     }
 }

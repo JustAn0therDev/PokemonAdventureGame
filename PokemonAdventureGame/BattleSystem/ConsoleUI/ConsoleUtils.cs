@@ -21,5 +21,12 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ResetConsoleColors();
         }
         public static void EndProgram() => Environment.Exit(0);
+        public static void EnemyPhraseBeforeBattle(string enemyPhrase)
+        {
+            ClearScreen();
+            TrainerAction<EnemyAction>(enemyPhrase);
+            WaitFourSeconds();
+            ClearScreen();
+        }
     }
 }

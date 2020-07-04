@@ -11,6 +11,8 @@ namespace PokemonAdventureGame.Trainers
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
 
+        public IPokemon RewardPokemonForWinning => null;
+
         public void InitializeTrainerTeam()
         {
             PokemonTeam = new List<TrainerPokemon>
@@ -52,6 +54,21 @@ namespace PokemonAdventureGame.Trainers
                 if (pkmn.Pokemon == pokemon)
                     pkmn.Fainted = true;
             });
+        }
+
+        public void ShowTrainerDialogue()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ShowFinalDialogueForVictory()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ShowFinalDialogueForLoss()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

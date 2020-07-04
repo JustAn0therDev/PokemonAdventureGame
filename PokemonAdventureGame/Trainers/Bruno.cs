@@ -4,12 +4,16 @@ using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
+using System;
+using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.Trainers
 {
     public class Bruno : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
+
+        public IPokemon RewardPokemonForWinning => PokemonFactory.CreatePokemon<Gengar>();
 
         public void InitializeTrainerTeam()
         {
@@ -60,6 +64,35 @@ namespace PokemonAdventureGame.Trainers
                 if (pkmn.Pokemon == pokemon)
                     pkmn.Fainted = true;
             });
+        }
+
+        public void ShowTrainerDialogue()
+        {
+            Console.WriteLine("Hello, trainer, and welcome to the new Pokemon League.");
+            Console.WriteLine("It takes a lot of courage to be here, and you must keep going strong to face the challenges up ahead.");
+            ConsoleUtils.WaitFourSeconds();
+
+            ConsoleUtils.EnemyPhraseBeforeBattle("Do you think you can handle me and my Pokemon?");
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+        }
+
+        public void ShowFinalDialogueForVictory()
+        {
+            Console.WriteLine("You are really good! I like your energy and the way you treat your Pokemon");
+            Console.WriteLine("And keep that in mind when entering the next room. You will need that energy.");
+            ConsoleUtils.WaitFourSeconds();
+
+            Console.WriteLine("Take care out there, kid");
+            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        public void ShowFinalDialogueForLoss()
+        {
+            Console.WriteLine("HAHAHA! You are really good, kid.");
+            Console.WriteLine("But I'm WAY STRONGER");
+            ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get tougher!!");
+            ConsoleUtils.WaitFourSeconds();
         }
     }
 }
