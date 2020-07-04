@@ -38,7 +38,6 @@ namespace PokemonAdventureGame.Story
 
         private void InitializeFinalDialoguesDictionary()
         {
-            _finalDialogues = new Dictionary<string, Delegate>();
             BrocksDialogue brocksDialogue = BrocksFinalDialogue;
             BrunosDialogue brunosDialogue = BrunosFinalDialogue;
             MaryAnnsDialogue maryAnnsDialogue = MaryAnnsFinalDialogue;
@@ -46,12 +45,15 @@ namespace PokemonAdventureGame.Story
             LancesDialogue lancesDialogue = LancesFinalDialogue;
             RedsDialogue redsDialogue = RedsFinalDialogue;
 
-            _finalDialogues.Add("Brock", brocksDialogue);
-            _finalDialogues.Add("Bruno", brunosDialogue);
-            _finalDialogues.Add("MaryAnn", maryAnnsDialogue);
-            _finalDialogues.Add("Blue", bluesDialogue);
-            _finalDialogues.Add("Lance", lancesDialogue);
-            _finalDialogues.Add("Red", redsDialogue);
+            _finalDialogues = new Dictionary<string, Delegate>
+            {
+                { "Brock", brocksDialogue },
+                { "Bruno", brunosDialogue },
+                { "MaryAnn", maryAnnsDialogue },
+                { "Blue", bluesDialogue },
+                { "Lance", lancesDialogue },
+                { "Red", redsDialogue }
+            };
         }
 
         private void BeginStory()
@@ -79,7 +81,7 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
 
-            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            ShowEnemyFinalDialogue(_enemyTrainer.GetType().Name);
             InitiateSecondBattle();
         }
 
@@ -95,7 +97,7 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
 
-            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            ShowEnemyFinalDialogue(_enemyTrainer.GetType().Name);
             InitiateThirdBattle();
         }
 
@@ -112,7 +114,7 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
 
-            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            ShowEnemyFinalDialogue(_enemyTrainer.GetType().Name);
             InitiateFourthBattle();
         }
 
@@ -131,7 +133,7 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
 
-            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            ShowEnemyFinalDialogue(_enemyTrainer.GetType().Name);
             InitiateFifthBattle();
         }
 
@@ -148,7 +150,7 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
 
-            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            ShowEnemyFinalDialogue(_enemyTrainer.GetType().Name);
             InitiateFinalBattle();
         }
 
@@ -160,7 +162,7 @@ namespace PokemonAdventureGame.Story
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(_enemyTrainer);
             StartBattle();
 
-            _finalDialogues[_enemyTrainer.GetType().Name].DynamicInvoke();
+            ShowEnemyFinalDialogue(_enemyTrainer.GetType().Name);
             EndStory();
         }
 
@@ -175,6 +177,9 @@ namespace PokemonAdventureGame.Story
         }
 
         #region Helper Methods
+
+        private void ShowEnemyFinalDialogue(string enemyClassNameToString) 
+            => _finalDialogues[enemyClassNameToString].DynamicInvoke();
 
         private void BrocksFinalDialogue()
         {
