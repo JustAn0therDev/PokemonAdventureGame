@@ -105,7 +105,7 @@ namespace PokemonAdventureGame.BattleSystem
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
 
-            var keepBattleGoing = (bool)_commands[command].DynamicInvoke();
+            bool keepBattleGoing = (bool)_commands[command].DynamicInvoke();
 
             return keepBattleGoing;
         }
