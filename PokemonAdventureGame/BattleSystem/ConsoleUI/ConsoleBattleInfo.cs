@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 
@@ -7,11 +8,12 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public static class ConsoleBattleInfo
     {
-        private static PlayerAction _playerMovement = new PlayerAction();
-        private static EnemyAction _enemyMovement = new EnemyAction();
+        private readonly static PlayerAction _playerMovement = new PlayerAction();
+        private readonly static EnemyAction _enemyMovement = new EnemyAction();
 
         public static void PlayerSendsPokemon(IPokemon pokemon) => _playerMovement.PlayerSendsPokemon(pokemon);
-        public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer, IPokemon pokemon) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer, pokemon);
+        public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer);
+
         public static void TrainerDrawsbackPokemon(IPokemon pokemon, bool isEnemyTrainer = false)
         {
             if (isEnemyTrainer)
@@ -41,7 +43,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK.ToString()}");
             Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString().Replace("_", " ")}");
             Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS.ToString()}");
-            Console.WriteLine($"{(int)Command.RUN}: {Command.RUN.ToString()}");
         }
 
         public static void ShowPokemonUsedMove(IPokemon pokemon, string moveName)
@@ -65,7 +66,17 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.SkipLine();
 
             for (int i = 0; i < pokemon.Moves.Count; i++)
-                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].PowerPoints}");
+                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].CurrentPowerPoints}");
+        }
+
+        public static void WriteAllAvailableItemsOnConsole(ITrainer player)
+        {
+            ConsoleUtils.SkipLine();
+            Console.WriteLine("Choose an item!");
+            ConsoleUtils.SkipLine();
+
+            for (int i = 0; i < player.Items.Count; i++)
+                Console.WriteLine($"{i}: {player.Items.ElementAt(i).Key} - Remaining: {player.Items.ElementAt(i).Value.Count}");
         }
 
         public static int GetPlayerChosenInput(string userInput)
@@ -103,14 +114,15 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             }
         }
 
-        private static void MovementIsNotVeryEffective()  
-        { 
-            Console.WriteLine("It's not very effective..."); 
+        private static void MovementIsNotVeryEffective()
+        {
+            Console.WriteLine("It's not very effective...");
             ConsoleUtils.WaitOneSecond();
         }
-        private static void MovementIsSuperEffective() 
+
+        private static void MovementIsSuperEffective()
         {
-            Console.WriteLine("It's super effective!"); 
+            Console.WriteLine("It's super effective!");
             ConsoleUtils.WaitOneSecond();
         }
 
@@ -125,21 +137,25 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void ShowAllTrainersPokemon(ITrainer trainer)
         {
             for (int i = 0; i < trainer.PokemonTeam.Count; i++)
-                Console.WriteLine($"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name}");
+            {
+                Console.WriteLine(
+                    $"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name} - HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.HealthPoints}"
+                    );
+            }
         }
 
-        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another!");
-        
-        public static void ShowPlayerThereAreNoPokemonLeft() 
+        public static void ShowChosenPokemonIsNotAvailable() => Console.WriteLine("The chosen pokemon is not available, please select another!");
+
+        public static void ShowPlayerThereAreNoPokemonLeftToSwitch()
         {
             Console.WriteLine("There are no other pokemon left to battle!");
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
         }
 
-        public static void ShowInflictedStatuses(IPokemon targetPokemon, List<StatusMove> statusMoves) 
+        public static void ShowInflictedStatuses(IPokemon targetPokemon, StatusMove[] statusMoves)
         {
-            for (int i = 0; i < statusMoves.Count; i++)
+            for (int i = 0; i < statusMoves.Length; i++)
             {
                 switch (statusMoves[i])
                 {
@@ -180,11 +196,36 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             }
         }
 
-        public static void ShowChosenPokemonIsAlreadyInBattle() 
+        public static void ShowChosenPokemonIsAlreadyInBattle()
         {
             Console.WriteLine("The chosen pokemon is already in battle!");
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
-        } 
+        }
+
+        #region Items 
+
+        public static void ShowItemWasUsedOnPokemon(IItem item, IPokemon pokemon)
+        {
+            Console.WriteLine($"{item.GetType().Name} was used on {pokemon.GetType().Name}!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        public static void ShowPlayerCantUseItemOnPokemon()
+        {
+            Console.WriteLine("You can't use the selected item on this Pokemon!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        public static void ShowPlayerItemIsNotAvailable()
+        {
+            Console.WriteLine("The selected item is not available!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        #endregion
     }
 }

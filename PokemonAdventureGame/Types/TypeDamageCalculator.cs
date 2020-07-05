@@ -6,13 +6,13 @@ namespace PokemonAdventureGame.Types
 {
     public static class TypeDamageCalculator
     {
-        private static double SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50;
-        private static double NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35;
+        private readonly static decimal STAB_MODIFIER_WHEN_DAMAGE_IS_SUPER_EFFECTIVE = 1.2M;
+        private readonly static decimal SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50M;
+        private readonly static decimal NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35M;
 
-        //Is there something I can do to improve the number of parameters in this method?
         public static int CalculateDamage(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move, TypeEffect typeEffect)
         {
-            int modifier = CalculateSTABModifier(attackingPokemon, move);
+            decimal modifier = CalculateSTABModifier(attackingPokemon, move);
 
             return typeEffect switch
             {
@@ -24,38 +24,52 @@ namespace PokemonAdventureGame.Types
             };
         }
 
-        //The "modifier" will envolve things outside the formula itself, such as STAB (Same Type Attack Bonus).
-        private static int CalculateSTABModifier(IPokemon attackingPokemon, IMove move)
-            => Convert.ToInt32(attackingPokemon.Types.Contains(move.Type) ? move.Damage * 1.2 : move.Damage);
+        //Following the original Pokemon game damage calculations,
+        //the "modifier" will envolve things outside the formula itself, such as STAB (Same Type Attack Bonus).
+        private static decimal CalculateSTABModifier(IPokemon attackingPokemon, IMove move)
+            => attackingPokemon.Types.Contains(move.Type) ?
+            move.Damage * STAB_MODIFIER_WHEN_DAMAGE_IS_SUPER_EFFECTIVE :
+            move.Damage;
 
-        public static int SuperEffectiveDamage(int modifier)
-            => modifier += (Convert.ToInt32(modifier * SUPER_EFFECTIVE_DAMAGE_ADDITION));
+        public static decimal SuperEffectiveDamage(decimal modifier)
+            => modifier += modifier * SUPER_EFFECTIVE_DAMAGE_ADDITION;
 
-        public static int NotVeryEffectiveDamage(int modifier)
-            => modifier -= (Convert.ToInt32(modifier * NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION));
+        public static decimal NotVeryEffectiveDamage(decimal modifier)
+            => modifier -= modifier * NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION;
+
 
         //This is the damage formula used for the Pokemon GO game. I didn't use the actual pokemon formula because it depends
         //on more stuff than what we got in this game, like weather, level, friendship, etc.
-        public static int ApplyDamageFormulaToInitialDamage(IPokemon attackingPokemon, IPokemon targetPokemon, int modifier, IMove move)
+        public static int ApplyDamageFormulaToInitialDamage(IPokemon attackingPokemon, IPokemon targetPokemon, decimal modifier, IMove move)
         {
-            decimal attackPointsInDecimal, defensePointsInDecimal;
+            decimal attackPoints, defensePoints;
+            (attackPoints, defensePoints) = GetDamageForSpecialOrCommonMove(attackingPokemon, targetPokemon, move.Special);
+            decimal finalDamageResult = ApplyFinalDamageFormula(attackPoints, defensePoints, modifier);
 
-            if (move.Special)
+            return (int)Math.Ceiling(finalDamageResult);
+        }
+
+        private static (decimal, decimal) GetDamageForSpecialOrCommonMove(IPokemon attackingPokemon, IPokemon targetPokemon, bool moveIsSpecial)
+        {
+            decimal attackPoints, defensePoints;
+            if (moveIsSpecial)
             {
-                attackPointsInDecimal = Convert.ToDecimal(attackingPokemon.SpecialAttackPoints);
-                defensePointsInDecimal = Convert.ToDecimal(targetPokemon.SpecialDefensePoints);
+                attackPoints = Convert.ToDecimal(attackingPokemon.SpecialAttackPoints);
+                defensePoints = Convert.ToDecimal(targetPokemon.SpecialDefensePoints);
             }
             else
             {
-                attackPointsInDecimal = Convert.ToDecimal(attackingPokemon.AttackPoints);
-                defensePointsInDecimal = Convert.ToDecimal(targetPokemon.DefensePoints);
+                attackPoints = Convert.ToDecimal(attackingPokemon.AttackPoints);
+                defensePoints = Convert.ToDecimal(targetPokemon.DefensePoints);
             }
+            return (attackPoints, defensePoints);
+        }
 
-            decimal productFromAttackAndTargetPokemonDefense = Math.Round(attackPointsInDecimal / defensePointsInDecimal, MidpointRounding.AwayFromZero);
-            decimal productWithModifier = modifier * productFromAttackAndTargetPokemonDefense;
-            decimal finalResult = (productWithModifier / 2) + 1;
-
-            return (int)Math.Ceiling(finalResult);
+        private static decimal ApplyFinalDamageFormula(decimal attackPoints, decimal defensePoints, decimal modifier)
+        {
+            decimal roundedAttackDividedByDefense = Math.Round(attackPoints / defensePoints, MidpointRounding.AwayFromZero);
+            decimal productFromDamageAndModifier = modifier * roundedAttackDividedByDefense;
+            return (productFromDamageAndModifier / 2) + 1;
         }
     }
 }

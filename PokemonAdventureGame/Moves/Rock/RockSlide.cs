@@ -8,14 +8,15 @@ namespace PokemonAdventureGame.Moves.Rock
     {
         public Type Type { get => Type.ROCK; }
         public int Damage { get => 30; }
-        public int PowerPoints { get; set; }
+        public int PowerPoints { get => 15; }
+        public int CurrentPowerPoints { get; set; }
         public bool Special { get => true; }
         public List<StatusMove> StatusMoves { get => null; }
         public StatusMoveTarget? MoveTarget { get => null; }
 
         public RockSlide()
         {
-            PowerPoints = 15;
+            CurrentPowerPoints = PowerPoints;
         }
     }
 }

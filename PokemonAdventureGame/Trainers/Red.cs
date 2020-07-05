@@ -4,12 +4,21 @@ using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
+using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.Trainers
 {
     public class Red : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
+        public IPokemon RewardPokemonForWinning => null;
+        public Dictionary<string, List<IItem>> Items { get; set; }
+
+        public void InitializeTrainer()
+        {
+            InitializeTrainerTeam();
+            InitializeTrainerItems();
+        }
 
         public void InitializeTrainerTeam()
         {
@@ -24,6 +33,8 @@ namespace PokemonAdventureGame.Trainers
             };
         }
 
+        public void InitializeTrainerItems() { }
+
         public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
@@ -37,11 +48,15 @@ namespace PokemonAdventureGame.Trainers
                     pkmn.Current = true;
             });
         }
+
         public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
 
         public IPokemon GetNextAvailablePokemon()
         {
-            IPokemon firstAvailablePokemon = PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
+            IPokemon firstAvailablePokemon = PokemonTeam
+                .Where(pkmn => !pkmn.Fainted)
+                .Select(pkmn => pkmn.Pokemon)
+                .FirstOrDefault();
 
             if (firstAvailablePokemon != null)
                 SetPokemonAsCurrent(firstAvailablePokemon);
@@ -51,11 +66,23 @@ namespace PokemonAdventureGame.Trainers
 
         public void SetPokemonAsFainted(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn => 
+            PokemonTeam.ForEach(pkmn =>
             {
                 if (pkmn.Pokemon == pokemon)
                     pkmn.Fainted = true;
             });
         }
+
+        public void ShowTrainerDialogue()
+        {
+            ConsoleUtils.EnemyPhraseBeforeBattle("...");
+            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+        }
+
+        public void ShowFinalDialogueForVictory()
+            => ConsoleUtils.TrainerAction<EnemyAction>("...");
+
+        public void ShowFinalDialogueForLoss()
+            => ConsoleUtils.TrainerAction<EnemyAction>("...");
     }
 }

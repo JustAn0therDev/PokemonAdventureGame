@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
@@ -10,11 +9,12 @@ using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
 {
+    delegate bool PokemonAttackDelegate();
+    delegate bool SwitchPokemonDelegate();
+    delegate bool UseItemDelegate();
+
     public class Battle : IDisposable
     {
-        private delegate bool PokemonAttackDelegate();
-        private delegate bool SwitchPokemonDelegate();
-        private delegate void EndProgramDelegate();
 
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
@@ -32,17 +32,16 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void InitializeCommandDictionary()
         {
-            _commands = new Dictionary<Command, Delegate>();
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
-            EndProgramDelegate endProgramDelegate = EndProgram;
+            UseItemDelegate endProgramDelegate = PromptPlayerToChooseItem;
 
-            _commands.Add(Command.ATTACK, firstMethodForAttackDelegate);
-            _commands.Add(Command.SWITCH_POKEMON, switchPokemonDelegate);
-
-            //While both commands don't have a method of their own, they will end the program's execution on call.
-            _commands.Add(Command.ITEMS, endProgramDelegate);
-            _commands.Add(Command.RUN, endProgramDelegate);
+            _commands = new Dictionary<Command, Delegate>
+            {
+                { Command.ATTACK, firstMethodForAttackDelegate },
+                { Command.SWITCH_POKEMON, switchPokemonDelegate },
+                { Command.ITEMS, endProgramDelegate }
+            };
         }
 
         public bool StartBattle()
@@ -56,7 +55,7 @@ namespace PokemonAdventureGame.BattleSystem
             _player.SetPokemonAsCurrent(_player.GetNextAvailablePokemon());
             _enemyTrainer.SetPokemonAsCurrent(_enemyTrainer.GetNextAvailablePokemon());
 
-            ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
+            ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer);
             ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
@@ -93,9 +92,7 @@ namespace PokemonAdventureGame.BattleSystem
             }
 
             if (_player.HasAvailablePokemon())
-            {
                 playerWon = true;
-            }
 
             return playerWon;
         }
@@ -106,29 +103,31 @@ namespace PokemonAdventureGame.BattleSystem
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
             Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
-
             bool keepBattleGoing = (bool)_commands[command].DynamicInvoke();
 
             return keepBattleGoing;
         }
 
+        #region Player Commands
+
         private bool PromptTrainerForPokemonMove()
         {
+            bool keepBattleGoing = true;
             int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
 
-            //The battle NEEDS to keep going and pass the next movement to the enemy trainer if the command
+            //The battle has to keep going and pass the next movement to the enemy trainer if the command
             //was just an attack.
-            //If the something happens that the Enemy Trainer should send another pokemon,
-            //other methods will take care of it.
-            return true;
+            //If something happens that the Enemy Trainer should send another pokemon,
+            //subsequent methods will handle those.
+            return keepBattleGoing;
         }
 
         private void PokemonAttack(IPokemon attackingPokemon, IPokemon targetPokemon, int chosenMove)
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            if (move.PowerPoints == 0)
+            if (move.CurrentPowerPoints == 0)
             {
                 ConsoleBattleInfo.MovementIsOutOfPowerPoints();
                 PromptTrainerForPokemonMove();
@@ -168,15 +167,11 @@ namespace PokemonAdventureGame.BattleSystem
 
             if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
-                ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeft();
+                ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeftToSwitch();
                 return false;
             }
 
-            while (chosenPokemon == -1 || chosenPokemon > _player.PokemonTeam.Count)
-            {
-                ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
-                chosenPokemon = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
-            }
+            chosenPokemon = _battleAux.KeepPlayerChoosingPokemonIndex();
 
             SwitchCurrentPokemon(chosenPokemon);
 
@@ -189,11 +184,12 @@ namespace PokemonAdventureGame.BattleSystem
 
             if (pokemon.Fainted)
             {
-                ConsoleBattleInfo.PokemonUnavailable();
+                ConsoleBattleInfo.ShowChosenPokemonIsNotAvailable();
                 PlayerMove();
                 return;
             }
-            else if (pokemon.Current)
+
+            if (pokemon.Current)
             {
                 ConsoleBattleInfo.ShowChosenPokemonIsAlreadyInBattle();
                 PlayerMove();
@@ -203,14 +199,59 @@ namespace PokemonAdventureGame.BattleSystem
             _battleAux.DrawbackThenSendPokemon(chosenPokemon);
         }
 
+        private bool PromptPlayerToChooseItem()
+        {
+            int chosenStackedItemsIndex = _battleAux.KeepPlayerChoosingItem(_player, _player.Items.Count);
+            int chosenPokemonIndex = _battleAux.KeepPlayerChoosingPokemonIndex();
+
+            IPokemon chosenPokemon = _player.PokemonTeam[chosenPokemonIndex].Pokemon;
+            IItem chosenItem = _player.Items.ElementAt(chosenStackedItemsIndex).Value.FirstOrDefault();
+
+            return CheckIfShouldKeepBattleGoingAfterItemSelection(chosenItem, chosenStackedItemsIndex, chosenPokemon);
+        }
+
+        private bool CheckIfShouldKeepBattleGoingAfterItemSelection(IItem chosenItem, int chosenStackedItemsIndex, IPokemon chosenPokemon)
+        {
+            bool itemWasSuccessfullyUsed = false;
+            if (chosenItem != null && chosenItem.TryToUseItemOnPokemon(chosenPokemon))
+            {
+                ConsoleBattleInfo.ShowItemWasUsedOnPokemon(chosenItem, chosenPokemon);
+                _player.Items.ElementAt(chosenStackedItemsIndex).Value.Remove(chosenItem);
+                itemWasSuccessfullyUsed = true;
+            }
+            else
+                ConsoleBattleInfo.ShowPlayerCantUseItemOnPokemon();
+
+            return itemWasSuccessfullyUsed;
+        }
+
+        #endregion
+
         private void EnemyMove()
         {
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
 
-        private void EndProgram() => Environment.Exit(0);
+        #region Dispose Methods and Memory Management
 
-        public void Dispose() => GC.SuppressFinalize(this);
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose()
+        {
+            _player = null;
+            _enemyTrainer = null;
+            _battleAux = null;
+            _commands = null;
+        }
+
+        #endregion
     }
 }

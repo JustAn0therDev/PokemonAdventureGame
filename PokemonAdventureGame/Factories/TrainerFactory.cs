@@ -10,7 +10,7 @@ namespace PokemonAdventureGame.Factories
         public static ITrainer CreateTrainer<T>() where T : ITrainer, new()
         {
             T trainer = new T();
-            trainer.InitializeTrainerTeam();
+            trainer.InitializeTrainer();
             return trainer;
         }
     }

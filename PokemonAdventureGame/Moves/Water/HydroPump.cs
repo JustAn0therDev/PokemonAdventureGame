@@ -8,14 +8,15 @@ namespace PokemonAdventureGame.Moves.Water
     {
         public Type Type { get => Type.WATER; }
         public int Damage { get => 40; }
-        public int PowerPoints { get; set; }
+        public int PowerPoints { get => 5; }
+        public int CurrentPowerPoints { get; set; }
         public bool Special { get => true; }
         public List<StatusMove> StatusMoves { get => null; }
         public StatusMoveTarget? MoveTarget { get => null; }
 
         public HydroPump()
         {
-            PowerPoints = 5;
+            CurrentPowerPoints = PowerPoints;
         }
     }
 }

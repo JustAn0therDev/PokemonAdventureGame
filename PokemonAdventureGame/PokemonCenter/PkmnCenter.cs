@@ -2,7 +2,7 @@
 
 namespace PokemonAdventureGame.PokemonCenter
 {
-    public static class PokemonCenterClass
+    public static class PkmnCenter
     {
         public static void HealPlayerTeam(ITrainer player)
         {
@@ -10,6 +10,7 @@ namespace PokemonAdventureGame.PokemonCenter
             {
                 pkmn.Fainted = false;
                 pkmn.Pokemon.CurrentHealthPoints = pkmn.Pokemon.HealthPoints;
+                pkmn.Pokemon.Moves.ForEach(move => move.CurrentPowerPoints = move.PowerPoints);
             });
         }
     }

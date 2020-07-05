@@ -5,12 +5,17 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public static class ConsoleUtils
     {
+        public readonly static int ONE_SECOND_IN_MILISSECONDS = 1000;
+        public readonly static int TWO_SECONDS_IN_MILISSECONDS = 2000;
+        public readonly static int FOUR_SECONDS_IN_MILISSECONDS = 4000;
+        public readonly static int FIVE_SECONDS_IN_MILISSECONDS = 5000;
+
         public static void ResetConsoleColors()
             => Console.ResetColor();
-        public static void WaitOneSecond() => Thread.Sleep(1000);
-        public static void WaitTwoSeconds() => Thread.Sleep(2000);
-        public static void WaitFourSeconds() => Thread.Sleep(4000);
-        public static void WaitFiveSeconds() => Thread.Sleep(5000);
+        public static void WaitOneSecond() => Thread.Sleep(ONE_SECOND_IN_MILISSECONDS);
+        public static void WaitTwoSeconds() => Thread.Sleep(TWO_SECONDS_IN_MILISSECONDS);
+        public static void WaitFourSeconds() => Thread.Sleep(FOUR_SECONDS_IN_MILISSECONDS);
+        public static void WaitFiveSeconds() => Thread.Sleep(FIVE_SECONDS_IN_MILISSECONDS);
         public static void ClearScreen() => Console.Clear();
         public static void SkipLine() => Console.WriteLine();
         public static void TrainerAction<T>(string actionMessage)
@@ -19,6 +24,14 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             Console.WriteLine(actionMessage);
             SkipLine();
             ResetConsoleColors();
+        }
+        public static void EndProgram() => Environment.Exit(0);
+        public static void EnemyPhraseBeforeBattle(string enemyPhrase)
+        {
+            ClearScreen();
+            TrainerAction<EnemyAction>(enemyPhrase);
+            WaitFourSeconds();
+            ClearScreen();
         }
     }
 }

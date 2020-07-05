@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
@@ -53,23 +52,47 @@ namespace PokemonAdventureGame.BattleSystem
             trainer.SetPokemonAsCurrent(trainer.GetNextAvailablePokemon());
 
             if (isEnemyTrainer)
-                ConsoleBattleInfo.EnemyTrainerSendsPokemon(trainer, trainer.GetCurrentPokemon());
+                ConsoleBattleInfo.EnemyTrainerSendsPokemon(trainer);
             else
                 ConsoleBattleInfo.PlayerSendsPokemon(trainer.GetCurrentPokemon());
         }
 
-        public int KeepPlayerChoosingMove(int limitOfMoves)
+        public int KeepPlayerChoosingMove(int movesLimit)
         {
             int chosenMove = -1;
             IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
 
-            while (chosenMove <= -1 || chosenMove > limitOfMoves)
+            while (chosenMove <= -1 || chosenMove > movesLimit)
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
                 chosenMove = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
             }
 
             return chosenMove;
+        }
+
+        public int KeepPlayerChoosingItem(ITrainer player, int limitOfItemStacksInTheInventory)
+        {
+            int chosenItem = -1;
+            while (chosenItem <= -1 || chosenItem > limitOfItemStacksInTheInventory)
+            {
+                ConsoleBattleInfo.WriteAllAvailableItemsOnConsole(player);
+                chosenItem = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+            }
+
+            return chosenItem;
+        }
+
+        public int KeepPlayerChoosingPokemonIndex()
+        {
+            int chosenPokemonIndex = -1;
+            while (chosenPokemonIndex == -1 || chosenPokemonIndex > _player.PokemonTeam.Count)
+            {
+                ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
+                chosenPokemonIndex = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+            }
+
+            return chosenPokemonIndex;
         }
 
         public void DrawbackThenSendPokemon(int chosenPokemon)
@@ -81,7 +104,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         public void ProcessStatusAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
         {
-            List<StatusMove> pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
+            StatusMove[] pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
 
             if (move.MoveTarget.Value == StatusMoveTarget.SELF)
                 ConsoleBattleInfo.ShowInflictedStatuses(attackingPokemon, pokemonAlteredStatuses);
