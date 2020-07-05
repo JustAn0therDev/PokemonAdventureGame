@@ -4,10 +4,10 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public class EnemyAction
     {
-        public void EnemyTrainerSendsPokemon(ITrainer trainer, IPokemon pokemon)
+        public void EnemyTrainerSendsPokemon(ITrainer trainer)
         {
             ConsoleUtils.WaitOneSecond();
-            ConsoleUtils.TrainerAction<EnemyAction>($"{trainer.GetType().Name} sent out {pokemon.GetType().Name}!");
+            ConsoleUtils.TrainerAction<EnemyAction>($"{trainer.GetType().Name} sent out {trainer.GetCurrentPokemon()?.GetType().Name}!");
             ConsoleUtils.SkipLine();
             ConsoleUtils.ResetConsoleColors();
         }

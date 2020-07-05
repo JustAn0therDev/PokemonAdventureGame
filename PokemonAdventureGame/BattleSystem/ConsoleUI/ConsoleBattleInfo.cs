@@ -11,7 +11,8 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         private readonly static EnemyAction _enemyMovement = new EnemyAction();
 
         public static void PlayerSendsPokemon(IPokemon pokemon) => _playerMovement.PlayerSendsPokemon(pokemon);
-        public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer, IPokemon pokemon) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer, pokemon);
+        public static void EnemyTrainerSendsPokemon(ITrainer enemyTrainer) => _enemyMovement.EnemyTrainerSendsPokemon(enemyTrainer);
+
         public static void TrainerDrawsbackPokemon(IPokemon pokemon, bool isEnemyTrainer = false)
         {
             if (isEnemyTrainer)
@@ -102,14 +103,14 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             }
         }
 
-        private static void MovementIsNotVeryEffective()  
-        { 
-            Console.WriteLine("It's not very effective..."); 
+        private static void MovementIsNotVeryEffective()
+        {
+            Console.WriteLine("It's not very effective...");
             ConsoleUtils.WaitOneSecond();
         }
-        private static void MovementIsSuperEffective() 
+        private static void MovementIsSuperEffective()
         {
-            Console.WriteLine("It's super effective!"); 
+            Console.WriteLine("It's super effective!");
             ConsoleUtils.WaitOneSecond();
         }
 
@@ -128,15 +129,15 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         }
 
         public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another!");
-        
-        public static void ShowPlayerThereAreNoPokemonLeft() 
+
+        public static void ShowPlayerThereAreNoPokemonLeft()
         {
             Console.WriteLine("There are no other pokemon left to battle!");
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
         }
 
-        public static void ShowInflictedStatuses(IPokemon targetPokemon, StatusMove[] statusMoves) 
+        public static void ShowInflictedStatuses(IPokemon targetPokemon, StatusMove[] statusMoves)
         {
             for (int i = 0; i < statusMoves.Length; i++)
             {
@@ -179,11 +180,11 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             }
         }
 
-        public static void ShowChosenPokemonIsAlreadyInBattle() 
+        public static void ShowChosenPokemonIsAlreadyInBattle()
         {
             Console.WriteLine("The chosen pokemon is already in battle!");
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
-        } 
+        }
     }
 }

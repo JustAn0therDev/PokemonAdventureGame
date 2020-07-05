@@ -52,7 +52,7 @@ namespace PokemonAdventureGame.BattleSystem
             trainer.SetPokemonAsCurrent(trainer.GetNextAvailablePokemon());
 
             if (isEnemyTrainer)
-                ConsoleBattleInfo.EnemyTrainerSendsPokemon(trainer, trainer.GetCurrentPokemon());
+                ConsoleBattleInfo.EnemyTrainerSendsPokemon(trainer);
             else
                 ConsoleBattleInfo.PlayerSendsPokemon(trainer.GetCurrentPokemon());
         }

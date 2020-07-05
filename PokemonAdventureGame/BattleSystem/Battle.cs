@@ -34,7 +34,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
-            EndProgramDelegate endProgramDelegate = ConsoleUtils.EndProgram;
+            EndProgramDelegate endProgramDelegate = OpenItemsMenu;
 
             _commands = new Dictionary<Command, Delegate>
             {
@@ -55,7 +55,7 @@ namespace PokemonAdventureGame.BattleSystem
             _player.SetPokemonAsCurrent(_player.GetNextAvailablePokemon());
             _enemyTrainer.SetPokemonAsCurrent(_enemyTrainer.GetNextAvailablePokemon());
 
-            ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer, _enemyTrainer.GetCurrentPokemon());
+            ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer);
             ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
@@ -107,6 +107,8 @@ namespace PokemonAdventureGame.BattleSystem
 
             return keepBattleGoing;
         }
+
+        #region Player Commands
 
         private bool PromptTrainerForPokemonMove()
         {
@@ -200,6 +202,13 @@ namespace PokemonAdventureGame.BattleSystem
 
             _battleAux.DrawbackThenSendPokemon(chosenPokemon);
         }
+
+        private void OpenItemsMenu()
+        {
+
+        }
+
+        #endregion
 
         private void EnemyMove()
         {
