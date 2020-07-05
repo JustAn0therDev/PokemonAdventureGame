@@ -32,14 +32,16 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void InitializeCommandDictionary()
         {
-            _commands = new Dictionary<Command, Delegate>();
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
             EndProgramDelegate endProgramDelegate = ConsoleUtils.EndProgram;
 
-            _commands.Add(Command.ATTACK, firstMethodForAttackDelegate);
-            _commands.Add(Command.SWITCH_POKEMON, switchPokemonDelegate);
-            _commands.Add(Command.ITEMS, endProgramDelegate);
+            _commands = new Dictionary<Command, Delegate>
+            {
+                { Command.ATTACK, firstMethodForAttackDelegate },
+                { Command.SWITCH_POKEMON, switchPokemonDelegate },
+                { Command.ITEMS, endProgramDelegate }
+            };
         }
 
         public bool StartBattle()
