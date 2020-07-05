@@ -163,19 +163,21 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool PromptPlayerToSelectPokemon()
         {
+            bool keepBattleGoingAfterPokemonSelection = false;
             int chosenPokemon = -1;
 
             if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
                 ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeftToSwitch();
-                return false;
+                return keepBattleGoingAfterPokemonSelection;
             }
 
             chosenPokemon = _battleAux.KeepPlayerChoosingPokemonIndex();
 
             SwitchCurrentPokemon(chosenPokemon);
+            keepBattleGoingAfterPokemonSelection = true;
 
-            return true;
+            return keepBattleGoingAfterPokemonSelection;
         }
 
         private void SwitchCurrentPokemon(int chosenPokemon)
