@@ -65,7 +65,7 @@ namespace PokemonAdventureGame.BattleSystem
             while (chosenMove <= -1 || chosenMove > movesLimit)
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
-                chosenMove = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+                chosenMove = ConsoleBattleInfo.GetPlayerChosenIndex(Console.ReadLine());
             }
 
             return chosenMove;
@@ -77,7 +77,7 @@ namespace PokemonAdventureGame.BattleSystem
             while (chosenItem <= -1 || chosenItem > limitOfItemStacksInTheInventory)
             {
                 ConsoleBattleInfo.WriteAllAvailableItemsOnConsole(player);
-                chosenItem = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+                chosenItem = ConsoleBattleInfo.GetPlayerChosenIndex(Console.ReadLine());
             }
 
             return chosenItem;
@@ -89,7 +89,7 @@ namespace PokemonAdventureGame.BattleSystem
             while (chosenPokemonIndex == -1 || chosenPokemonIndex > _player.PokemonTeam.Count)
             {
                 ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
-                chosenPokemonIndex = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+                chosenPokemonIndex = ConsoleBattleInfo.GetPlayerChosenIndex(Console.ReadLine());
             }
 
             return chosenPokemonIndex;

@@ -46,23 +46,19 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static void ShowPokemonUsedMove(IPokemon pokemon, string moveName)
         {
-            Console.WriteLine($"{pokemon.GetType().Name} used {moveName}!");
-            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ShowMessageAndWaitTwoSeconds($"{pokemon.GetType().Name} used {moveName}!");
             ConsoleUtils.SkipLine();
         }
 
         public static void ShowPokemonReceivedDamage(IPokemon pokemon, int damage)
         {
-            Console.WriteLine($"{pokemon.GetType().Name} took {damage} damage!");
-            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ShowMessageAndWaitTwoSeconds($"{pokemon.GetType().Name} took {damage} damage!");
             ConsoleUtils.SkipLine();
         }
 
         public static void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
-            ConsoleUtils.SkipLine();
-            Console.WriteLine("Choose your attack!");
-            ConsoleUtils.SkipLine();
+            ConsoleUtils.ShowMessageBetweenEmptyLines("Choose your attack!");
 
             for (int i = 0; i < pokemon.Moves.Count; i++)
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].CurrentPowerPoints}");
@@ -70,31 +66,25 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static void WriteAllAvailableItemsOnConsole(ITrainer player)
         {
-            ConsoleUtils.SkipLine();
-            Console.WriteLine("Choose an item!");
-            ConsoleUtils.SkipLine();
+            ConsoleUtils.ShowMessageBetweenEmptyLines("Choose an item!");
 
             for (int i = 0; i < player.Items.Count; i++)
                 Console.WriteLine($"{i}: {player.Items.ElementAt(i).Key} - Remaining: {player.Items.ElementAt(i).Value.Count}");
         }
 
-        public static int GetPlayerChosenInput(string userInput)
+        public static int GetPlayerChosenIndex(string userInput)
         {
             ConsoleUtils.ClearScreen();
-            return int.TryParse(userInput, out int chosenMove) ? chosenMove : -1;
+            return int.TryParse(userInput, out int chosenIndex) ? chosenIndex : -1;
         }
 
-        public static void ShowTrainerWins(ITrainer trainer)
-        {
-            Console.WriteLine($"{trainer.GetType().Name} wins!");
-            ConsoleUtils.SkipLine();
-        }
+        public static void ShowTrainerWins(ITrainer trainer) 
+            => ConsoleUtils.ShowMessageBetweenEmptyLines($"{trainer.GetType().Name} wins!");
 
         public static void TrainerHasNoPokemonLeft(ITrainer trainer)
         {
             ConsoleUtils.ClearScreen();
-            Console.WriteLine($"{trainer.GetType().Name} has no other pokemon left to battle...");
-            ConsoleUtils.SkipLine();
+            ConsoleUtils.ShowMessageBetweenEmptyLines($"{trainer.GetType().Name} has no other pokemon left to battle...");
         }
 
         public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
@@ -131,8 +121,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static void ShowPlayerThereAreNoPokemonLeftToSwitch()
         {
-            Console.WriteLine("There are no other pokemon left to battle!");
-            ConsoleUtils.WaitOneSecond();
+            ConsoleUtils.ShowMessageAndWaitOneSecond("There are no other pokemon left to battle!");
             ConsoleUtils.ClearScreen();
         }
 
@@ -198,6 +187,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ShowMessageAndWaitTwoSeconds("The selected item cannot be used on the Pokemon!");
             ConsoleUtils.ClearScreen();
         }
+
         #endregion
     }
 }
