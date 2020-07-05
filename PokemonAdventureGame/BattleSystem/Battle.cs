@@ -127,21 +127,28 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            if (move.CurrentPowerPoints == 0)
-            {
-                ConsoleBattleInfo.MovementIsOutOfPowerPoints();
-                PromptTrainerForPokemonMove();
+            if (MoveDoesNotHavePowerPointsLeft(move))
                 return;
-            }
 
             ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
             if (TypeComparer.PokemonTypeDoesNotMakeContactWithMove(targetPokemon.Types, move))
-                ConsoleBattleInfo.MovementDidntAffectPokemon(targetPokemon);
+                ConsoleUtils.ShowMessageAndWaitOneSecond($"It didn't affect {targetPokemon.GetType().Name}!");
             else
                 ProcessAttack(attackingPokemon, targetPokemon, move);
 
             ConsoleBattleInfo.Clear();
+        }
+
+        private bool MoveDoesNotHavePowerPointsLeft(IMove move)
+        {
+            if (move.CurrentPowerPoints == 0)
+            {
+                ConsoleBattleInfo.MovementIsOutOfPowerPoints();
+                PromptTrainerForPokemonMove();
+                return true;
+            }
+            return false;
         }
 
         private void ProcessAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
@@ -222,7 +229,7 @@ namespace PokemonAdventureGame.BattleSystem
                 itemWasSuccessfullyUsed = true;
             }
             else
-                ConsoleBattleInfo.ShowPlayerCantUseItemOnPokemon();
+                ConsoleBattleInfo.ShowItemCannotBeUsed();
 
             return itemWasSuccessfullyUsed;
         }
