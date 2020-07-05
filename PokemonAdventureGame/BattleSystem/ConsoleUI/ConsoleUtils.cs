@@ -18,6 +18,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void WaitFiveSeconds() => Thread.Sleep(FIVE_SECONDS_IN_MILISSECONDS);
         public static void ClearScreen() => Console.Clear();
         public static void SkipLine() => Console.WriteLine();
+        public static void EndProgram() => Environment.Exit(0);
         public static void TrainerAction<T>(string actionMessage)
         {
             Console.ForegroundColor = typeof(T) == typeof(PlayerAction) ? ConsoleColor.Green : ConsoleColor.DarkRed;
@@ -26,7 +27,12 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ResetConsoleColors();
         }
 
-        public static void EndProgram() => Environment.Exit(0);
+        public static void ShowMessageBetweenEmptyLines(string message)
+        {
+            SkipLine();
+            Console.WriteLine(message);
+            SkipLine();
+        }
 
         public static void EnemyPhraseBeforeBattle(string enemyPhrase)
         {
