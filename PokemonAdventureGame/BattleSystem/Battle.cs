@@ -11,7 +11,7 @@ namespace PokemonAdventureGame.BattleSystem
 {
     delegate bool PokemonAttackDelegate();
     delegate bool SwitchPokemonDelegate();
-    delegate void EndProgramDelegate();
+    delegate bool UseItemDelegate();
 
     public class Battle : IDisposable
     {
@@ -34,7 +34,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
-            EndProgramDelegate endProgramDelegate = OpenItemsMenu;
+            UseItemDelegate endProgramDelegate = PromptPlayerToChooseItem;
 
             _commands = new Dictionary<Command, Delegate>
             {
@@ -167,15 +167,11 @@ namespace PokemonAdventureGame.BattleSystem
 
             if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
-                ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeft();
+                ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeftToSwitch();
                 return false;
             }
 
-            while (chosenPokemon == -1 || chosenPokemon > _player.PokemonTeam.Count)
-            {
-                ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
-                chosenPokemon = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
-            }
+            chosenPokemon = _battleAux.KeepPlayerChoosingPokemonIndex();
 
             SwitchCurrentPokemon(chosenPokemon);
 
@@ -188,7 +184,7 @@ namespace PokemonAdventureGame.BattleSystem
 
             if (pokemon.Fainted)
             {
-                ConsoleBattleInfo.PokemonUnavailable();
+                ConsoleBattleInfo.ShowChosenPokemonIsNotAvailable();
                 PlayerMove();
                 return;
             }
@@ -203,9 +199,30 @@ namespace PokemonAdventureGame.BattleSystem
             _battleAux.DrawbackThenSendPokemon(chosenPokemon);
         }
 
-        private void OpenItemsMenu()
+        private bool PromptPlayerToChooseItem()
         {
+            int chosenStackedItemsIndex = _battleAux.KeepPlayerChoosingItem(_player, _player.Items.Count);
+            int chosenPokemonIndex = _battleAux.KeepPlayerChoosingPokemonIndex();
 
+            IPokemon chosenPokemon = _player.PokemonTeam[chosenPokemonIndex].Pokemon;
+            IItem chosenItem = _player.Items.ElementAt(chosenStackedItemsIndex).Value.FirstOrDefault();
+
+            return CheckIfShouldKeepBattleGoingAfterItemSelection(chosenItem, chosenStackedItemsIndex, chosenPokemon);
+        }
+
+        private bool CheckIfShouldKeepBattleGoingAfterItemSelection(IItem chosenItem, int chosenStackedItemsIndex, IPokemon chosenPokemon)
+        {
+            bool itemWasSuccessfullyUsed = false;
+            if (chosenItem != null && chosenItem.TryToUseItemOnPokemon(chosenPokemon))
+            {
+                ConsoleBattleInfo.ShowItemWasUsedOnPokemon(chosenItem, chosenPokemon);
+                _player.Items.ElementAt(chosenStackedItemsIndex).Value.Remove(chosenItem);
+                itemWasSuccessfullyUsed = true;
+            }
+            else
+                ConsoleBattleInfo.ShowPlayerCantUseItemOnPokemon();
+
+            return itemWasSuccessfullyUsed;
         }
 
         #endregion

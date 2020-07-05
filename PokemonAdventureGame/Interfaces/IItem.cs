@@ -6,6 +6,6 @@ namespace PokemonAdventureGame.Interfaces
 {
     public interface IItem
     {
-        void UseItemOnPokemon(IPokemon targetPokemon);
+        bool TryToUseItemOnPokemon(IPokemon targetPokemon);
     }
 }

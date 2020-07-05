@@ -111,7 +111,7 @@ namespace PokemonAdventureGame.Story
 
         #endregion
 
-        #region Final Dialogue Methods
+        #region Final Dialogue
 
         private void EnemyTrainerFinalDialogue()
         {

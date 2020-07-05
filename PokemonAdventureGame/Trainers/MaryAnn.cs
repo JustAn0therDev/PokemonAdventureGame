@@ -25,7 +25,6 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Machamp>()),
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Hypno>()),
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Alakazam>()),
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Gengar>()),

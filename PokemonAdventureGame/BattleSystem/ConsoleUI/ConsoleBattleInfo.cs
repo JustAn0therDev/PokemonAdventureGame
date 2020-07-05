@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 
@@ -68,6 +69,16 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].CurrentPowerPoints}");
         }
 
+        public static void WriteAllAvailableItemsOnConsole(ITrainer player)
+        {
+            ConsoleUtils.SkipLine();
+            Console.WriteLine("Choose an item!");
+            ConsoleUtils.SkipLine();
+
+            for (int i = 0; i < player.Items.Count; i++)
+                Console.WriteLine($"{i}: {player.Items.ElementAt(i).Key} - Remaining: {player.Items.ElementAt(i).Value.Count}");
+        }
+
         public static int GetPlayerChosenInput(string userInput)
         {
             ConsoleUtils.ClearScreen();
@@ -108,6 +119,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             Console.WriteLine("It's not very effective...");
             ConsoleUtils.WaitOneSecond();
         }
+
         private static void MovementIsSuperEffective()
         {
             Console.WriteLine("It's super effective!");
@@ -125,12 +137,16 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void ShowAllTrainersPokemon(ITrainer trainer)
         {
             for (int i = 0; i < trainer.PokemonTeam.Count; i++)
-                Console.WriteLine($"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name}");
+            {
+                Console.WriteLine(
+                    $"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name} - HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.HealthPoints}"
+                    );
+            }
         }
 
-        public static void PokemonUnavailable() => Console.WriteLine("The chosen pokemon is not available, please select another!");
+        public static void ShowChosenPokemonIsNotAvailable() => Console.WriteLine("The chosen pokemon is not available, please select another!");
 
-        public static void ShowPlayerThereAreNoPokemonLeft()
+        public static void ShowPlayerThereAreNoPokemonLeftToSwitch()
         {
             Console.WriteLine("There are no other pokemon left to battle!");
             ConsoleUtils.WaitOneSecond();
@@ -186,5 +202,30 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
         }
+
+        #region Items 
+
+        public static void ShowItemWasUsedOnPokemon(IItem item, IPokemon pokemon)
+        {
+            Console.WriteLine($"{item.GetType().Name} was used on {pokemon.GetType().Name}!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        public static void ShowPlayerCantUseItemOnPokemon()
+        {
+            Console.WriteLine("You can't use the selected item on this Pokemon!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        public static void ShowPlayerItemIsNotAvailable()
+        {
+            Console.WriteLine("The selected item is not available!");
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ClearScreen();
+        }
+
+        #endregion
     }
 }

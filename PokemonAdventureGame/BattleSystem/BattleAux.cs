@@ -57,18 +57,42 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfo.PlayerSendsPokemon(trainer.GetCurrentPokemon());
         }
 
-        public int KeepPlayerChoosingMove(int limitOfMoves)
+        public int KeepPlayerChoosingMove(int movesLimit)
         {
             int chosenMove = -1;
             IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
 
-            while (chosenMove <= -1 || chosenMove > limitOfMoves)
+            while (chosenMove <= -1 || chosenMove > movesLimit)
             {
                 ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
                 chosenMove = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
             }
 
             return chosenMove;
+        }
+
+        public int KeepPlayerChoosingItem(ITrainer player, int limitOfItemStacksInTheInventory)
+        {
+            int chosenItem = -1;
+            while (chosenItem <= -1 || chosenItem > limitOfItemStacksInTheInventory)
+            {
+                ConsoleBattleInfo.WriteAllAvailableItemsOnConsole(player);
+                chosenItem = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+            }
+
+            return chosenItem;
+        }
+
+        public int KeepPlayerChoosingPokemonIndex()
+        {
+            int chosenPokemonIndex = -1;
+            while (chosenPokemonIndex == -1 || chosenPokemonIndex > _player.PokemonTeam.Count)
+            {
+                ConsoleBattleInfo.ShowAllTrainersPokemon(_player);
+                chosenPokemonIndex = ConsoleBattleInfo.GetPlayerChosenInput(Console.ReadLine());
+            }
+
+            return chosenPokemonIndex;
         }
 
         public void DrawbackThenSendPokemon(int chosenPokemon)
