@@ -64,7 +64,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.SkipLine();
 
             for (int i = 0; i < pokemon.Moves.Count; i++)
-                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].PowerPoints}");
+                Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].CurrentPowerPoints}");
         }
 
         public static int GetPlayerChosenInput(string userInput)

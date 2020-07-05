@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
@@ -124,7 +123,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            if (move.PowerPoints == 0)
+            if (move.CurrentPowerPoints == 0)
             {
                 ConsoleBattleInfo.MovementIsOutOfPowerPoints();
                 PromptTrainerForPokemonMove();
@@ -206,6 +205,8 @@ namespace PokemonAdventureGame.BattleSystem
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
 
+        #region Dispose Methods and Memory Management
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing)
@@ -222,5 +223,7 @@ namespace PokemonAdventureGame.BattleSystem
             _battleAux = null;
             _commands = null;
         }
+
+        #endregion
     }
 }

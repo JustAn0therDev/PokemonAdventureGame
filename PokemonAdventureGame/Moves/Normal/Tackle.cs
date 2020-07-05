@@ -6,16 +6,17 @@ namespace PokemonAdventureGame.Moves.Normal
 {
     public class Tackle : IMove
     {
-        public Enums.Type Type { get => Enums.Type.NORMAL; }
+        public Type Type { get => Type.NORMAL; }
         public int Damage { get => 10; }
-        public int PowerPoints { get; set; }
+        public int PowerPoints { get => 30; }
+        public int CurrentPowerPoints { get; set; }
         public bool Special { get => false; }
         public List<StatusMove> StatusMoves { get => null; }
         public StatusMoveTarget? MoveTarget { get => null; }
 
         public Tackle()
         {
-            PowerPoints = 30;
+            CurrentPowerPoints = PowerPoints;
         }
     }
 }

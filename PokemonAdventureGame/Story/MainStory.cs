@@ -119,7 +119,6 @@ namespace PokemonAdventureGame.Story
             if (_playerWonBattle)
             {
                 _enemyTrainer.ShowFinalDialogueForVictory();
-
                 if (didNotComeFromFinalBattle)
                     HealPlayerTeamAndReward();
             }
@@ -138,7 +137,7 @@ namespace PokemonAdventureGame.Story
         {
             ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} heals your Pokemon to prepare you for the next battle.");
-            PokemonCenterClass.HealPlayerTeam(_player);
+            PkmnCenter.HealPlayerTeam(_player);
 
             GivePokemonToPlayer(_enemyTrainer.RewardPokemonForWinning);
             ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} gave you a {_enemyTrainer.RewardPokemonForWinning.GetType().Name}!");

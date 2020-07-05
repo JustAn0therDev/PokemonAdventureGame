@@ -49,7 +49,7 @@ namespace PokemonAdventureGame.Pokemon
             IMove moveToRemovePowerPoints = Moves.Find(f => f == move);
 
             if (moveToRemovePowerPoints != null)
-                moveToRemovePowerPoints.PowerPoints -= 1;
+                moveToRemovePowerPoints.CurrentPowerPoints -= 1;
         }
 
         public bool HasFainted() => CurrentHealthPoints <= 0;

@@ -7,7 +7,8 @@ namespace PokemonAdventureGame.Interfaces
     {
         Enums.Type Type { get; }
         int Damage { get; }
-        int PowerPoints { get; set; }
+        int PowerPoints { get; }
+        int CurrentPowerPoints { get; set; }
         bool Special { get; }
         List<StatusMove> StatusMoves { get; }
         StatusMoveTarget? MoveTarget { get; }
