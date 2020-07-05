@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
@@ -100,36 +99,20 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
         {
+            string messageForTypeEffect = string.Empty;
             switch (typeEffect)
             {
                 case TypeEffect.IMMUNE:
-                    MovementDidntAffectPokemon(pokemon);
+                    messageForTypeEffect = $"It didn't affect {pokemon.GetType().Name}!";
                     break;
                 case TypeEffect.NOT_VERY_EFFECTIVE:
-                    MovementIsNotVeryEffective();
+                    messageForTypeEffect = "It's not very effective...";
                     break;
                 case TypeEffect.SUPER_EFFECTIVE:
-                    MovementIsSuperEffective();
+                    messageForTypeEffect = "It's super effective!";
                     break;
             }
-        }
-
-        private static void MovementIsNotVeryEffective()
-        {
-            Console.WriteLine("It's not very effective...");
-            ConsoleUtils.WaitOneSecond();
-        }
-
-        private static void MovementIsSuperEffective()
-        {
-            Console.WriteLine("It's super effective!");
-            ConsoleUtils.WaitOneSecond();
-        }
-
-        public static void MovementDidntAffectPokemon(IPokemon pokemon)
-        {
-            Console.WriteLine($"It didn't affect {pokemon.GetType().Name}!");
-            ConsoleUtils.WaitOneSecond();
+            ConsoleUtils.ShowMessageAndWaitOneSecond(messageForTypeEffect);
         }
 
         public static void MovementIsOutOfPowerPoints() => Console.WriteLine("The chosen move is out of Power Points!");
@@ -192,14 +175,13 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                     default:
                         break;
                 }
-                ConsoleUtils.WaitOneSecond();
+                ConsoleUtils.WaitTwoSeconds();
             }
         }
 
         public static void ShowChosenPokemonIsAlreadyInBattle()
         {
-            Console.WriteLine("The chosen pokemon is already in battle!");
-            ConsoleUtils.WaitOneSecond();
+            ConsoleUtils.ShowMessageAndWaitOneSecond("The chosen pokemon is already in battle!");
             ConsoleUtils.ClearScreen();
         }
 
@@ -207,25 +189,15 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static void ShowItemWasUsedOnPokemon(IItem item, IPokemon pokemon)
         {
-            Console.WriteLine($"{item.GetType().Name} was used on {pokemon.GetType().Name}!");
-            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ShowMessageAndWaitTwoSeconds($"{item.GetType().Name} was used on {pokemon.GetType().Name}!");
             ConsoleUtils.ClearScreen();
         }
 
-        public static void ShowPlayerCantUseItemOnPokemon()
+        public static void ShowItemCannotBeUsed()
         {
-            Console.WriteLine("You can't use the selected item on this Pokemon!");
-            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.ShowMessageAndWaitTwoSeconds("The selected item cannot be used on the Pokemon!");
             ConsoleUtils.ClearScreen();
         }
-
-        public static void ShowPlayerItemIsNotAvailable()
-        {
-            Console.WriteLine("The selected item is not available!");
-            ConsoleUtils.WaitTwoSeconds();
-            ConsoleUtils.ClearScreen();
-        }
-
         #endregion
     }
 }
