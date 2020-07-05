@@ -12,9 +12,7 @@ namespace PokemonAdventureGame.Trainers
     public class Blue : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
-
         public IPokemon RewardPokemonForWinning => PokemonFactory.CreatePokemon<Dragonite>();
-
         public Dictionary<string, List<IItem>> Items { get; set; }
 
         public void InitializeTrainer()
