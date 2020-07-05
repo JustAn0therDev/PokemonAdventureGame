@@ -15,6 +15,14 @@ namespace PokemonAdventureGame.Trainers
 
         public IPokemon RewardPokemonForWinning => PokemonFactory.CreatePokemon<Dragonite>();
 
+        public Dictionary<string, List<IItem>> Items { get; set; }
+
+        public void InitializeTrainer()
+        {
+            InitializeTrainerTeam();
+            InitializeTrainerItems();
+        }
+
         public void InitializeTrainerTeam()
         {
             PokemonTeam = new List<TrainerPokemon>
@@ -24,6 +32,8 @@ namespace PokemonAdventureGame.Trainers
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Exeggutor>())
             };
         }
+
+        public void InitializeTrainerItems() { }
 
         public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
 
@@ -38,6 +48,7 @@ namespace PokemonAdventureGame.Trainers
                     pkmn.Current = true;
             });
         }
+
         public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
 
         public IPokemon GetNextAvailablePokemon()

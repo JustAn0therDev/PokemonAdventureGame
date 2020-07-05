@@ -11,8 +11,14 @@ namespace PokemonAdventureGame.Trainers
     public class Red : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
-
         public IPokemon RewardPokemonForWinning => null;
+        public Dictionary<string, List<IItem>> Items { get; set; }
+
+        public void InitializeTrainer()
+        {
+            InitializeTrainerTeam();
+            InitializeTrainerItems();
+        }
 
         public void InitializeTrainerTeam()
         {
@@ -27,6 +33,8 @@ namespace PokemonAdventureGame.Trainers
             };
         }
 
+        public void InitializeTrainerItems() { }
+
         public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
@@ -40,6 +48,7 @@ namespace PokemonAdventureGame.Trainers
                     pkmn.Current = true;
             });
         }
+
         public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
 
         public IPokemon GetNextAvailablePokemon()

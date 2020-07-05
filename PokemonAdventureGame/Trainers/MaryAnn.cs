@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
-using System;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.Trainers
@@ -12,8 +12,14 @@ namespace PokemonAdventureGame.Trainers
     public class MaryAnn : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
-
         public IPokemon RewardPokemonForWinning => PokemonFactory.CreatePokemon<Lapras>();
+        public Dictionary<string, List<IItem>> Items { get; set; }
+
+        public void InitializeTrainer()
+        {
+            InitializeTrainerTeam();
+            InitializeTrainerItems();
+        }
 
         public void InitializeTrainerTeam()
         {
@@ -25,6 +31,8 @@ namespace PokemonAdventureGame.Trainers
                 new TrainerPokemon(PokemonFactory.CreatePokemon<Gengar>()),
             };
         }
+
+        public void InitializeTrainerItems() { }
 
         public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
 

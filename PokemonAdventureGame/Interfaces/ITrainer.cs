@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using PokemonAdventureGame.PokemonTeam;
 
 namespace PokemonAdventureGame.Interfaces
@@ -8,7 +6,9 @@ namespace PokemonAdventureGame.Interfaces
     public interface ITrainer
     {
         List<TrainerPokemon> PokemonTeam { get; set; }
+        void InitializeTrainer();
         void InitializeTrainerTeam();
+        void InitializeTrainerItems();
         IPokemon GetCurrentPokemon();
         void SetPokemonAsCurrent(IPokemon trainerPokemon);
         bool HasAvailablePokemon();
@@ -18,7 +18,6 @@ namespace PokemonAdventureGame.Interfaces
         void ShowFinalDialogueForVictory();
         void ShowFinalDialogueForLoss();
         IPokemon RewardPokemonForWinning { get; }
-
-        //void InitializeTrainerItems();
+        Dictionary<string, List<IItem>> Items { get; set; }
     }
 }
