@@ -12,9 +12,7 @@ namespace PokemonAdventureGame.Trainers
     public class Brock : ITrainer
     {
         public List<TrainerPokemon> PokemonTeam { get; set; }
-
         public IPokemon RewardPokemonForWinning => PokemonFactory.CreatePokemon<Pidgeot>();
-
         public Dictionary<string, List<IItem>> Items { get; set; }
 
         public void InitializeTrainer()
@@ -83,10 +81,8 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Wow, man, you are really tough!");
             Console.WriteLine("But by no means I'm the strongest trainer in the League.");
-            Console.WriteLine("So to help you in the next battle, I'll heal your pokemon and give you this: ");
-            ConsoleUtils.WaitFourSeconds();
+            Console.WriteLine("So to help you in the next battle, I'll heal your pokemon and give you something...");
 
-            Console.WriteLine("Good luck out there.");
             ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.ClearScreen();
         }
