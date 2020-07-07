@@ -34,13 +34,13 @@ namespace PokemonAdventureGame.BattleSystem
         {
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
-            UseItemDelegate endProgramDelegate = PromptPlayerToChooseItem;
+            UseItemDelegate chooseItemDelegate = PromptPlayerToChooseItem;
 
             _commands = new Dictionary<Command, Delegate>
             {
                 { Command.ATTACK, firstMethodForAttackDelegate },
                 { Command.SWITCH_POKEMON, switchPokemonDelegate },
-                { Command.ITEMS, endProgramDelegate }
+                { Command.ITEMS, chooseItemDelegate }
             };
         }
 
