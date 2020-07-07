@@ -19,17 +19,12 @@ namespace PokemonAdventureGame.Types
         {
             get
             {
-                ImmuneDelegate immuneDelegate = ImmuneDamageValue;
-                NeutralDamageDelegate neutralDamageDelegate = ApplyDamageFormulaToInitialDamage;
-                NotVeryEffectiveDamageDelegate notVeryEffectiveDamageDelegate = NotVeryEffectiveDamage;
-                SuperEffectiveDamageDelegate superEffectiveDamageDelegate = SuperEffectiveDamage;
-
                 return new Dictionary<TypeEffect, Delegate>
                 {
-                    { TypeEffect.IMMUNE, immuneDelegate },
-                    { TypeEffect.NEUTRAL, neutralDamageDelegate },
-                    { TypeEffect.NOT_VERY_EFFECTIVE, notVeryEffectiveDamageDelegate },
-                    { TypeEffect.SUPER_EFFECTIVE, superEffectiveDamageDelegate }
+                    { TypeEffect.IMMUNE, new ImmuneDelegate(ImmuneDamageValue) },
+                    { TypeEffect.NEUTRAL, new NeutralDamageDelegate(ApplyDamageFormulaToInitialDamage) },
+                    { TypeEffect.NOT_VERY_EFFECTIVE, new NotVeryEffectiveDamageDelegate(NotVeryEffectiveDamage) },
+                    { TypeEffect.SUPER_EFFECTIVE, new SuperEffectiveDamageDelegate(SuperEffectiveDamage) }
                 };
             }
         }
