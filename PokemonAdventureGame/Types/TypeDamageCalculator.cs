@@ -20,8 +20,6 @@ namespace PokemonAdventureGame.Types
         }
 
         private static decimal CalculateSTABModifier(IPokemon attackingPokemon, IMove move)
-            => attackingPokemon.Types.Contains(move.Type) ?
-            move.Damage * STAB_MODIFIER_WHEN_DAMAGE_IS_SUPER_EFFECTIVE :
-            move.Damage;
+            => attackingPokemon.Types.Contains(move.Type) ? move.Damage * STAB_MODIFIER_WHEN_DAMAGE_IS_SUPER_EFFECTIVE : move.Damage;
     }
 }
