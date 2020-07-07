@@ -4,6 +4,7 @@ using System.Linq;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.ParameterObjects.Types;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.Types;
 
@@ -154,6 +155,7 @@ namespace PokemonAdventureGame.BattleSystem
         private void ProcessAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
         {
             TypeEffect moveEffectOnPokemon = TypeComparer.GetMoveEffectivenessBasedOnPokemonType(move.Type, targetPokemon.Types.FirstOrDefault());
+
             int calculatedDamage = TypeDamageCalculator.CalculateDamage(attackingPokemon, targetPokemon, move, moveEffectOnPokemon);
 
             attackingPokemon.UseMove(move);
