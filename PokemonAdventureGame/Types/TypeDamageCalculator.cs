@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.ParameterObjects.Types;

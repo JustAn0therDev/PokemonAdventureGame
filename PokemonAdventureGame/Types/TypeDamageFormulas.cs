@@ -1,7 +1,7 @@
-﻿using PokemonAdventureGame.Enums;
-using PokemonAdventureGame.ParameterObjects.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PokemonAdventureGame.Enums;
+using PokemonAdventureGame.ParameterObjects.Types;
 
 namespace PokemonAdventureGame.Types
 {
