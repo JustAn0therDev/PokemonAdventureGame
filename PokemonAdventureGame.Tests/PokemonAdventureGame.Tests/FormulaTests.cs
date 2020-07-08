@@ -18,9 +18,9 @@ namespace PokemonAdventureGame.Tests
             TypeEffect effectOfTypeOnTargetPokemon = TypeComparer.CompareGrassType(targetPokemon.Types[0]);
 
             int totalDamage = TypeDamageCalculator.CalculateDamage(
-                attackingPokemon, 
-                targetPokemon, 
-                attackingPokemon.Moves[3], 
+                attackingPokemon,
+                targetPokemon,
+                attackingPokemon.Moves[3],
                 effectOfTypeOnTargetPokemon
             );
 
@@ -36,12 +36,21 @@ namespace PokemonAdventureGame.Tests
             TypeEffect effectOfTypeOnTargetPokemon = TypeComparer.CompareGhostType(targetPokemon.Types[0]);
 
             int totalDamage = TypeDamageCalculator.CalculateDamage(
-                attackingPokemon, 
-                targetPokemon, 
-                attackingPokemon.Moves[2], 
+                attackingPokemon,
+                targetPokemon,
+                attackingPokemon.Moves[2],
                 effectOfTypeOnTargetPokemon
             );
-            
+
+            Assert.True(totalDamage >= 20 && totalDamage < 50);
+
+            totalDamage = TypeDamageCalculator.CalculateDamage(
+                attackingPokemon,
+                targetPokemon,
+                attackingPokemon.Moves[1],
+                effectOfTypeOnTargetPokemon
+            );
+
             Assert.True(totalDamage >= 20 && totalDamage < 50);
         }
 
@@ -57,6 +66,15 @@ namespace PokemonAdventureGame.Tests
                 attackingPokemon,
                 targetPokemon,
                 attackingPokemon.Moves[1],
+                effectOfTypeOnTargetPokemon
+            );
+
+            Assert.True(totalDamage <= 20);
+
+            totalDamage = TypeDamageCalculator.CalculateDamage(
+                attackingPokemon,
+                targetPokemon,
+                attackingPokemon.Moves[2],
                 effectOfTypeOnTargetPokemon
             );
 
