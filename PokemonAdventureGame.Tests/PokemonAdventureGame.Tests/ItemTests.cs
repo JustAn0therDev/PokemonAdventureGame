@@ -35,7 +35,7 @@ namespace PokemonAdventureGame.Tests
 
         [Theory]
         [InlineData(20)]
-        [InlineData(10)]
+        [InlineData(30)]
         [InlineData(26)]
         public void ItemShouldHealPokemon(int damageTaken)
         {
@@ -43,8 +43,24 @@ namespace PokemonAdventureGame.Tests
             onix.CurrentHealthPoints -= damageTaken;
 
             bool pokemonIsEligibleForPotionUse = (bool)_player?.Items
-                .ElementAt(POTION_INDEX_IN_TRAINER_INVENTORY).Value[POTION_INDEX_IN_TRAINER_INVENTORY].TryToUseItemOnPokemon(onix);
+                .ElementAt(POTION_INDEX_IN_TRAINER_INVENTORY).Value[POTION_INDEX_IN_TRAINER_INVENTORY]
+                .TryToUseItemOnPokemon(onix);
             Assert.True(pokemonIsEligibleForPotionUse);
+        }
+
+        [Theory]
+        [InlineData(5)]
+        [InlineData(10)]
+        [InlineData(9)]
+        public void ItemShouldNotHealPokemonMoreThanItsHealthPointsProperty(int damageTaken)
+        {
+            IPokemon onix = PokemonFactory.CreatePokemon<Onix>();
+            onix.CurrentHealthPoints -= damageTaken;
+
+            _player?.Items
+                .ElementAt(POTION_INDEX_IN_TRAINER_INVENTORY).Value[POTION_INDEX_IN_TRAINER_INVENTORY]
+                .TryToUseItemOnPokemon(onix);
+            Assert.True(onix.CurrentHealthPoints == onix.HealthPoints);
         }
 
         [Fact]
@@ -53,7 +69,8 @@ namespace PokemonAdventureGame.Tests
             IPokemon onix = PokemonFactory.CreatePokemon<Onix>();
 
             bool pokemonIsEligibleForPotionUse = (bool)_player?.Items
-                .ElementAt(POTION_INDEX_IN_TRAINER_INVENTORY).Value[POTION_INDEX_IN_TRAINER_INVENTORY].TryToUseItemOnPokemon(onix);
+                .ElementAt(POTION_INDEX_IN_TRAINER_INVENTORY).Value[POTION_INDEX_IN_TRAINER_INVENTORY]
+                .TryToUseItemOnPokemon(onix);
             Assert.False(pokemonIsEligibleForPotionUse);
         }
     }
