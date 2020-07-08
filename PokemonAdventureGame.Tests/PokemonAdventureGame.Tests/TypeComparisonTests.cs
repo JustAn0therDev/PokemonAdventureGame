@@ -16,7 +16,7 @@ namespace PokemonAdventureGame.Tests
             IPokemon ghostTypePokemon = PokemonFactory.CreatePokemon<Gengar>();
             IMove move = new Tackle();
 
-            Assert.True(TypeComparer.PokemonTypeDoesNotMakeContactWithMove(ghostTypePokemon.Types, move));
+            Assert.True(TypeComparer.PokemonTypeDoesNotMakeContactWithMove(ghostTypePokemon?.Types, move));
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace PokemonAdventureGame.Tests
             IPokemon ghostTypePokemon = PokemonFactory.CreatePokemon<Gengar>();
             IMove move = new ShadowBall();
 
-            Assert.False(TypeComparer.PokemonTypeDoesNotMakeContactWithMove(ghostTypePokemon.Types, move));
+            Assert.False(TypeComparer.PokemonTypeDoesNotMakeContactWithMove(ghostTypePokemon?.Types, move));
         }
     }
 }

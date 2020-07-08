@@ -1,4 +1,6 @@
 ﻿using PokemonAdventureGame.Factories;
+using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.Trainers;
 using PokemonAdventureGame.Items;
 using System.Linq;
 using Xunit;
@@ -17,7 +19,14 @@ namespace PokemonAdventureGame.Tests
         public void ShouldReturnAListWithNonNullItems(int numberOfItemsToCreate)
         {
             var items = ItemFactory.CreateItems<Potion>(numberOfItemsToCreate);
-            Assert.Equal(numberOfItemsToCreate, items.Count());
+            Assert.Equal(numberOfItemsToCreate, items?.Count());
+        }
+
+        [Fact]
+        public void EnemyTrainerShouldNotHaveAnyItems()
+        {
+            ITrainer brock = TrainerFactory.CreateTrainer<Brock>();
+            Assert.True(brock?.Items == null);
         }
     }
 }
