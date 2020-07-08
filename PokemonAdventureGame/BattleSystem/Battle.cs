@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PokemonAdventureGame.BattleSystem.ConsoleUI;
+﻿using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
-using PokemonAdventureGame.ParameterObjects.Types;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PokemonAdventureGame.BattleSystem
 {
