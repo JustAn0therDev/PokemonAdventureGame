@@ -58,6 +58,8 @@ namespace PokemonAdventureGame.Tests
         {
             ITrainer player = TrainerFactory.CreateTrainer<Player>();
             Assert.Throws<NotImplementedException>(() => player?.ShowTrainerDialogue());
+            Assert.Throws<NotImplementedException>(() => player?.ShowFinalDialogueForLoss());
+            Assert.Throws<NotImplementedException>(() => player?.ShowFinalDialogueForVictory());
         }
     }
 }
