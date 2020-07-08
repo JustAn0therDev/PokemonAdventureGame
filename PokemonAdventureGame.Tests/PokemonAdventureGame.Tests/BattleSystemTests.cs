@@ -1,9 +1,8 @@
-﻿using PokemonAdventureGame.Interfaces;
+﻿using PokemonAdventureGame.BattleSystem;
 using PokemonAdventureGame.Factories;
-using System;
-using Xunit;
+using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Trainers;
-using PokemonAdventureGame.BattleSystem;
+using Xunit;
 
 namespace PokemonAdventureGame.Tests
 {
