@@ -76,7 +76,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("Congratulations on getting all the way here, trainer.");
             Console.WriteLine("You look strong and like someone who has faced a lot of tough battles.");
             Console.WriteLine("And with that said...");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("May you who have come to challenge me, fulfill my desire for a good battle!");
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
@@ -86,10 +86,10 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Congratulations! You beat me and you deserve every single moment of good feelings about yourself!");
             Console.WriteLine("Now, the league does not end here... You need to face a final challenge. Have this: ");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             Console.WriteLine("Watch out and think carefully about every. Single. Movement.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
             ConsoleUtils.ClearScreen();
         }
 
@@ -97,7 +97,7 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Hey, c'mon, I know you can do better than this!");
             ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get stronger.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
             ConsoleUtils.EndProgram();
         }
     }

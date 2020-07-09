@@ -73,7 +73,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("Hey, I'm Blue, former Pokemon League Champion. Since you got here, I hope you give me a good battle");
             Console.WriteLine("because the last trainers that got here were really disapointing...");
             Console.WriteLine("And you're ugly.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.TrainerAction<EnemyAction>("I hope you're ready to have your butt handed over to you.");
             ConsoleUtils.WaitTwoSeconds();
@@ -85,17 +85,17 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Ok, I'll admit it, you're the real deal.");
             Console.WriteLine("Have this Dragonite. Lance is really good, no wonder he is the Champion.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             Console.WriteLine("Good luck, you'll need it.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
             ConsoleUtils.ClearScreen();
         }
 
         public void ShowFinalDialogueForLoss()
         {
             ConsoleUtils.TrainerAction<EnemyAction>("Good-bye, joke.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
             ConsoleUtils.EndProgram();
         }
     }

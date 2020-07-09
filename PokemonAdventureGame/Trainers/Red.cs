@@ -75,14 +75,18 @@ namespace PokemonAdventureGame.Trainers
 
         public void ShowTrainerDialogue()
         {
-            ConsoleUtils.EnemyPhraseBeforeBattle("...");
+            RedsDialogue();
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
         }
 
-        public void ShowFinalDialogueForVictory()
-            => ConsoleUtils.TrainerAction<EnemyAction>("...");
+        public void ShowFinalDialogueForVictory() => RedsDialogue();
 
-        public void ShowFinalDialogueForLoss()
-            => ConsoleUtils.TrainerAction<EnemyAction>("...");
+        public void ShowFinalDialogueForLoss() => RedsDialogue();
+
+        private void RedsDialogue()
+        {
+            ConsoleUtils.TrainerAction<EnemyAction>("...");
+            ConsoleUtils.WaitFourSeconds();
+        }
     }
 }

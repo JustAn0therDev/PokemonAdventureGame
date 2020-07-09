@@ -78,7 +78,7 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Hello, trainer, and welcome to the new Pokemon League.");
             Console.WriteLine("It takes a lot of courage to be here, and you must keep going strong to face the challenges up ahead.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("Do you think you can handle me and my Pokemon?");
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
@@ -88,10 +88,10 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("You are really good! I like your energy and the way you treat your Pokemon");
             Console.WriteLine("And keep that in mind when entering the next room. You will need that energy.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             Console.WriteLine("Take care out there, kid");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
             ConsoleUtils.ClearScreen();
         }
 
@@ -100,7 +100,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("HAHAHA! You are really good, kid.");
             Console.WriteLine("But I'm WAY STRONGER");
             ConsoleUtils.TrainerAction<EnemyAction>("Come back when you get tougher!!");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
         }
     }
 }
