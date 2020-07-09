@@ -71,7 +71,7 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Hey, welcome to the All-Stars Pokemon League!");
             Console.WriteLine("My name's Brock. I'm the pewter city's gym leader, and your first challenge.");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("I hope you give me a good challenge and we both have a lot of fun.");
             ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
@@ -83,7 +83,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("But by no means I'm the strongest trainer in the League.");
             Console.WriteLine("So to help you in the next battle, I'll heal your pokemon and give you something...");
 
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
             ConsoleUtils.ClearScreen();
         }
 
@@ -93,7 +93,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("Anytime you want to come back to battle, we'll be here.");
 
             ConsoleUtils.TrainerAction<EnemyAction>("Good-bye!");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitFiveSeconds();
         }
     }
 }

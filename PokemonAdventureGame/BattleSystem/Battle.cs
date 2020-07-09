@@ -9,12 +9,11 @@ using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    delegate bool PokemonAttackDelegate();
-    delegate bool SwitchPokemonDelegate();
-    delegate bool UseItemDelegate();
-
     public class Battle : IDisposable
     {
+        private delegate bool PokemonAttackDelegate();
+        private delegate bool SwitchPokemonDelegate();
+        private delegate bool UseItemDelegate();
 
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
         private ITrainer _player { get; set; }
