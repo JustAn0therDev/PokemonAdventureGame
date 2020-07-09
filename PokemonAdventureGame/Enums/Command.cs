@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PokemonAdventureGame.Enums
+﻿namespace PokemonAdventureGame.Enums
 {
     public enum Command
     {

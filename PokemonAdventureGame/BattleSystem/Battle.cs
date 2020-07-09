@@ -1,11 +1,11 @@
-﻿using PokemonAdventureGame.BattleSystem.ConsoleUI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PokemonAdventureGame.BattleSystem
 {
@@ -116,10 +116,6 @@ namespace PokemonAdventureGame.BattleSystem
             int chosenMove = _battleAux.KeepPlayerChoosingMove(LIMIT_OF_MOVES_PER_POKEMON);
             PokemonAttack(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon(), chosenMove);
 
-            //The battle has to keep going and pass the next movement to the enemy trainer if the command
-            //was just an attack.
-            //If something happens that the Enemy Trainer should send another pokemon,
-            //subsequent methods will handle those.
             return keepBattleGoing;
         }
 
@@ -127,8 +123,11 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            if (MoveDoesNotHavePowerPointsLeft(move))
+            if (ConsoleBattleInfo.MoveDoesNotHavePowerPointsLeft(move))
+            {
+                PromptTrainerForPokemonMove();
                 return;
+            }
 
             ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
@@ -137,18 +136,7 @@ namespace PokemonAdventureGame.BattleSystem
             else
                 ProcessAttack(attackingPokemon, targetPokemon, move);
 
-            ConsoleBattleInfo.Clear();
-        }
-
-        private bool MoveDoesNotHavePowerPointsLeft(IMove move)
-        {
-            if (move.CurrentPowerPoints == 0)
-            {
-                ConsoleBattleInfo.MovementIsOutOfPowerPoints();
-                PromptTrainerForPokemonMove();
-                return true;
-            }
-            return false;
+            ConsoleUtils.ClearScreen();
         }
 
         private void ProcessAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
@@ -165,7 +153,7 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 targetPokemon.ReceiveDamage(calculatedDamage);
                 ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, calculatedDamage);
-                ConsoleBattleInfo.ShowHowEffectiveTheMoveWas(moveEffectOnPokemon, targetPokemon);
+                ConsoleBattleInfo.ShowHowEffectiveTheMoveWas(moveEffectOnPokemon);
             }
         }
 
