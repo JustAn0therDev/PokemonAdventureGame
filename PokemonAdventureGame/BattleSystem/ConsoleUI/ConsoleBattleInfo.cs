@@ -21,8 +21,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                 _playerMovement.PlayerChangesPokemon(pokemon);
         }
 
-        public static void Clear() => ConsoleUtils.ClearScreen();
-
         public static void EnemyTrainerWantsToBattle(ITrainer enemyTrainer)
         {
             Console.WriteLine($"{enemyTrainer.GetType().Name} wants to battle!");
@@ -59,7 +57,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)
         {
             ConsoleUtils.ShowMessageBetweenEmptyLines("Choose your attack!");
-
             for (int i = 0; i < pokemon.Moves.Count; i++)
                 Console.WriteLine($"{i}: {pokemon.Moves[i].GetType().Name} | PP: {pokemon.Moves[i].CurrentPowerPoints}");
         }
@@ -72,13 +69,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                 Console.WriteLine($"{i}: {player.Items.ElementAt(i).Key} - Remaining: {player.Items.ElementAt(i).Value.Count}");
         }
 
-        public static int GetPlayerChosenIndex(string userInput)
-        {
-            ConsoleUtils.ClearScreen();
-            return int.TryParse(userInput, out int chosenIndex) ? chosenIndex : -1;
-        }
-
-        public static void ShowTrainerWins(ITrainer trainer) 
+        public static void ShowTrainerWins(ITrainer trainer)
             => ConsoleUtils.ShowMessageBetweenEmptyLines($"{trainer.GetType().Name} wins!");
 
         public static void TrainerHasNoPokemonLeft(ITrainer trainer)
@@ -87,25 +78,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ShowMessageBetweenEmptyLines($"{trainer.GetType().Name} has no other pokemon left to battle...");
         }
 
-        public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect, IPokemon pokemon)
-        {
-            string messageForTypeEffect = string.Empty;
-            switch (typeEffect)
-            {
-                case TypeEffect.IMMUNE:
-                    messageForTypeEffect = $"It didn't affect {pokemon.GetType().Name}!";
-                    break;
-                case TypeEffect.NOT_VERY_EFFECTIVE:
-                    messageForTypeEffect = "It's not very effective...";
-                    break;
-                case TypeEffect.SUPER_EFFECTIVE:
-                    messageForTypeEffect = "It's super effective!";
-                    break;
-            }
-            ConsoleUtils.ShowMessageAndWaitOneSecond(messageForTypeEffect);
-        }
-
-        public static void MovementIsOutOfPowerPoints() => Console.WriteLine("The chosen move is out of Power Points!");
+        public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect) => ConsoleBattleInfoTypes.ShowHowEffectiveTheMoveWas(typeEffect);
 
         public static void ShowAllTrainersPokemon(ITrainer trainer)
         {
@@ -125,53 +98,23 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ClearScreen();
         }
 
-        public static void ShowInflictedStatuses(IPokemon targetPokemon, StatusMove[] statusMoves)
-        {
-            for (int i = 0; i < statusMoves.Length; i++)
-            {
-                switch (statusMoves[i])
-                {
-                    case StatusMove.ATTACK_UP:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s attack went up!");
-                        break;
-                    case StatusMove.ATTACK_DOWN:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s attack went down!");
-                        break;
-                    case StatusMove.DEFENSE_UP:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s defense went up!");
-                        break;
-                    case StatusMove.DEFENSE_DOWN:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s defense went down!");
-                        break;
-                    case StatusMove.SPECIALATTACK_UP:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special attack went up!");
-                        break;
-                    case StatusMove.SPECIALATTACK_DOWN:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special attack went down!");
-                        break;
-                    case StatusMove.SPECIALDEFENSE_UP:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special defense went up!");
-                        break;
-                    case StatusMove.SPECIALDEFENSE_DOWN:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s special defense went down!");
-                        break;
-                    case StatusMove.SPEED_UP:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s speed went up!");
-                        break;
-                    case StatusMove.SPEED_DOWN:
-                        Console.WriteLine($"{targetPokemon.GetType().Name}'s speed went down!");
-                        break;
-                    default:
-                        break;
-                }
-                ConsoleUtils.WaitTwoSeconds();
-            }
-        }
+        public static void ShowInflictedStatuses(IPokemon targetPokemon, StatusMove[] statusMoves) => ConsoleBattleInfoStatuses.ShowInflictedStatuses(targetPokemon, statusMoves);
 
         public static void ShowChosenPokemonIsAlreadyInBattle()
         {
             ConsoleUtils.ShowMessageAndWaitOneSecond("The chosen pokemon is already in battle!");
             ConsoleUtils.ClearScreen();
+        }
+
+        public static bool MoveDoesNotHavePowerPointsLeft(IMove move)
+        {
+            if (move.CurrentPowerPoints == 0)
+            {
+                Console.WriteLine("The chosen move is out of Power Points!");
+                return true;
+            }
+
+            return false;
         }
 
         #region Items 

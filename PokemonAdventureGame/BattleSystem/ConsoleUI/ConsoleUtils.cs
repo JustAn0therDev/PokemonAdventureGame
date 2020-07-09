@@ -10,8 +10,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public readonly static int FOUR_SECONDS_IN_MILISSECONDS = 4000;
         public readonly static int FIVE_SECONDS_IN_MILISSECONDS = 5000;
 
-        public static void ResetConsoleColors()
-            => Console.ResetColor();
+        public static void ResetConsoleColors() => Console.ResetColor();
         public static void WaitOneSecond() => Thread.Sleep(ONE_SECOND_IN_MILISSECONDS);
         public static void WaitTwoSeconds() => Thread.Sleep(TWO_SECONDS_IN_MILISSECONDS);
         public static void WaitFourSeconds() => Thread.Sleep(FOUR_SECONDS_IN_MILISSECONDS);
@@ -52,6 +51,12 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         {
             Console.WriteLine(message);
             WaitTwoSeconds();
+        }
+
+        public static int GetPlayerChosenIndex(string userInput)
+        {
+            ClearScreen();
+            return int.TryParse(userInput, out int chosenIndex) ? chosenIndex : -1;
         }
     }
 }

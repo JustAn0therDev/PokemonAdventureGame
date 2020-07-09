@@ -15,7 +15,7 @@ namespace PokemonAdventureGame.Types
         private readonly static decimal SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50M;
         private readonly static decimal NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35M;
 
-        public static Dictionary<TypeEffect, Delegate> DictionaryOfFormulas
+        public static IReadOnlyDictionary<TypeEffect, Delegate> DictionaryOfFormulas
         {
             get
             {
