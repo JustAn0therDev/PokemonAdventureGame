@@ -79,7 +79,7 @@ namespace PokemonAdventureGame.Trainers
             ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("May you who have come to challenge me, fulfill my desire for a good battle!");
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+            ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
         }
 
         public void ShowFinalDialogueForVictory()

@@ -33,9 +33,9 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void TrainerDrawsbackPokemon(IPokemon pokemon, EnemyAction enemyAction, PlayerAction playerAction, bool isEnemyTrainer = false)
         {
             if (isEnemyTrainer)
-                enemyAction.EnemyTrainerChangesPokemon(pokemon);
+                enemyAction.EnemyTrainerDrawsbackPokemon(pokemon);
             else
-                playerAction.PlayerChangesPokemon(pokemon);
+                playerAction.PlayerDrawsbackPokemon(pokemon);
         }
 
         public static void EnemyTrainerWantsToBattle(ITrainer enemyTrainer)
@@ -44,5 +44,8 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.ClearScreen();
         }
+
+        public static void ShowTrainerWins(ITrainer trainer)
+           => ConsoleUtils.ShowMessageBetweenEmptyLines($"{trainer.GetType().Name} wins!");
     }
 }

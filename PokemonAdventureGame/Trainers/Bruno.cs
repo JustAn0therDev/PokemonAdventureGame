@@ -81,7 +81,7 @@ namespace PokemonAdventureGame.Trainers
             ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("Do you think you can handle me and my Pokemon?");
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+            ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
         }
 
         public void ShowFinalDialogueForVictory()

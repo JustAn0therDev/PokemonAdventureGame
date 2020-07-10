@@ -74,7 +74,7 @@ namespace PokemonAdventureGame.Trainers
             ConsoleUtils.WaitFiveSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("I hope you give me a good challenge and we both have a lot of fun.");
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+            ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
         }
 
         public void ShowFinalDialogueForVictory()

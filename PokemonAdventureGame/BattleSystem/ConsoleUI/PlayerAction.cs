@@ -12,7 +12,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ClearScreen();
         }
 
-        public void PlayerChangesPokemon(IPokemon pokemon)
+        public void PlayerDrawsbackPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.TrainerAction<PlayerAction>($"{pokemon.GetType().Name}, come back!");

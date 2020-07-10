@@ -76,7 +76,7 @@ namespace PokemonAdventureGame.Trainers
 
             ConsoleUtils.EnemyPhraseBeforeBattle("Are you ready to take a beating?");
             ConsoleUtils.EnemyPhraseBeforeBattle("By the way, have you seen my cat?");
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+            ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
         }
 
         public void ShowFinalDialogueForVictory()

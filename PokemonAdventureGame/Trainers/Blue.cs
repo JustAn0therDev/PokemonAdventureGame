@@ -78,7 +78,7 @@ namespace PokemonAdventureGame.Trainers
             ConsoleUtils.TrainerAction<EnemyAction>("I hope you're ready to have your butt handed over to you.");
             ConsoleUtils.WaitTwoSeconds();
             ConsoleUtils.ClearScreen();
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+            ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
         }
 
         public void ShowFinalDialogueForVictory()

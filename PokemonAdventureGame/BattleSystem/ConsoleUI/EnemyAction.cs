@@ -12,7 +12,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ResetConsoleColors();
         }
 
-        public void EnemyTrainerChangesPokemon(IPokemon pokemon)
+        public void EnemyTrainerDrawsbackPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.TrainerAction<EnemyAction>($"{pokemon.GetType().Name}, come back!");

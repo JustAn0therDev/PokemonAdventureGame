@@ -11,21 +11,29 @@ namespace PokemonAdventureGame.BattleSystem
 {
     public class Battle : IDisposable
     {
+        #region Private Properties
+
         private delegate bool PokemonAttackDelegate();
         private delegate bool SwitchPokemonDelegate();
         private delegate bool UseItemDelegate();
 
+        private PlayerAction _playerAction = new PlayerAction();
+        private EnemyAction _enemyAction = new EnemyAction();
+
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
+
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
         private BattleAux _battleAux { get; set; }
         private Dictionary<Command, Delegate> _commands { get; set; }
 
+        #endregion
+
         public Battle(ITrainer player, ITrainer enemyTrainer)
         {
             _player = player;
             _enemyTrainer = enemyTrainer;
-            _battleAux = new BattleAux(player, enemyTrainer);
+            _battleAux = new BattleAux(player, enemyTrainer, _enemyAction, _playerAction);
             InitializeCommandDictionary();
         }
 
@@ -54,8 +62,8 @@ namespace PokemonAdventureGame.BattleSystem
             _player.SetPokemonAsCurrent(_player.GetNextAvailablePokemon());
             _enemyTrainer.SetPokemonAsCurrent(_enemyTrainer.GetNextAvailablePokemon());
 
-            ConsoleBattleInfo.EnemyTrainerSendsPokemon(_enemyTrainer);
-            ConsoleBattleInfo.PlayerSendsPokemon(_player.GetCurrentPokemon());
+            _enemyAction.EnemyTrainerSendsPokemon(_enemyTrainer);
+            _playerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
         private bool KeepBattleGoingWhileBothPlayersHavePokemonLeft()
@@ -74,7 +82,7 @@ namespace PokemonAdventureGame.BattleSystem
                 }
                 else
                 {
-                    ConsoleBattleInfo.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
+                    ConsoleBattleInfoPokemon.ShowBothPokemonStats(_player.GetCurrentPokemon(), _enemyTrainer.GetCurrentPokemon());
                     keepBattleGoing = PlayerMove();
                 }
 
@@ -122,13 +130,13 @@ namespace PokemonAdventureGame.BattleSystem
         {
             IMove move = attackingPokemon.Moves[chosenMove];
 
-            if (ConsoleBattleInfo.MoveDoesNotHavePowerPointsLeft(move))
+            if (ConsoleBattleInfoMove.MoveDoesNotHavePowerPointsLeft(move))
             {
                 PromptTrainerForPokemonMove();
                 return;
             }
 
-            ConsoleBattleInfo.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
+            ConsoleBattleInfoPokemon.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
             if (TypeComparer.PokemonTypeDoesNotMakeContactWithMove(targetPokemon.Types, move))
                 ConsoleUtils.ShowMessageAndWaitOneSecond($"It didn't affect {targetPokemon.GetType().Name}!");
@@ -151,8 +159,8 @@ namespace PokemonAdventureGame.BattleSystem
             else
             {
                 targetPokemon.ReceiveDamage(calculatedDamage);
-                ConsoleBattleInfo.ShowPokemonReceivedDamage(targetPokemon, calculatedDamage);
-                ConsoleBattleInfo.ShowHowEffectiveTheMoveWas(moveEffectOnPokemon);
+                ConsoleBattleInfoPokemon.ShowPokemonReceivedDamage(targetPokemon, calculatedDamage);
+                ConsoleBattleInfoTypes.ShowHowEffectiveTheMoveWas(moveEffectOnPokemon);
             }
         }
 
@@ -163,7 +171,7 @@ namespace PokemonAdventureGame.BattleSystem
 
             if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
-                ConsoleBattleInfo.ShowPlayerThereAreNoPokemonLeftToSwitch();
+                ConsoleBattleInfoTrainer.ShowPlayerThereAreNoPokemonLeftToSwitch();
                 return keepBattleGoingAfterPokemonSelection;
             }
 
@@ -181,14 +189,14 @@ namespace PokemonAdventureGame.BattleSystem
 
             if (pokemon.Fainted)
             {
-                ConsoleBattleInfo.ShowChosenPokemonIsNotAvailable();
+                ConsoleBattleInfoPokemon.ShowChosenPokemonIsNotAvailable();
                 PlayerMove();
                 return;
             }
 
             if (pokemon.Current)
             {
-                ConsoleBattleInfo.ShowChosenPokemonIsAlreadyInBattle();
+                ConsoleBattleInfoPokemon.ShowChosenPokemonIsAlreadyInBattle();
                 PlayerMove();
                 return;
             }
@@ -212,12 +220,12 @@ namespace PokemonAdventureGame.BattleSystem
             bool itemWasSuccessfullyUsed = false;
             if (chosenItem != null && chosenItem.TryToUseItemOnPokemon(chosenPokemon))
             {
-                ConsoleBattleInfo.ShowItemWasUsedOnPokemon(chosenItem, chosenPokemon);
+                ConsoleBattleInfoItems.ShowItemWasUsedOnPokemon(chosenItem, chosenPokemon);
                 _player.Items.ElementAt(chosenStackedItemsIndex).Value.Remove(chosenItem);
                 itemWasSuccessfullyUsed = true;
             }
             else
-                ConsoleBattleInfo.ShowItemCannotBeUsed();
+                ConsoleBattleInfoItems.ShowItemCannotBeUsed();
 
             return itemWasSuccessfullyUsed;
         }
@@ -245,6 +253,8 @@ namespace PokemonAdventureGame.BattleSystem
         {
             _player = null;
             _enemyTrainer = null;
+            _playerAction = null;
+            _enemyAction = null;
             _battleAux = null;
             _commands = null;
         }

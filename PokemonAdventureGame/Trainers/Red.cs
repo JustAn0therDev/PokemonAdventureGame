@@ -76,7 +76,7 @@ namespace PokemonAdventureGame.Trainers
         public void ShowTrainerDialogue()
         {
             RedsDialogue();
-            ConsoleBattleInfo.EnemyTrainerWantsToBattle(this);
+            ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
         }
 
         public void ShowFinalDialogueForVictory() => RedsDialogue();
