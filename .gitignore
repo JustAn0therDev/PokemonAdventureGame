@@ -360,4 +360,5 @@ MigrationBackup/
 *.swp
 
 # VSCode folder
-/.vscode
+.vscode/
+PokemonAdventureGame/.vscode/
