@@ -358,3 +358,6 @@ MigrationBackup/
 
 # For VIM swap files
 *.swp
+
+# VSCode folder
+/.vscode
