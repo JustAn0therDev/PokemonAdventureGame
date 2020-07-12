@@ -16,12 +16,9 @@ namespace PokemonAdventureGame.BattleSystem
         private delegate bool PokemonAttackDelegate();
         private delegate bool SwitchPokemonDelegate();
         private delegate bool UseItemDelegate();
-
         private PlayerAction _playerAction = new PlayerAction();
         private EnemyAction _enemyAction = new EnemyAction();
-
         private const int LIMIT_OF_MOVES_PER_POKEMON = 4;
-
         private ITrainer _player { get; set; }
         private ITrainer _enemyTrainer { get; set; }
         private BattleAux _battleAux { get; set; }
@@ -73,12 +70,15 @@ namespace PokemonAdventureGame.BattleSystem
             {
                 bool keepBattleGoing = false, isChangingToNextAvailablePokemon = false;
 
-                if (_player.GetCurrentPokemon().CurrentHealthPoints == 0 && _enemyTrainer.HasAvailablePokemon())
+                if (_player.GetCurrentPokemon().CurrentHealthPoints <= 0 && _enemyTrainer.HasAvailablePokemon())
                 {
                     if (_battleAux.CannotSendNextAvailablePokemon(_player))
                         break;
                     else
+                    {
+                        PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
                         isChangingToNextAvailablePokemon = true;
+                    }
                 }
                 else
                 {
@@ -88,10 +88,12 @@ namespace PokemonAdventureGame.BattleSystem
 
                 if (keepBattleGoing && !isChangingToNextAvailablePokemon)
                 {
-                    if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints == 0 && _player.HasAvailablePokemon())
+                    if (_enemyTrainer.GetCurrentPokemon().CurrentHealthPoints <= 0 && _player.HasAvailablePokemon())
                     {
                         if (_battleAux.CannotSendNextAvailablePokemon(_enemyTrainer, true))
                             break;
+                        else
+                            PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
                     }
                     else
                         EnemyMove();
@@ -167,7 +169,6 @@ namespace PokemonAdventureGame.BattleSystem
         private bool PromptPlayerToSelectPokemon()
         {
             bool keepBattleGoingAfterPokemonSelection = false;
-            int chosenPokemon = -1;
 
             if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
@@ -175,17 +176,20 @@ namespace PokemonAdventureGame.BattleSystem
                 return keepBattleGoingAfterPokemonSelection;
             }
 
-            chosenPokemon = _battleAux.KeepPlayerChoosingPokemonIndex();
+            int chosenPokemonIndex = _battleAux.KeepPlayerChoosingPokemonIndex();
 
-            SwitchCurrentPokemon(chosenPokemon);
+            SwitchCurrentPokemon(chosenPokemonIndex);
             keepBattleGoingAfterPokemonSelection = true;
 
             return keepBattleGoingAfterPokemonSelection;
         }
 
-        private void SwitchCurrentPokemon(int chosenPokemon)
+        private void SwitchCurrentPokemon(int chosenPokemon, bool isChangingAfterAnotherPokemonFainted = false)
         {
             TrainerPokemon pokemon = _player.PokemonTeam[chosenPokemon];
+
+            if (pokemon.Current && isChangingAfterAnotherPokemonFainted)
+                return;
 
             if (pokemon.Fainted)
             {
@@ -228,6 +232,17 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfoItems.ShowItemCannotBeUsed();
 
             return itemWasSuccessfullyUsed;
+        }
+
+        private void PromptPlayerToSelectPokemonAfterAnotherPokemonFainted()
+        {
+            if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
+                return;
+
+            ConsoleUtils.ShowMessageBetweenEmptyLines("Which pokemon will you choose?");
+            int chosenPokemonIndex = _battleAux.KeepPlayerChoosingPokemonIndex();
+
+            SwitchCurrentPokemon(chosenPokemonIndex, true);
         }
 
         #endregion

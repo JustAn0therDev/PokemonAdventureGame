@@ -15,7 +15,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public void EnemyTrainerDrawsbackPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
-            ConsoleUtils.TrainerAction<EnemyAction>($"{pokemon.GetType().Name}, come back!");
+            ConsoleUtils.TrainerAction<EnemyAction>($"{pokemon?.GetType().Name}, come back!");
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
         }
