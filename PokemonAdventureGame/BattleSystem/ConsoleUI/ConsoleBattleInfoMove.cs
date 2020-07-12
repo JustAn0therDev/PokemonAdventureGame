@@ -1,7 +1,5 @@
-﻿using PokemonAdventureGame.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {

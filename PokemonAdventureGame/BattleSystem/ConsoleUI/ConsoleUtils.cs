@@ -9,7 +9,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public readonly static int TWO_SECONDS_IN_MILISSECONDS = 2000;
         public readonly static int FOUR_SECONDS_IN_MILISSECONDS = 4000;
         public readonly static int FIVE_SECONDS_IN_MILISSECONDS = 5000;
-
+        
         public static void ResetConsoleColors() => Console.ResetColor();
         public static void WaitOneSecond() => Thread.Sleep(ONE_SECOND_IN_MILISSECONDS);
         public static void WaitTwoSeconds() => Thread.Sleep(TWO_SECONDS_IN_MILISSECONDS);
