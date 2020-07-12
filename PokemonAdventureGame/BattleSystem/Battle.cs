@@ -75,7 +75,10 @@ namespace PokemonAdventureGame.BattleSystem
                     if (PromptPlayerToSelectPokemonAfterAnotherPokemonFainted())
                         break;
                     else
+                    {
+                        PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
                         isChangingToNextAvailablePokemon = true;
+                    }
                 }
                 else
                 {

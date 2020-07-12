@@ -24,7 +24,8 @@ namespace PokemonAdventureGame.Trainers
         {
             PokemonTeam = new List<TrainerPokemon>
             {
-                new TrainerPokemon(PokemonFactory.CreatePokemon<Venusaur>())
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Venusaur>()),
+                new TrainerPokemon(PokemonFactory.CreatePokemon<Gengar>())
             };
         }
 
