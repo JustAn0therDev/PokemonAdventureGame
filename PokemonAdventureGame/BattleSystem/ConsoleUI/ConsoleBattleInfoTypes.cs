@@ -1,5 +1,5 @@
-﻿using PokemonAdventureGame.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PokemonAdventureGame.Enums;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
