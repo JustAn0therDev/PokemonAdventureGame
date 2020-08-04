@@ -9,9 +9,9 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
     {
         public static void ShowAvailableCommandsOnConsole()
         {
-            Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK.ToString()}");
+            Console.WriteLine($"{(int)Command.ATTACK}: {Command.ATTACK}");
             Console.WriteLine($"{(int)Command.SWITCH_POKEMON}: {Command.SWITCH_POKEMON.ToString().Replace("_", " ")}");
-            Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS.ToString()}");
+            Console.WriteLine($"{(int)Command.ITEMS}: {Command.ITEMS}");
         }
 
         public static void WriteAllAvailableAttacksOnConsole(IPokemon pokemon)

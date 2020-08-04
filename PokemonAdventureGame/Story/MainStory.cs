@@ -151,7 +151,7 @@ namespace PokemonAdventureGame.Story
         private void ShowTrainerDialogueToStartBattle()
         {
             _enemyTrainer.ShowTrainerDialogue();
-            using var battle = new Battle(_player, _enemyTrainer);
+            Battle battle = new Battle(_player, _enemyTrainer);
             _playerWonBattle = battle.StartBattle();
         }
 

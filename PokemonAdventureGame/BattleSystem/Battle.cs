@@ -9,7 +9,7 @@ using PokemonAdventureGame.Types;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    public class Battle : IDisposable
+    public class Battle
     {
         #region Private Properties
 
@@ -72,13 +72,8 @@ namespace PokemonAdventureGame.BattleSystem
 
                 if (_player.GetCurrentPokemon().CurrentHealthPoints <= 0 && _enemyTrainer.HasAvailablePokemon())
                 {
-                    if (PromptPlayerToSelectPokemonAfterAnotherPokemonFainted())
-                        break;
-                    else
-                    {
-                        PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
-                        isChangingToNextAvailablePokemon = true;
-                    }
+                    PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
+                    isChangingToNextAvailablePokemon = true;
                 }
                 else
                 {
@@ -188,7 +183,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             TrainerPokemon pokemon = _player.PokemonTeam[chosenPokemon];
 
-            if (pokemon.Current && isChangingAfterAnotherPokemonFainted)
+            if (pokemon == null || (pokemon.Current && isChangingAfterAnotherPokemonFainted))
                 return;
 
             if (pokemon.Fainted)
@@ -234,21 +229,15 @@ namespace PokemonAdventureGame.BattleSystem
             return itemWasSuccessfullyUsed;
         }
 
-        private bool PromptPlayerToSelectPokemonAfterAnotherPokemonFainted()
+        private void PromptPlayerToSelectPokemonAfterAnotherPokemonFainted()
         {
-            bool isNotChangingTheCurrentPokemon = false;
-            if (_player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1) 
+            if (_player.PokemonTeam.Count > 1 && _player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
             {
-                isNotChangingTheCurrentPokemon = true;
-                return isNotChangingTheCurrentPokemon;
+                ConsoleUtils.ShowMessageBetweenEmptyLines("Which pokemon will you choose?");
+                int chosenPokemonIndex = _battleAux.KeepPlayerChoosingPokemonIndex();
+
+                SwitchCurrentPokemon(chosenPokemonIndex, true);
             }
-
-            ConsoleUtils.ShowMessageBetweenEmptyLines("Which pokemon will you choose?");
-            int chosenPokemonIndex = _battleAux.KeepPlayerChoosingPokemonIndex();
-
-            SwitchCurrentPokemon(chosenPokemonIndex, true);
-
-            return isNotChangingTheCurrentPokemon;
         }
 
         #endregion
@@ -258,28 +247,5 @@ namespace PokemonAdventureGame.BattleSystem
             IPokemon enemyPokemon = _enemyTrainer.GetCurrentPokemon();
             PokemonAttack(enemyPokemon, _player.GetCurrentPokemon(), new Random().Next(0, enemyPokemon.Moves.Count));
         }
-
-        #region Dispose Methods and Memory Management
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-                return;
-
-            Dispose();
-            GC.SuppressFinalize(this);
-        }
-
-        public void Dispose()
-        {
-            _player = null;
-            _enemyTrainer = null;
-            _playerAction = null;
-            _enemyAction = null;
-            _battleAux = null;
-            _commands = null;
-        }
-
-        #endregion
     }
 }

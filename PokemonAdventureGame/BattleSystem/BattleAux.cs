@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
@@ -104,13 +105,21 @@ namespace PokemonAdventureGame.BattleSystem
         public int KeepPlayerChoosingPokemonIndex()
         {
             int chosenPokemonIndex = -1;
-            while (chosenPokemonIndex == -1 || chosenPokemonIndex > _player.PokemonTeam.Count)
+            while (chosenPokemonIndex <= -1 || IsNotValidIndexForPlayerPokemonTeam(chosenPokemonIndex))
             {
                 ConsoleBattleInfoTrainer.ShowAllTrainersPokemon(_player);
                 chosenPokemonIndex = ConsoleUtils.GetPlayerChosenIndex(Console.ReadLine());
             }
 
             return chosenPokemonIndex;
+        }
+
+        private bool IsNotValidIndexForPlayerPokemonTeam(int trainerPokemonIndex)
+        {
+            try
+            {
+                return _player.PokemonTeam[trainerPokemonIndex] == null;
+            } catch { return true; }
         }
 
         public void DrawbackThenSendPokemon(int chosenPokemon)
