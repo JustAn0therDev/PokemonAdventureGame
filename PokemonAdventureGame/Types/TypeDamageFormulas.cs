@@ -6,9 +6,9 @@ using PokemonAdventureGame.ParameterObjects.Types;
 namespace PokemonAdventureGame.Types
 {
     delegate decimal ImmuneDelegate();
-    delegate decimal NeutralDamageDelegate(InitialDamageParameter initialDamageParameter);
-    delegate decimal NotVeryEffectiveDamageDelegate(InitialDamageParameter initialDamageParameter);
-    delegate decimal SuperEffectiveDamageDelegate(InitialDamageParameter initialDamageParameter);
+    delegate decimal NeutralDamageDelegate(in InitialDamageParameter initialDamageParameter);
+    delegate decimal NotVeryEffectiveDamageDelegate(ref InitialDamageParameter initialDamageParameter);
+    delegate decimal SuperEffectiveDamageDelegate(ref InitialDamageParameter initialDamageParameter);
 
     public static class TypeDamageFormulas
     {
@@ -31,19 +31,19 @@ namespace PokemonAdventureGame.Types
 
         private static decimal ImmuneDamageValue() => 0M;
 
-        private static decimal SuperEffectiveDamage(InitialDamageParameter initialDamageParameter)
+        private static decimal SuperEffectiveDamage(ref InitialDamageParameter initialDamageParameter)
         {
             initialDamageParameter.Modifier += initialDamageParameter.Modifier * SUPER_EFFECTIVE_DAMAGE_ADDITION;
             return ApplyDamageFormulaToInitialDamage(initialDamageParameter);
         }
 
-        private static decimal NotVeryEffectiveDamage(InitialDamageParameter initialDamageParameter)
+        private static decimal NotVeryEffectiveDamage(ref InitialDamageParameter initialDamageParameter)
         {
             initialDamageParameter.Modifier -= initialDamageParameter.Modifier * NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION;
             return ApplyDamageFormulaToInitialDamage(initialDamageParameter);
         }
 
-        private static decimal ApplyDamageFormulaToInitialDamage(InitialDamageParameter initialDamageParameter)
+        private static decimal ApplyDamageFormulaToInitialDamage(in InitialDamageParameter initialDamageParameter)
         {
             decimal attackPoints, defensePoints;
             (attackPoints, defensePoints) = GetDamageForSpecialOrNormalMove(initialDamageParameter);
@@ -52,7 +52,7 @@ namespace PokemonAdventureGame.Types
             return Math.Ceiling(finalDamageResult);
         }
 
-        private static (decimal, decimal) GetDamageForSpecialOrNormalMove(InitialDamageParameter initialDamageParameter)
+        private static (decimal, decimal) GetDamageForSpecialOrNormalMove(in InitialDamageParameter initialDamageParameter)
         {
             decimal attackPoints, defensePoints;
             if (initialDamageParameter.Move.Special)

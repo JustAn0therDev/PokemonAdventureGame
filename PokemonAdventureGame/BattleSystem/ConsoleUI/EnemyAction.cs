@@ -2,7 +2,7 @@ using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
-    public class EnemyAction
+    public struct EnemyAction
     {
         public void EnemyTrainerSendsPokemon(ITrainer trainer)
         {

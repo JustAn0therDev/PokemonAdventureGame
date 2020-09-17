@@ -2,7 +2,7 @@
 
 namespace PokemonAdventureGame.ParameterObjects.Types
 {
-    public class InitialDamageParameter
+    public struct InitialDamageParameter
     {
         public IPokemon AttackingPokemon { get; set; }
         public IPokemon TargetPokemon { get; set; }

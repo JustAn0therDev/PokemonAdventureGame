@@ -2,7 +2,7 @@
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
-    public class ConsoleBattleInfoItems
+    public static class ConsoleBattleInfoItems
     {
         public static void ShowItemWasUsedOnPokemon(IItem item, IPokemon pokemon)
         {

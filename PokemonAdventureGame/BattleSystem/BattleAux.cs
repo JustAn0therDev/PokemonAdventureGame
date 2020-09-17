@@ -14,7 +14,7 @@ namespace PokemonAdventureGame.BattleSystem
         private readonly EnemyAction _enemyAction;
         private readonly PlayerAction _playerAction;
 
-        public BattleAux (ITrainer player, ITrainer enemyTrainer, EnemyAction enemyAction, PlayerAction playerAction)
+        public BattleAux (ITrainer player, ITrainer enemyTrainer, in EnemyAction enemyAction, in PlayerAction playerAction)
         {
             _player = player;
             _enemyTrainer = enemyTrainer;
