@@ -7,6 +7,6 @@ This game is a small re-creation of the Pokemon Battle System (the damage calcul
 
 ## Play the game
 
-To play it, just download the project and run it on your machine (you should not have any problems with the operating system or .NET Core).
+To play it, download the project and publish it locally (you should not have any problems with the operating system or .NET Core). **It is strongly recommended that you have the latest version of the .NET Core SDK installed**.
 
 If you play it and like it, please consider giving it a star and letting me know if you have any suggestions on features, bug fixes or quality of the code itself.
