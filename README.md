@@ -3,7 +3,7 @@ A Pokemon Adventure Game with a small re-creation of the Pokemon Battle System.
 
 Made with C# and the .NET Core framework, no external libraries.
 
-This game is a small re-creation of the Pokemon Battle System (the damage calculation was made based on the formula used by the Pokemon GO game).
+This game is a small re-creation of the Pokemon Battle System (the damage calculation was made based on the formula used by the Pokemon GO game), completely playable on your favorite terminal.
 
 ## Play the game
 
