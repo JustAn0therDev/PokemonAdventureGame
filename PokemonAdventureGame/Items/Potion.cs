@@ -18,12 +18,8 @@ namespace PokemonAdventureGame.Items
 
         private int GetDifferenceInHealthPoints(IPokemon targetPokemon)
         {
-            int differenceInHealthPoints = 
-                 targetPokemon.HealthPoints - targetPokemon.CurrentHealthPoints > LIMIT_OF_HEALTH_POINTS_TO_RECOVER
-                 ? LIMIT_OF_HEALTH_POINTS_TO_RECOVER
-                 : targetPokemon.HealthPoints - targetPokemon.CurrentHealthPoints;
-
-            return differenceInHealthPoints;
+            int differenceInHealthPoints = targetPokemon.HealthPoints - targetPokemon.CurrentHealthPoints;
+            return differenceInHealthPoints > LIMIT_OF_HEALTH_POINTS_TO_RECOVER ? LIMIT_OF_HEALTH_POINTS_TO_RECOVER : differenceInHealthPoints;
         }
     }
 }

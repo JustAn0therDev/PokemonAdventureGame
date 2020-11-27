@@ -7,7 +7,7 @@ namespace PokemonAdventureGame.Types
 {
     public static class TypeDamageCalculator
     {
-        private readonly static decimal STAB_MODIFIER_WHEN_DAMAGE_IS_SUPER_EFFECTIVE = 1.2M;
+        private readonly static decimal _stabModifierWhenDamageIsSuperEffective = 1.2M;
 
         public static int CalculateDamage(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move, TypeEffect typeEffect)
         {
@@ -20,6 +20,6 @@ namespace PokemonAdventureGame.Types
         }
 
         private static decimal CalculateSTABModifier(IPokemon attackingPokemon, IMove move)
-            => attackingPokemon.Types.Contains(move.Type) ? move.Damage * STAB_MODIFIER_WHEN_DAMAGE_IS_SUPER_EFFECTIVE : move.Damage;
+            => attackingPokemon.Types.Contains(move.Type) ? move.Damage * _stabModifierWhenDamageIsSuperEffective : move.Damage;
     }
 }

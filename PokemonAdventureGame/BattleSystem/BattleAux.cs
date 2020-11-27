@@ -113,9 +113,9 @@ namespace PokemonAdventureGame.BattleSystem
             return chosenPokemonIndex;
         }
 
-        //This method is used so if the player chooses an index that's outside
-        //the bounds of the array, it doesn't break the game. The other methods
-        //have constant or customizable limit of array indexes when choosing.
+        // This method is used so if the player chooses an index that's outside
+        // the bounds of the array, it doesn't break the game. The other methods
+        // have constant or customizable limit of array indexes when choosing.
         private bool IsNotValidIndexForPlayerPokemonTeam(int trainerPokemonIndex)
         {
             try
