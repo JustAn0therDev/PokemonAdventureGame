@@ -9,6 +9,4 @@ The game is currently being optimized to use the best that C# and the .NET 5 fra
 
 ## How to play the game
 
-To play it, download the project and publish it locally (you should not have any problems with your operating system or the .NET framework itself). **It is strongly recommended that you have the latest version of the .NET 5 SDK installed**. If you do not have .NET 5 installed on your computer, you can target .NET Core 3.1 (for the test project as well if you want to test it) and run it. No new syntax available in .NET 5 is being used so it will keep running as is.
-
-If you play it and like it, please consider giving it a star; and if you have any suggestions about anything that is related to the game, I'll be happy to respond.
+To play it, download the project and publish it locally (you should not have any problems with your operating system or the .NET framework itself). **It is strongly recommended that you have the latest version of the .NET 5 SDK installed**. If you do not have .NET 5 installed on your computer, you can target .NET Core 3.1 (for the test project as well if you want to test it) and run it. No new syntax available in .NET 5 is being used so it will keep running as is. If you have played the game and liked it, consider giving it a star.
