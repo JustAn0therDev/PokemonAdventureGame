@@ -33,7 +33,7 @@ namespace PokemonAdventureGame.Trainers
 
         public void InitializeTrainerItems() { }
 
-        public IPokemon GetCurrentPokemon() => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
+        public IPokemon GetCurrentPokemon() => PokemonTeam.FirstOrDefault(pkmn => pkmn.Current)?.Pokemon;
 
         public IPokemon GetNextAvailablePokemon()
         {
