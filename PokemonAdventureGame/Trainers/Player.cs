@@ -36,8 +36,7 @@ namespace PokemonAdventureGame.Trainers
             };
         }
 
-        public IPokemon GetCurrentPokemon()
-            => PokemonTeam.Where(pkmn => pkmn.Current).Select(s => s.Pokemon).FirstOrDefault();
+        public IPokemon GetCurrentPokemon() => PokemonTeam.FirstOrDefault(pkmn => pkmn.Current)?.Pokemon;
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
