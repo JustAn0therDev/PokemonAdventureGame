@@ -10,7 +10,7 @@ namespace PokemonAdventureGame.Pokemon
 {
     public class Dragonite : IPokemon
     {
-        public int HealthPoints { get; set; }
+        public int TotalHealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
@@ -23,8 +23,8 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 91;
-            CurrentHealthPoints = HealthPoints;
+            TotalHealthPoints = 91;
+            CurrentHealthPoints = TotalHealthPoints;
 
             AttackPoints = 134;
             DefensePoints = 95;

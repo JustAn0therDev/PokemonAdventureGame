@@ -1,4 +1,5 @@
-﻿using PokemonAdventureGame.Interfaces;
+﻿using System.Threading.Tasks;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.PokemonCenter
 {
@@ -6,11 +7,11 @@ namespace PokemonAdventureGame.PokemonCenter
     {
         public static void HealPlayerTeam(ITrainer player)
         {
-            player.PokemonTeam.ForEach(pkmn =>
+            Parallel.ForEach(player.PokemonTeam, pkmn =>
             {
                 pkmn.Fainted = false;
-                pkmn.Pokemon.CurrentHealthPoints = pkmn.Pokemon.HealthPoints;
-                pkmn.Pokemon.Moves.ForEach(move => move.CurrentPowerPoints = move.PowerPoints);
+                pkmn.Pokemon.CurrentHealthPoints = pkmn.Pokemon.TotalHealthPoints;
+                Parallel.ForEach(pkmn.Pokemon.Moves, move => move.CurrentPowerPoints = move.PowerPoints);
             });
         }
     }

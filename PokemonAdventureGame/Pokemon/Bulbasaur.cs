@@ -8,7 +8,7 @@ namespace PokemonAdventureGame.Pokemon
 {
     public class Bulbasaur : IPokemon
     {
-        public int HealthPoints { get; set; }
+        public int TotalHealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
@@ -21,8 +21,8 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 45;
-            CurrentHealthPoints = HealthPoints;
+            TotalHealthPoints = 45;
+            CurrentHealthPoints = TotalHealthPoints;
 
             AttackPoints = 49;
             DefensePoints = 49;

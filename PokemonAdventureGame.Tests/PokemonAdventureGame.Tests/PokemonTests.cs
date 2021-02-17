@@ -19,7 +19,7 @@ namespace PokemonAdventureGame.Tests
         public void PokemonShouldFaint()
         {
             IPokemon pokemon = PokemonFactory.CreatePokemon<Pikachu>();
-            pokemon?.ReceiveDamage((int)pokemon?.HealthPoints);
+            pokemon?.ReceiveDamage((int)pokemon?.TotalHealthPoints);
             Assert.True(pokemon?.HasFainted());
         }
 
@@ -28,7 +28,7 @@ namespace PokemonAdventureGame.Tests
         {
             IPokemon pokemon = PokemonFactory.CreatePokemon<Eevee>();
             pokemon?.ReceiveDamage(10);
-            Assert.True(pokemon?.CurrentHealthPoints < pokemon.HealthPoints);
+            Assert.True(pokemon?.CurrentHealthPoints < pokemon.TotalHealthPoints);
         }
     }
 }

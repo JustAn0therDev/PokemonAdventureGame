@@ -18,7 +18,7 @@ namespace PokemonAdventureGame
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Something bad happened in the game! Please report the error. Error: {ex.Message}");
+                Console.WriteLine($"Something bad happened in the game! Please report the error. Error: {ex.Message} \n Error's StackTrace: {ex.StackTrace}");
             }
         }
     }

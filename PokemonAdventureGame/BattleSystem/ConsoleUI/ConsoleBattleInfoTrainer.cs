@@ -11,7 +11,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             {
                 Console.WriteLine(
                     $"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name} " +
-                    $"- HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.HealthPoints}"
+                    $"- HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.TotalHealthPoints}"
                     );
             }
         }

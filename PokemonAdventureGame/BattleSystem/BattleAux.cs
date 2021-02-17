@@ -97,12 +97,14 @@ namespace PokemonAdventureGame.BattleSystem
             return chosenItem;
         }
 
-        public int KeepPlayerChoosingPokemonIndex()
+        public int KeepPlayerChoosingPokemon()
         {
             int chosenPokemonIndex = -1;
-            while (chosenPokemonIndex <= -1 || IsNotValidIndexForPlayerPokemonTeam(chosenPokemonIndex))
+            while (chosenPokemonIndex <= -1 || IsNotValidPokemonIndex(chosenPokemonIndex))
             {
+                ConsoleUtils.ClearScreen();
                 ConsoleBattleInfoTrainer.ShowAllTrainersPokemon(_player);
+
                 chosenPokemonIndex = ConsoleUtils.GetPlayerChosenIndex(Console.ReadLine());
             }
 
@@ -112,12 +114,16 @@ namespace PokemonAdventureGame.BattleSystem
         // This method is used so if the player chooses an index that's outside
         // the bounds of the array, it doesn't break the game. The other methods
         // have constant or customizable limit of array indexes when choosing.
-        private bool IsNotValidIndexForPlayerPokemonTeam(int trainerPokemonIndex)
+        private bool IsNotValidPokemonIndex(int trainerPokemonIndex)
         {
             try
             {
                 return _player.PokemonTeam[trainerPokemonIndex] == null;
-            } catch { return true; }
+            } 
+            catch 
+            {
+                return true; 
+            }
         }
 
         public void DrawbackThenSendPokemon(int chosenPokemon)

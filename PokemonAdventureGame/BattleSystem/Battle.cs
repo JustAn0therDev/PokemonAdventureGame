@@ -63,10 +63,11 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool KeepBattleGoingWhileBothPlayersHavePokemonLeft()
         {
-            bool playerWon = false;
+            bool playerWon = false, keepBattleGoing, isChangingToNextAvailablePokemon;
             while (Player.HasAvailablePokemon() && EnemyTrainer.HasAvailablePokemon())
             {
-                bool keepBattleGoing = false, isChangingToNextAvailablePokemon = false;
+                keepBattleGoing = false;
+                isChangingToNextAvailablePokemon = false;
 
                 if (Player.GetCurrentPokemon().CurrentHealthPoints <= 0 && EnemyTrainer.HasAvailablePokemon())
                 {
@@ -104,8 +105,8 @@ namespace PokemonAdventureGame.BattleSystem
             Console.WriteLine("What are you going to do next?");
             ConsoleBattleInfo.ShowAvailableCommandsOnConsole();
 
-            Command command = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
-            bool keepBattleGoing = (bool)Commands[command].DynamicInvoke();
+            Command chosenCommand = (Command)Enum.Parse(typeof(Command), Console.ReadLine() ?? "1");
+            bool keepBattleGoing = (bool)Commands[chosenCommand].DynamicInvoke();
 
             return keepBattleGoing;
         }
@@ -149,10 +150,8 @@ namespace PokemonAdventureGame.BattleSystem
 
             attackingPokemon.UseMove(move);
 
-            if (move.StatusMoves != null) 
-            {
+            if (move.StatusMoves != null)
                 BattleAux.ProcessStatusAttack(attackingPokemon, targetPokemon, move);
-			}
             else
             {
                 targetPokemon.ReceiveDamage(calculatedDamage);
@@ -163,7 +162,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         private bool PromptPlayerToSelectPokemon()
         {
-            bool keepBattleGoingAfterPokemonSelection = false;
+            var keepBattleGoingAfterPokemonSelection = false;
 
             if (Player.PokemonTeam.Where(pkmn => !pkmn.Fainted).Count() == 1)
             {
@@ -171,7 +170,7 @@ namespace PokemonAdventureGame.BattleSystem
                 return keepBattleGoingAfterPokemonSelection;
             }
 
-            int chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemonIndex();
+            int chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemon();
 
             SwitchCurrentPokemon(chosenPokemonIndex);
             keepBattleGoingAfterPokemonSelection = true;
@@ -191,7 +190,7 @@ namespace PokemonAdventureGame.BattleSystem
                 ConsoleBattleInfoPokemon.ShowChosenPokemonIsNotAvailable();
                 PlayerMove();
                 return;
-            } 
+            }
             else if (pokemon.Current)
             {
                 ConsoleBattleInfoPokemon.ShowChosenPokemonIsAlreadyInBattle();
@@ -205,7 +204,7 @@ namespace PokemonAdventureGame.BattleSystem
         private bool PromptPlayerToChooseItem()
         {
             int chosenStackedItemsIndex = BattleAux.KeepPlayerChoosingItem(Player, Player.Items.Count);
-            int chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemonIndex();
+            int chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemon();
 
             IPokemon chosenPokemon = Player.PokemonTeam[chosenPokemonIndex].Pokemon;
             IItem chosenItem = Player.Items.ElementAt(chosenStackedItemsIndex).Value.FirstOrDefault();
@@ -219,7 +218,7 @@ namespace PokemonAdventureGame.BattleSystem
             if (chosenItem != null && chosenItem.TryToUseItemOnPokemon(chosenPokemon))
             {
                 ConsoleBattleInfoItems.ShowItemWasUsedOnPokemon(chosenItem, chosenPokemon);
-                Player.Items.ElementAt(chosenStackedItemsIndex).Value.Remove(chosenItem);
+                Player.Items.ElementAtOrDefault(chosenStackedItemsIndex).Value.Remove(chosenItem);
                 itemWasSuccessfullyUsed = true;
             }
             else
@@ -230,11 +229,17 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void PromptPlayerToSelectPokemonAfterAnotherPokemonFainted()
         {
-            if (Player.PokemonTeam.Count > 1 && Player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
+            int chosenPokemonIndex;
+
+            if (Player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
             {
                 ConsoleUtils.ShowMessageBetweenEmptyLines("Which pokemon will you choose?");
-                int chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemonIndex();
-
+                chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemon();
+                SwitchCurrentPokemon(chosenPokemonIndex, isChangingAfterOwnPokemonFainted: true);
+            }
+            else
+            {
+                chosenPokemonIndex = Player.PokemonTeam.IndexOf(Player.PokemonTeam.Where(w => !w.Fainted).FirstOrDefault());
                 SwitchCurrentPokemon(chosenPokemonIndex, isChangingAfterOwnPokemonFainted: true);
             }
         }

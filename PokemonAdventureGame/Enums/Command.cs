@@ -2,8 +2,8 @@
 {
     public enum Command
     {
-        ATTACK = 1,
-        SWITCH_POKEMON = 2,
-        ITEMS = 3
+        ATTACK,
+        SWITCH_POKEMON,
+        ITEMS
     }
 }

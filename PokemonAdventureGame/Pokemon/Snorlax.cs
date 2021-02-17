@@ -11,7 +11,7 @@ namespace PokemonAdventureGame.Pokemon
 {
     public class Snorlax : IPokemon
     {
-        public int HealthPoints { get; set; }
+        public int TotalHealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
@@ -24,8 +24,8 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 200;
-            CurrentHealthPoints = HealthPoints;
+            TotalHealthPoints = 200;
+            CurrentHealthPoints = TotalHealthPoints;
 
             AttackPoints = 110;
             DefensePoints = 65;

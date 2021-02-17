@@ -9,7 +9,7 @@ namespace PokemonAdventureGame.Pokemon
 {
     public class Blastoise : IPokemon
     {
-        public int HealthPoints { get; set; }
+        public int TotalHealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
@@ -22,8 +22,8 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 79;
-            CurrentHealthPoints = HealthPoints;
+            TotalHealthPoints = 79;
+            CurrentHealthPoints = TotalHealthPoints;
 
             AttackPoints = 83;
             DefensePoints = 100;
