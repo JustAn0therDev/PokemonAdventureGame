@@ -13,7 +13,7 @@ namespace PokemonAdventureGame
             try
             {
                 ITrainer player = TrainerFactory.CreateTrainer<Player>();
-                MainStory mainStory = new MainStory(player);
+                var mainStory = new MainStory(player);
                 mainStory.BeginStory();
             }
             catch (Exception ex)
