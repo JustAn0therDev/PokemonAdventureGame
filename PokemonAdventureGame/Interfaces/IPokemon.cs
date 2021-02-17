@@ -5,7 +5,7 @@ namespace PokemonAdventureGame.Interfaces
 {
     public interface IPokemon
     {
-        int HealthPoints { get; set; }
+        int TotalHealthPoints { get; set; }
         int CurrentHealthPoints { get; set; }
         int AttackPoints { get; set; }
         int DefensePoints { get; set; }

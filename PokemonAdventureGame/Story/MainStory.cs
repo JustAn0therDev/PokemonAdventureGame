@@ -101,13 +101,14 @@ namespace PokemonAdventureGame.Story
 
         private static void EndStory()
         {
-            Console.WriteLine("Congratulations on beating the All-Stars Pokemon League! You have come a long way");
-            Console.WriteLine("just to get here. If you are a developer and liked the game, please consider giving it a star on GitHub,");
-            Console.WriteLine("just look up for PokemonAdventureGame in the repositories tab.");
-
+            Console.WriteLine("Congratulations on beating the All-Stars Pokemon League!");
+            Console.WriteLine("Look up for 'PokemonAdventureGame' on GitHub to see how the game was made.");
+            Console.WriteLine("And if you really liked the game, consider giving it a star if you have a GitHub account.");
             ConsoleUtils.WaitFourSeconds();
+
             Console.WriteLine("Thanks for playing!");
-            ConsoleUtils.EndProgram();
+            ConsoleUtils.WaitTwoSeconds();
+            ConsoleUtils.EndGame();
         }
 
         #endregion
@@ -127,7 +128,7 @@ namespace PokemonAdventureGame.Story
             else
             {
                 _enemyTrainer.ShowFinalDialogueForLoss();
-                ConsoleUtils.EndProgram();
+                ConsoleUtils.EndGame();
             }
         }
 

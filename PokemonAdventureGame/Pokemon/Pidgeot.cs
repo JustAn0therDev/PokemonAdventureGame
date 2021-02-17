@@ -8,7 +8,7 @@ namespace PokemonAdventureGame.Pokemon
 {
     public class Pidgeot : IPokemon
     {
-        public int HealthPoints { get; set; }
+        public int TotalHealthPoints { get; set; }
         public int CurrentHealthPoints { get; set; }
         public int AttackPoints { get; set; }
         public int DefensePoints { get; set; }
@@ -21,8 +21,8 @@ namespace PokemonAdventureGame.Pokemon
 
         public void InitializePokemonProperties()
         {
-            HealthPoints = 83;
-            CurrentHealthPoints = HealthPoints;
+            TotalHealthPoints = 83;
+            CurrentHealthPoints = TotalHealthPoints;
 
             AttackPoints = 80;
             DefensePoints = 75;

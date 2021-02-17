@@ -60,7 +60,7 @@ namespace PokemonAdventureGame.Tests
             _player?.Items
                 .ElementAt(POTION_INDEX_IN_TRAINER_INVENTORY).Value[POTION_INDEX_IN_TRAINER_INVENTORY]
                 .TryToUseItemOnPokemon(onix);
-            Assert.True(onix.CurrentHealthPoints == onix.HealthPoints);
+            Assert.True(onix.CurrentHealthPoints == onix.TotalHealthPoints);
         }
 
         [Fact]

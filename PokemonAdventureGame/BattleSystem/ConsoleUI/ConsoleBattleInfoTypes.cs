@@ -5,9 +5,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
     public static class ConsoleBattleInfoTypes
     {
-        private delegate void ShowMessageAndWaitOneSecondDelegate(string messageToShow);
-
-        private static IReadOnlyDictionary<TypeEffect, string> _dictionaryOfMessageForTypeEffect
+        private static IReadOnlyDictionary<TypeEffect, string> DictionaryOfMessageToTypeEffect
         {
             get
             {
@@ -22,6 +20,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         }
 
         public static void ShowHowEffectiveTheMoveWas(TypeEffect typeEffect)
-         => ConsoleUtils.ShowMessageAndWaitOneSecond(_dictionaryOfMessageForTypeEffect[typeEffect]);
+         => ConsoleUtils.ShowMessageAndWaitOneSecond(DictionaryOfMessageToTypeEffect[typeEffect]);
     }
 }

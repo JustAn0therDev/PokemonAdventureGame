@@ -48,7 +48,7 @@ namespace PokemonAdventureGame.Trainers
 
         public IPokemon GetNextAvailablePokemon()
         {
-            IPokemon firstAvailablePokemon = PokemonTeam.Where(pkmn => !pkmn.Fainted).Select(pkmn => pkmn.Pokemon).FirstOrDefault();
+            IPokemon firstAvailablePokemon = PokemonTeam.FirstOrDefault(pkmn => !pkmn.Fainted)?.Pokemon;
 
             if (firstAvailablePokemon != null)
                 SetPokemonAsCurrent(firstAvailablePokemon);
@@ -56,15 +56,16 @@ namespace PokemonAdventureGame.Trainers
             return firstAvailablePokemon;
         }
 
-        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Count() > 0;
+        public bool HasAvailablePokemon() => PokemonTeam.Where(w => !w.Fainted).Any();
 
         public void SetPokemonAsFainted(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn =>
+            var foundPokemon = PokemonTeam.FirstOrDefault(fd => fd.Pokemon == pokemon);
+
+            if (foundPokemon != null)
             {
-                if (pkmn.Pokemon == pokemon)
-                    pkmn.Fainted = true;
-            });
+                foundPokemon.Fainted = true;
+            }
         }
 
         public void ShowTrainerDialogue()
