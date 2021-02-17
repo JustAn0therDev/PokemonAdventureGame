@@ -2,9 +2,9 @@ using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
-    public struct PlayerAction
+    public class PlayerAction
     {
-        public void PlayerSendsPokemon(IPokemon pokemon)
+        public static void PlayerSendsPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.TrainerAction<PlayerAction>($"Go, {pokemon.GetType().Name}!");
@@ -12,7 +12,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ClearScreen();
         }
 
-        public void PlayerDrawsbackPokemon(IPokemon pokemon)
+        public static void PlayerDrawsbackPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.TrainerAction<PlayerAction>($"{pokemon.GetType().Name}, come back!");

@@ -2,9 +2,9 @@ using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
-    public struct EnemyAction
+    public class EnemyAction
     {
-        public void EnemyTrainerSendsPokemon(ITrainer trainer)
+        public static void EnemyTrainerSendsPokemon(ITrainer trainer)
         {
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.TrainerAction<EnemyAction>($"{trainer.GetType().Name} sent out {trainer.GetCurrentPokemon()?.GetType().Name}!");
@@ -12,7 +12,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ResetConsoleColors();
         }
 
-        public void EnemyTrainerDrawsbackPokemon(IPokemon pokemon)
+        public static void EnemyTrainerDrawsbackPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.TrainerAction<EnemyAction>($"{pokemon?.GetType().Name}, come back!");
