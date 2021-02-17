@@ -1,25 +1,21 @@
 ﻿using System;
-using PokemonAdventureGame.BattleSystem.ConsoleUI;
 using PokemonAdventureGame.Enums;
-using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Statuses;
+using PokemonAdventureGame.Interfaces;
+using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    //This class contains every method that does not depend on an order of execution.
+    // This class contains every method that does not depend on an order of execution.
     public class BattleAux
     {
         private readonly ITrainer _player;
         private readonly ITrainer _enemyTrainer;
-        private readonly EnemyAction _enemyAction;
-        private readonly PlayerAction _playerAction;
 
-        public BattleAux (ITrainer player, ITrainer enemyTrainer, in EnemyAction enemyAction, in PlayerAction playerAction)
+        public BattleAux (ITrainer player, ITrainer enemyTrainer)
         {
             _player = player;
             _enemyTrainer = enemyTrainer;
-            _playerAction = playerAction;
-            _enemyAction = enemyAction;
         }
 
         public bool CannotSendNextAvailablePokemon(ITrainer trainer, bool isEnemyTrainer = false)
@@ -27,6 +23,14 @@ namespace PokemonAdventureGame.BattleSystem
             trainer.SetPokemonAsFainted(trainer.GetCurrentPokemon());
             TrainerDrawsbackPokemon(isEnemyTrainer);
             return TrainerIsOutOfPokemonToBattle(trainer, isEnemyTrainer);
+        }
+
+        private void TrainerDrawsbackPokemon(bool isEnemyTrainer)
+        {
+            if (isEnemyTrainer)
+                EnemyAction.EnemyTrainerDrawsbackPokemon(_enemyTrainer.GetCurrentPokemon());
+            else
+                PlayerAction.PlayerDrawsbackPokemon(_player.GetCurrentPokemon());
         }
 
         private bool TrainerIsOutOfPokemonToBattle(ITrainer trainer, bool isEnemyTrainer)
@@ -41,14 +45,6 @@ namespace PokemonAdventureGame.BattleSystem
                 SetCurrentToSendNextPokemon(trainer, isEnemyTrainer);
                 return false;
             }
-        }
-
-        private void TrainerDrawsbackPokemon(bool isEnemyTrainer)
-        {
-            if (isEnemyTrainer)
-                _enemyAction.EnemyTrainerDrawsbackPokemon(_enemyTrainer.GetCurrentPokemon());
-            else
-                _playerAction.PlayerDrawsbackPokemon(_player.GetCurrentPokemon());
         }
 
         private void FinishBattle(bool enemyTrainerLost)
@@ -70,9 +66,9 @@ namespace PokemonAdventureGame.BattleSystem
             trainer.SetPokemonAsCurrent(trainer.GetNextAvailablePokemon());
 
             if (isEnemyTrainer)
-                _enemyAction.EnemyTrainerSendsPokemon(trainer);
+                EnemyAction.EnemyTrainerSendsPokemon(trainer);
             else
-                _playerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
+                PlayerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
         public int KeepPlayerChoosingMove(int movesLimit)
@@ -89,7 +85,7 @@ namespace PokemonAdventureGame.BattleSystem
             return chosenMove;
         }
 
-        public int KeepPlayerChoosingItem(ITrainer player, int limitOfItemStacksInTheInventory)
+        public static int KeepPlayerChoosingItem(ITrainer player, int limitOfItemStacksInTheInventory)
         {
             int chosenItem = -1;
             while (chosenItem <= -1 || chosenItem > limitOfItemStacksInTheInventory)
@@ -126,12 +122,12 @@ namespace PokemonAdventureGame.BattleSystem
 
         public void DrawbackThenSendPokemon(int chosenPokemon)
         {
-            _playerAction.PlayerDrawsbackPokemon(_player.GetCurrentPokemon());
+            PlayerAction.PlayerDrawsbackPokemon(_player.GetCurrentPokemon());
             _player.SetPokemonAsCurrent(_player.PokemonTeam[chosenPokemon].Pokemon);
-            _playerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
+            PlayerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
         }
 
-        public void ProcessStatusAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
+        public static void ProcessStatusAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
         {
             StatusMove[] pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
 

@@ -1,8 +1,8 @@
 ﻿using System;
-using PokemonAdventureGame.Factories;
-using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Story;
 using PokemonAdventureGame.Trainers;
+using PokemonAdventureGame.Factories;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame
 {
@@ -14,6 +14,7 @@ namespace PokemonAdventureGame
             {
                 ITrainer player = TrainerFactory.CreateTrainer<Player>();
                 MainStory mainStory = new MainStory(player);
+                mainStory.BeginStory();
             }
             catch (Exception ex)
             {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
+using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;

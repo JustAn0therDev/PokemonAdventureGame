@@ -1,5 +1,5 @@
-﻿using PokemonAdventureGame.Interfaces;
-using System;
+﻿using System;
+using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
@@ -10,7 +10,8 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             for (int i = 0; i < trainer.PokemonTeam.Count; i++)
             {
                 Console.WriteLine(
-                    $"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name} - HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.HealthPoints}"
+                    $"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name} " +
+                    $"- HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.HealthPoints}"
                     );
             }
         }
@@ -27,12 +28,12 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
             ConsoleUtils.ShowMessageBetweenEmptyLines($"{trainer.GetType().Name} has no other pokemon left to battle...");
         }
 
-        public static void TrainerDrawsbackPokemon(IPokemon pokemon, in EnemyAction enemyAction, in PlayerAction playerAction, bool isEnemyTrainer = false)
+        public static void TrainerDrawsbackPokemon(IPokemon pokemon, bool isEnemyTrainer = false)
         {
             if (isEnemyTrainer)
-                enemyAction.EnemyTrainerDrawsbackPokemon(pokemon);
+                EnemyAction.EnemyTrainerDrawsbackPokemon(pokemon);
             else
-                playerAction.PlayerDrawsbackPokemon(pokemon);
+                PlayerAction.PlayerDrawsbackPokemon(pokemon);
         }
 
         public static void EnemyTrainerWantsToBattle(ITrainer enemyTrainer)
