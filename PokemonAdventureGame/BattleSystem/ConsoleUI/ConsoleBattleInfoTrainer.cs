@@ -39,7 +39,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void EnemyTrainerWantsToBattle(ITrainer enemyTrainer)
         {
             Console.WriteLine($"{enemyTrainer.GetType().Name} wants to battle!");
-            ConsoleUtils.WaitFourSeconds();
+            ConsoleUtils.WaitTwoSeconds();
             ConsoleUtils.ClearScreen();
         }
 

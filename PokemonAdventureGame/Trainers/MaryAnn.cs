@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
@@ -37,12 +38,12 @@ namespace PokemonAdventureGame.Trainers
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn =>
+            Parallel.ForEach(PokemonTeam, pkmn =>
             {
                 if (pkmn.Current)
                     pkmn.Current = false;
 
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && pkmn.Pokemon.CurrentHealthPoints > 0)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
                     pkmn.Current = true;
             });
         }
@@ -73,7 +74,7 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Hi, welcome to the new Pokemon League. Congratulations on beating Brock and Bruno.");
             Console.WriteLine("But I can guarantee that I won't be that much of a pushover like those two.");
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("Are you ready to take a beating?");
             ConsoleUtils.EnemyPhraseBeforeBattle("By the way, have you seen my cat?");
@@ -84,10 +85,10 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Hey, that was a great battle, congratulations on winning! Now, the next trainer is really tough.");
             Console.WriteLine("Watch out and have this, you'll need it.");
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
 
             Console.WriteLine("And if you see my cat, please tell her to come back, I'm a bit worried...");
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.ClearScreen();
         }
 
@@ -96,7 +97,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("I told you...");
             Console.WriteLine("Come back when you get better.");
             ConsoleUtils.TrainerAction<EnemyAction>("Or if you see my cat, I'm worried about her...");
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.EndGame();
         }
     }

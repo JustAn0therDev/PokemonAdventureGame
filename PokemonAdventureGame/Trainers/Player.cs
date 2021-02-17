@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Interfaces;
@@ -40,7 +41,7 @@ namespace PokemonAdventureGame.Trainers
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn =>
+            Parallel.ForEach(PokemonTeam, pkmn =>
             {
                 if (pkmn.Current)
                     pkmn.Current = false;
@@ -66,7 +67,8 @@ namespace PokemonAdventureGame.Trainers
         { 
             var foundPokemon = PokemonTeam.FirstOrDefault(fd => fd.Pokemon == pokemon);
 
-            if (foundPokemon != null) { 
+            if (foundPokemon != null) 
+            { 
                 foundPokemon.Fainted = true; 
             }
         }

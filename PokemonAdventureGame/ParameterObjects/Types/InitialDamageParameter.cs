@@ -11,10 +11,10 @@ namespace PokemonAdventureGame.ParameterObjects.Types
 
         public InitialDamageParameter(IPokemon attackingPokemon, IPokemon targetPokemon, decimal modifier, IMove move)
         {
+            Move             = move;
+            Modifier         = modifier;
+            TargetPokemon    = targetPokemon;
             AttackingPokemon = attackingPokemon;
-            TargetPokemon = targetPokemon;
-            Modifier = modifier;
-            Move = move;
         }
     }
 }

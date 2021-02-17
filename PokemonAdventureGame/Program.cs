@@ -3,7 +3,6 @@ using PokemonAdventureGame.Story;
 using PokemonAdventureGame.Trainers;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Interfaces;
-
 namespace PokemonAdventureGame
 {
     class Program

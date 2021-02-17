@@ -14,7 +14,6 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void WaitOneSecond()      => Thread.Sleep(ONE_SECOND_IN_MILISSECONDS);
         public static void WaitTwoSeconds()     => Thread.Sleep(TWO_SECONDS_IN_MILISSECONDS);
         public static void WaitFourSeconds()    => Thread.Sleep(FOUR_SECONDS_IN_MILISSECONDS);
-        public static void WaitFiveSeconds()    => Thread.Sleep(FIVE_SECONDS_IN_MILISSECONDS);
         public static void ClearScreen()        => Console.Clear();
         public static void SkipLine()           => Console.WriteLine();
         public static void EndGame()            => Environment.Exit(0);
@@ -37,7 +36,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         {
             ClearScreen();
             TrainerAction<EnemyAction>(enemyPhrase);
-            WaitFourSeconds();
+            WaitTwoSeconds();
             ClearScreen();
         }
 
