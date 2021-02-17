@@ -11,12 +11,12 @@ namespace PokemonAdventureGame.Items
             bool pokemonIsEligibleToReceiveItem = ItemValidator.CanUsePotionOnPokemon(targetPokemon);
 
             if (pokemonIsEligibleToReceiveItem)
-                targetPokemon.CurrentHealthPoints += GetDifferenceInHealthPoints(targetPokemon);
+                targetPokemon.CurrentHealthPoints += GetPositiveDifferenceInHealthPoints(targetPokemon);
 
             return pokemonIsEligibleToReceiveItem;
         }
 
-        private int GetDifferenceInHealthPoints(IPokemon targetPokemon)
+        private int GetPositiveDifferenceInHealthPoints(IPokemon targetPokemon)
         {
             int differenceInHealthPoints = targetPokemon.TotalHealthPoints - targetPokemon.CurrentHealthPoints;
             return differenceInHealthPoints > LIMIT_OF_HEALTH_POINTS_TO_RECOVER ? LIMIT_OF_HEALTH_POINTS_TO_RECOVER : differenceInHealthPoints;

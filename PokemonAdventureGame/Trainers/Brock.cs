@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
@@ -36,12 +37,12 @@ namespace PokemonAdventureGame.Trainers
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn =>
+            Parallel.ForEach(PokemonTeam, pkmn =>
             {
                 if (pkmn.Current)
                     pkmn.Current = false;
 
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && pkmn.Pokemon.CurrentHealthPoints > 0)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
                     pkmn.Current = true;
             });
         }
@@ -72,7 +73,7 @@ namespace PokemonAdventureGame.Trainers
         {
             Console.WriteLine("Hey, welcome to the All-Stars Pokemon League!");
             Console.WriteLine("My name's Brock. I'm the pewter city's gym leader, and your first challenge.");
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
 
             ConsoleUtils.EnemyPhraseBeforeBattle("I hope you give me a good challenge and we both have a lot of fun.");
             ConsoleBattleInfoTrainer.EnemyTrainerWantsToBattle(this);
@@ -84,7 +85,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("But by no means I'm the strongest trainer in the League.");
             Console.WriteLine("So to help you in the next battle, I'll heal your pokemon and give you something...");
 
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
             ConsoleUtils.ClearScreen();
         }
 
@@ -94,7 +95,7 @@ namespace PokemonAdventureGame.Trainers
             Console.WriteLine("Anytime you want to come back to battle, we'll be here.");
 
             ConsoleUtils.TrainerAction<EnemyAction>("Good-bye!");
-            ConsoleUtils.WaitFiveSeconds();
+            ConsoleUtils.WaitFourSeconds();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Factories;
@@ -39,7 +40,7 @@ namespace PokemonAdventureGame.Trainers
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
-            PokemonTeam.ForEach(pkmn =>
+            Parallel.ForEach(PokemonTeam, pkmn =>
             {
                 if (pkmn.Current)
                     pkmn.Current = false;
