@@ -139,7 +139,7 @@ namespace PokemonAdventureGame.Story
         private void HealPlayerTeamAndReward()
         {
             ConsoleUtils.WaitFourSeconds();
-            ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} heals your Pokemon to prepare you for the next battle.");
+            ConsoleUtils.TrainerAction<PlayerAction>($"{_enemyTrainer.GetType().Name} heals your Pokemon, preparing you for the next battle.");
             PkmnCenter.HealPlayerTeam(_player);
 
             GivePokemonToPlayer(_enemyTrainer.RewardPokemonForWinning);

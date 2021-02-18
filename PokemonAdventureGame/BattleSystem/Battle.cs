@@ -69,9 +69,10 @@ namespace PokemonAdventureGame.BattleSystem
                 keepBattleGoing = false;
                 isChangingToNextAvailablePokemon = false;
 
-                if (Player.GetCurrentPokemon().CurrentHealthPoints <= 0 && EnemyTrainer.HasAvailablePokemon())
+                if (Player.GetCurrentPokemon().HasFainted() && EnemyTrainer.HasAvailablePokemon())
                 {
-                    PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
+                    PromptPlayerToSelectPokemonAfterOwnPokemonFainted();
+                    PlayerAction.PlayerSendsPokemon(Player.GetCurrentPokemon());
                     isChangingToNextAvailablePokemon = true;
                 }
                 else
@@ -84,10 +85,14 @@ namespace PokemonAdventureGame.BattleSystem
                 {
                     if (EnemyTrainer.GetCurrentPokemon().HasFainted() && Player.HasAvailablePokemon())
                     {
-                        if (BattleAux.CannotSendNextAvailablePokemon(EnemyTrainer, isEnemyTrainer: true))
+                        if (BattleAux.CannotSendNextAvailablePokemon(isEnemyTrainer: true)) 
                             break;
-                        else
-                            PromptPlayerToSelectPokemonAfterAnotherPokemonFainted();
+                        else 
+                        {
+                            PromptPlayerToSelectPokemonAfterEnemyPokemonFainted();
+                            BattleAux.ShowTrainerSentPokemonMessage(isEnemyTrainer: true);
+                            PlayerAction.PlayerSendsPokemon(Player.GetCurrentPokemon());
+                        }
                     }
                     else
                         EnemyMove();
@@ -198,12 +203,12 @@ namespace PokemonAdventureGame.BattleSystem
                 return;
             }
 
-            BattleAux.DrawbackThenSendPokemon(chosenPokemon);
+            BattleAux.DrawbackAndSetChosenPokemonIndexAsCurrent(chosenPokemon);
         }
 
         private bool PromptPlayerToChooseItem()
         {
-            int chosenStackedItemsIndex = BattleAux.KeepPlayerChoosingItem(Player, Player.Items.Count);
+            int chosenStackedItemsIndex = BattleAux.KeepPlayerChoosingItem(Player.Items.Count);
             int chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemon();
 
             IPokemon chosenPokemon = Player.PokemonTeam[chosenPokemonIndex].Pokemon;
@@ -227,12 +232,31 @@ namespace PokemonAdventureGame.BattleSystem
             return itemWasSuccessfullyUsed;
         }
 
-        private void PromptPlayerToSelectPokemonAfterAnotherPokemonFainted()
+        private void PromptPlayerToSelectPokemonAfterOwnPokemonFainted()
         {
             int chosenPokemonIndex;
 
             if (Player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
             {
+                ConsoleUtils.ShowMessageBetweenEmptyLines($"{Player.GetCurrentPokemon().GetType().Name} fainted!");
+                ConsoleUtils.ShowMessageBetweenEmptyLines("Which pokemon will you choose?");
+                chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemon();
+                SwitchCurrentPokemon(chosenPokemonIndex, isChangingAfterOwnPokemonFainted: true);
+            }
+            else
+            {
+                chosenPokemonIndex = Player.PokemonTeam.IndexOf(Player.PokemonTeam.Where(w => !w.Fainted).FirstOrDefault());
+                SwitchCurrentPokemon(chosenPokemonIndex, isChangingAfterOwnPokemonFainted: true);
+            }
+        }
+
+        private void PromptPlayerToSelectPokemonAfterEnemyPokemonFainted()
+        {
+            int chosenPokemonIndex;
+
+            if (Player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
+            {
+                ConsoleUtils.ShowMessageAndWaitTwoSeconds($"{EnemyTrainer.GetType().Name} is about to send out {EnemyTrainer.GetCurrentPokemon().GetType().Name}");
                 ConsoleUtils.ShowMessageBetweenEmptyLines("Which pokemon will you choose?");
                 chosenPokemonIndex = BattleAux.KeepPlayerChoosingPokemon();
                 SwitchCurrentPokemon(chosenPokemonIndex, isChangingAfterOwnPokemonFainted: true);
