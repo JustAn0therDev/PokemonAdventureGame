@@ -6,7 +6,7 @@ using PokemonAdventureGame.BattleSystem.ConsoleUI;
 
 namespace PokemonAdventureGame.BattleSystem
 {
-    // This class contains every method that does not depend on an order of execution.
+    // This class contains methods that do not depend on an order of execution.
     public class BattleAux
     {
         private readonly ITrainer Player;
@@ -118,7 +118,7 @@ namespace PokemonAdventureGame.BattleSystem
             return chosenPokemonIndex;
         }
 
-        // This method is used so if the player chooses an index that's outside
+        // This method uses a "try-catch" structure so if the player chooses an index that's outside
         // the bounds of the array, it doesn't break the game. The other methods
         // have constant or customizable limit of array indexes when choosing.
         private bool IsNotValidPokemonIndex(int trainerPokemonIndex)
@@ -133,11 +133,10 @@ namespace PokemonAdventureGame.BattleSystem
             }
         }
 
-        public void DrawbackAndSetChosenPokemonIndexAsCurrent(int chosenPokemon)
+        public void ShowDrawbackMessageAndSetChosenPokemonIndexAsCurrent(int chosenPokemon)
         {
             PlayerAction.PlayerDrawsbackPokemon(Player.GetCurrentPokemon());
             Player.SetPokemonAsCurrent(Player.PokemonTeam[chosenPokemon].Pokemon);
-            // PlayerAction.PlayerSendsPokemon(Player.GetCurrentPokemon());
         }
 
         public static void ProcessStatusAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
