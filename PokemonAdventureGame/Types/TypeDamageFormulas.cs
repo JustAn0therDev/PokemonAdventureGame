@@ -5,15 +5,15 @@ using PokemonAdventureGame.ParameterObjects.Types;
 
 namespace PokemonAdventureGame.Types
 {
-    delegate decimal ImmuneDelegate();
-    delegate decimal NeutralDamageDelegate(in InitialDamageParameter initialDamageParameter);
-    delegate decimal NotVeryEffectiveDamageDelegate(ref InitialDamageParameter initialDamageParameter);
-    delegate decimal SuperEffectiveDamageDelegate(ref InitialDamageParameter initialDamageParameter);
 
     public static class TypeDamageFormulas
     {
-        private readonly static decimal SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50M;
-        private readonly static decimal NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35M;
+        private delegate float ImmuneDelegate();
+        private delegate float NeutralDamageDelegate(InitialDamageParameter initialDamageParameter);
+        private delegate float NotVeryEffectiveDamageDelegate(InitialDamageParameter initialDamageParameter);
+        private delegate float SuperEffectiveDamageDelegate(InitialDamageParameter initialDamageParameter);
+        private readonly static float SUPER_EFFECTIVE_DAMAGE_ADDITION = 0.50f;
+        private readonly static float NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION = 0.35f;
 
         public static IReadOnlyDictionary<TypeEffect, Delegate> DictionaryOfFormulas
         {
@@ -29,49 +29,51 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        private static decimal ImmuneDamageValue() => 0M;
+        // The immune damage value comes from a method so we can use the Strategy Pattern at runtime for all other values as well.
+        private static float ImmuneDamageValue() => 0;
 
-        private static decimal SuperEffectiveDamage(ref InitialDamageParameter initialDamageParameter)
+        private static float SuperEffectiveDamage(InitialDamageParameter initialDamageParameter)
         {
             initialDamageParameter.Modifier += initialDamageParameter.Modifier * SUPER_EFFECTIVE_DAMAGE_ADDITION;
             return ApplyDamageFormulaToInitialDamage(initialDamageParameter);
         }
 
-        private static decimal NotVeryEffectiveDamage(ref InitialDamageParameter initialDamageParameter)
+        private static float NotVeryEffectiveDamage(InitialDamageParameter initialDamageParameter)
         {
             initialDamageParameter.Modifier -= initialDamageParameter.Modifier * NOT_VERY_EFFECTIVE_DAMAGE_SUBTRACTION;
             return ApplyDamageFormulaToInitialDamage(initialDamageParameter);
         }
 
-        private static decimal ApplyDamageFormulaToInitialDamage(in InitialDamageParameter initialDamageParameter)
+        private static float ApplyDamageFormulaToInitialDamage(InitialDamageParameter initialDamageParameter)
         {
-            decimal attackPoints, defensePoints;
+            float attackPoints, defensePoints;
             (attackPoints, defensePoints) = GetDamageForSpecialOrNormalMove(initialDamageParameter);
-            decimal finalDamageResult = ApplyFinalDamageFormula(attackPoints, defensePoints, initialDamageParameter.Modifier);
+            float finalDamageResult = GetFinalDamageFromFinalDamageFormula(attackPoints, defensePoints, initialDamageParameter.Modifier);
 
-            return Math.Ceiling(finalDamageResult);
+            return Convert.ToInt32(Math.Ceiling(finalDamageResult));
         }
 
-        private static (decimal, decimal) GetDamageForSpecialOrNormalMove(in InitialDamageParameter initialDamageParameter)
+        private static (float, float) GetDamageForSpecialOrNormalMove(InitialDamageParameter initialDamageParameter)
         {
-            decimal attackPoints, defensePoints;
+            float attackPoints, defensePoints;
             if (initialDamageParameter.Move.Special)
             {
-                attackPoints = Convert.ToDecimal(initialDamageParameter.AttackingPokemon.SpecialAttackPoints);
-                defensePoints = Convert.ToDecimal(initialDamageParameter.TargetPokemon.SpecialDefensePoints);
+                attackPoints = initialDamageParameter.AttackingPokemon.SpecialAttackPoints;
+                defensePoints = initialDamageParameter.TargetPokemon.SpecialDefensePoints;
             }
             else
             {
-                attackPoints = Convert.ToDecimal(initialDamageParameter.AttackingPokemon.AttackPoints);
-                defensePoints = Convert.ToDecimal(initialDamageParameter.TargetPokemon.DefensePoints);
+                attackPoints = initialDamageParameter.AttackingPokemon.AttackPoints;
+                defensePoints = initialDamageParameter.TargetPokemon.DefensePoints;
             }
+
             return (attackPoints, defensePoints);
         }
 
-        private static decimal ApplyFinalDamageFormula(decimal attackPoints, decimal defensePoints, decimal modifier)
+        private static float GetFinalDamageFromFinalDamageFormula(float attackPoints, float defensePoints, float modifier)
         {
-            decimal baseDamageResult = Math.Round(attackPoints / defensePoints, MidpointRounding.AwayFromZero);
-            decimal productFromDamageAndModifier = modifier * baseDamageResult;
+            float baseDamageResult = attackPoints / defensePoints;
+            float productFromDamageAndModifier = modifier * baseDamageResult;
             return (productFromDamageAndModifier / 2) + 1;
         }
     }

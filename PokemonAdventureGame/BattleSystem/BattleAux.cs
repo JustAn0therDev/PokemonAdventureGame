@@ -9,32 +9,36 @@ namespace PokemonAdventureGame.BattleSystem
     // This class contains every method that does not depend on an order of execution.
     public class BattleAux
     {
-        private readonly ITrainer _player;
-        private readonly ITrainer _enemyTrainer;
+        private readonly ITrainer Player;
+        private readonly ITrainer EnemyTrainer;
 
         public BattleAux (ITrainer player, ITrainer enemyTrainer)
         {
-            _player = player;
-            _enemyTrainer = enemyTrainer;
+            Player = player;
+            EnemyTrainer = enemyTrainer;
         }
 
-        public bool CannotSendNextAvailablePokemon(ITrainer trainer, bool isEnemyTrainer = false)
+        public bool CannotSendNextAvailablePokemon(bool isEnemyTrainer = false)
         {
+            ITrainer trainer = isEnemyTrainer ? EnemyTrainer : Player;
+
             trainer.SetPokemonAsFainted(trainer.GetCurrentPokemon());
             TrainerDrawsbackPokemon(isEnemyTrainer);
-            return TrainerIsOutOfPokemonToBattle(trainer, isEnemyTrainer);
+            return TrainerIsOutOfPokemonToBattle(isEnemyTrainer);
         }
 
         private void TrainerDrawsbackPokemon(bool isEnemyTrainer)
         {
             if (isEnemyTrainer)
-                EnemyAction.EnemyTrainerDrawsbackPokemon(_enemyTrainer.GetCurrentPokemon());
+                EnemyAction.EnemyTrainerDrawsbackPokemon(EnemyTrainer.GetCurrentPokemon());
             else
-                PlayerAction.PlayerDrawsbackPokemon(_player.GetCurrentPokemon());
+                PlayerAction.PlayerDrawsbackPokemon(Player.GetCurrentPokemon());
         }
 
-        private bool TrainerIsOutOfPokemonToBattle(ITrainer trainer, bool isEnemyTrainer)
+        private bool TrainerIsOutOfPokemonToBattle(bool isEnemyTrainer)
         {
+            ITrainer trainer = isEnemyTrainer ? EnemyTrainer : Player;
+
             if (trainer.GetNextAvailablePokemon() == null)
             {
                 FinishBattle(isEnemyTrainer);
@@ -42,7 +46,7 @@ namespace PokemonAdventureGame.BattleSystem
             }
             else
             {
-                SetCurrentToSendNextPokemon(trainer, isEnemyTrainer);
+                SetCurrentToSendNextPokemon(isEnemyTrainer);
                 return false;
             }
         }
@@ -51,46 +55,51 @@ namespace PokemonAdventureGame.BattleSystem
         {
             if (enemyTrainerLost)
             {
-                ConsoleBattleInfoTrainer.TrainerHasNoPokemonLeft(_enemyTrainer);
-                ConsoleBattleInfoTrainer.ShowTrainerWins(_player);
+                ConsoleBattleInfoTrainer.TrainerHasNoPokemonLeft(EnemyTrainer);
+                ConsoleBattleInfoTrainer.ShowTrainerWins(Player);
             }
             else
             {
-                ConsoleBattleInfoTrainer.TrainerHasNoPokemonLeft(_enemyTrainer);
-                ConsoleBattleInfoTrainer.ShowTrainerWins(_player);
+                ConsoleBattleInfoTrainer.TrainerHasNoPokemonLeft(Player);
+                ConsoleBattleInfoTrainer.ShowTrainerWins(EnemyTrainer);
             }
         }
 
-        private void SetCurrentToSendNextPokemon(ITrainer trainer, bool isEnemyTrainer)
-        {
+        private void SetCurrentToSendNextPokemon(bool isEnemyTrainer) {
+            ITrainer trainer = isEnemyTrainer ? EnemyTrainer : Player;
             trainer.SetPokemonAsCurrent(trainer.GetNextAvailablePokemon());
+        }
+
+        internal void ShowTrainerSentPokemonMessage(bool isEnemyTrainer) 
+        {
+            ITrainer trainer = isEnemyTrainer ? EnemyTrainer : Player;
 
             if (isEnemyTrainer)
                 EnemyAction.EnemyTrainerSendsPokemon(trainer);
             else
-                PlayerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
+                PlayerAction.PlayerSendsPokemon(Player.GetCurrentPokemon());
         }
 
         public int KeepPlayerChoosingMove(int movesLimit)
         {
             int chosenMove = -1;
-            IPokemon playerCurrentPokemon = _player.GetCurrentPokemon();
+            IPokemon currentPokemon = Player.GetCurrentPokemon();
 
             while (chosenMove <= -1 || chosenMove > movesLimit)
             {
-                ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(playerCurrentPokemon);
+                ConsoleBattleInfo.WriteAllAvailableAttacksOnConsole(currentPokemon);
                 chosenMove = ConsoleUtils.GetPlayerChosenIndex(Console.ReadLine());
             }
 
             return chosenMove;
         }
 
-        public static int KeepPlayerChoosingItem(ITrainer player, int limitOfItemStacksInTheInventory)
+        public int KeepPlayerChoosingItem(int limitOfItemStacksInTheInventory)
         {
             int chosenItem = -1;
             while (chosenItem <= -1 || chosenItem > limitOfItemStacksInTheInventory)
             {
-                ConsoleBattleInfo.WriteAllAvailableItemsOnConsole(player);
+                ConsoleBattleInfo.WriteAllAvailableItemsOnConsole(Player);
                 chosenItem = ConsoleUtils.GetPlayerChosenIndex(Console.ReadLine());
             }
 
@@ -102,9 +111,7 @@ namespace PokemonAdventureGame.BattleSystem
             int chosenPokemonIndex = -1;
             while (chosenPokemonIndex <= -1 || IsNotValidPokemonIndex(chosenPokemonIndex))
             {
-                ConsoleUtils.ClearScreen();
-                ConsoleBattleInfoTrainer.ShowAllTrainersPokemon(_player);
-
+                ConsoleBattleInfoTrainer.ShowAllTrainersPokemon(Player);
                 chosenPokemonIndex = ConsoleUtils.GetPlayerChosenIndex(Console.ReadLine());
             }
 
@@ -118,7 +125,7 @@ namespace PokemonAdventureGame.BattleSystem
         {
             try
             {
-                return _player.PokemonTeam[trainerPokemonIndex] == null;
+                return Player.PokemonTeam[trainerPokemonIndex] == null;
             } 
             catch 
             {
@@ -126,11 +133,11 @@ namespace PokemonAdventureGame.BattleSystem
             }
         }
 
-        public void DrawbackThenSendPokemon(int chosenPokemon)
+        public void DrawbackAndSetChosenPokemonIndexAsCurrent(int chosenPokemon)
         {
-            PlayerAction.PlayerDrawsbackPokemon(_player.GetCurrentPokemon());
-            _player.SetPokemonAsCurrent(_player.PokemonTeam[chosenPokemon].Pokemon);
-            PlayerAction.PlayerSendsPokemon(_player.GetCurrentPokemon());
+            PlayerAction.PlayerDrawsbackPokemon(Player.GetCurrentPokemon());
+            Player.SetPokemonAsCurrent(Player.PokemonTeam[chosenPokemon].Pokemon);
+            // PlayerAction.PlayerSendsPokemon(Player.GetCurrentPokemon());
         }
 
         public static void ProcessStatusAttack(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)

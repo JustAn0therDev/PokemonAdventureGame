@@ -15,7 +15,7 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void PlayerDrawsbackPokemon(IPokemon pokemon)
         {
             ConsoleUtils.WaitOneSecond();
-            ConsoleUtils.TrainerAction<PlayerAction>($"{pokemon.GetType().Name}, come back!");
+            ConsoleUtils.TrainerAction<PlayerAction>($"Great job, {pokemon.GetType().Name}. Come back!");
             ConsoleUtils.WaitOneSecond();
             ConsoleUtils.ClearScreen();
         }
