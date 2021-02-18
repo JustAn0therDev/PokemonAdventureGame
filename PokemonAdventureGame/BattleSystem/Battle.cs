@@ -204,7 +204,6 @@ namespace PokemonAdventureGame.BattleSystem
             }
 
             BattleAux.ShowDrawbackMessageAndSetChosenPokemonIndexAsCurrent(chosenPokemon);
-            BattleAux.ShowTrainerSentPokemonMessage(isEnemyTrainer: false);
         }
 
         private bool PromptPlayerToChooseItem()
