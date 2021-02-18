@@ -203,7 +203,8 @@ namespace PokemonAdventureGame.BattleSystem
                 return;
             }
 
-            BattleAux.DrawbackAndSetChosenPokemonIndexAsCurrent(chosenPokemon);
+            BattleAux.ShowDrawbackMessageAndSetChosenPokemonIndexAsCurrent(chosenPokemon);
+            BattleAux.ShowTrainerSentPokemonMessage(isEnemyTrainer: false);
         }
 
         private bool PromptPlayerToChooseItem()
