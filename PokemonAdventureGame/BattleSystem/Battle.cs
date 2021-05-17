@@ -85,8 +85,10 @@ namespace PokemonAdventureGame.BattleSystem
                 {
                     if (EnemyTrainer.GetCurrentPokemon().HasFainted() && Player.HasAvailablePokemon())
                     {
-                        if (BattleAux.CannotSendNextAvailablePokemon(isEnemyTrainer: true)) 
+                        if (BattleAux.CannotSendNextAvailablePokemon(isEnemyTrainer: true))
+                        {
                             break;
+                        }
                         else 
                         {
                             PromptPlayerToSelectPokemonAfterEnemyPokemonFainted();
@@ -95,12 +97,16 @@ namespace PokemonAdventureGame.BattleSystem
                         }
                     }
                     else
+                    {
                         EnemyMove();
+                    }
                 }
             }
 
             if (Player.HasAvailablePokemon())
+            {
                 playerWon = true;
+            }
 
             return playerWon;
         }
@@ -140,9 +146,13 @@ namespace PokemonAdventureGame.BattleSystem
             ConsoleBattleInfoPokemon.ShowPokemonUsedMove(attackingPokemon, move.GetType().Name);
 
             if (TypeComparer.PokemonTypeDoesNotMakeContactWithMove(targetPokemon.Types, move))
+            {
                 ConsoleUtils.ShowMessageAndWaitOneSecond($"It didn't affect {targetPokemon.GetType().Name}!");
+            }
             else
+            {
                 ProcessAttack(attackingPokemon, targetPokemon, move);
+            }
 
             ConsoleUtils.ClearScreen();
         }
@@ -156,7 +166,9 @@ namespace PokemonAdventureGame.BattleSystem
             attackingPokemon.UseMove(move);
 
             if (move.StatusMoves != null)
+            {
                 BattleAux.ProcessStatusAttack(attackingPokemon, targetPokemon, move);
+            }
             else
             {
                 targetPokemon.ReceiveDamage(calculatedDamage);
@@ -188,8 +200,10 @@ namespace PokemonAdventureGame.BattleSystem
             TrainerPokemon pokemon = Player.PokemonTeam[chosenPokemon];
 
             if (pokemon is null || (pokemon.Current && isChangingAfterOwnPokemonFainted))
+            {
                 return;
-
+            }
+            
             if (pokemon.Fainted)
             {
                 ConsoleBattleInfoPokemon.ShowChosenPokemonIsNotAvailable();
@@ -227,14 +241,16 @@ namespace PokemonAdventureGame.BattleSystem
                 itemWasSuccessfullyUsed = true;
             }
             else
+            {
                 ConsoleBattleInfoItems.ShowItemCannotBeUsed();
+            }
 
             return itemWasSuccessfullyUsed;
         }
 
         private void PromptPlayerToSelectPokemonAfterOwnPokemonFainted()
         {
-            int chosenPokemonIndex;
+            int chosenPokemonIndex = 0;
 
             if (Player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
             {
@@ -252,7 +268,7 @@ namespace PokemonAdventureGame.BattleSystem
 
         private void PromptPlayerToSelectPokemonAfterEnemyPokemonFainted()
         {
-            int chosenPokemonIndex;
+            int chosenPokemonIndex = 0;
 
             if (Player.PokemonTeam.Where(w => !w.Pokemon.HasFainted()).Count() > 1)
             {

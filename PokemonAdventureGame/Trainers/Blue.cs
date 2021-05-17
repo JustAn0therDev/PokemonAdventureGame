@@ -41,7 +41,9 @@ namespace PokemonAdventureGame.Trainers
             IPokemon firstAvailablePokemon = PokemonTeam.FirstOrDefault(pkmn => !pkmn.Fainted)?.Pokemon;
 
             if (firstAvailablePokemon != null)
+            {
                 SetPokemonAsCurrent(firstAvailablePokemon);
+            }
 
             return firstAvailablePokemon;
         }
@@ -51,10 +53,14 @@ namespace PokemonAdventureGame.Trainers
             Parallel.ForEach(PokemonTeam, pkmn =>
             {
                 if (pkmn.Current)
+                {
                     pkmn.Current = false;
+                }
 
                 if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
+                {
                     pkmn.Current = true;
+                }
             });
         }
 

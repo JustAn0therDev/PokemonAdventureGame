@@ -362,3 +362,6 @@ MigrationBackup/
 # VSCode folder
 .vscode/
 PokemonAdventureGame/.vscode/
+
+# Ignoring emacs temp files
+*#*

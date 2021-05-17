@@ -1,3 +1,4 @@
+using System;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Enums;
 
@@ -9,7 +10,7 @@ namespace PokemonAdventureGame.Statuses
         public static StatusMove[] ProcessStatusMove(IPokemon attackingPokemon, IPokemon targetPokemon, IMove move)
         {
             IPokemon pokemonToChangeStatus = move.MoveTarget == StatusMoveTarget.SELF ? attackingPokemon : targetPokemon;
-
+            
             for (int i = 0; i < move.StatusMoves.Count; i++)
             {
                 switch (move.StatusMoves[i])

@@ -44,10 +44,14 @@ namespace PokemonAdventureGame.Trainers
             Parallel.ForEach(PokemonTeam, pkmn =>
             {
                 if (pkmn.Current)
+                {
                     pkmn.Current = false;
+                }
 
                 if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
+                {
                     pkmn.Current = true;
+                }
             });
         }
 

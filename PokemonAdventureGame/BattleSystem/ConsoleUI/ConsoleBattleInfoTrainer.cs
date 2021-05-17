@@ -31,9 +31,13 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void TrainerDrawsbackPokemon(IPokemon pokemon, bool isEnemyTrainer = false)
         {
             if (isEnemyTrainer)
+            {
                 EnemyAction.EnemyTrainerDrawsbackPokemon(pokemon);
+            }
             else
+            {
                 PlayerAction.PlayerDrawsbackPokemon(pokemon);
+            }
         }
 
         public static void EnemyTrainerWantsToBattle(ITrainer enemyTrainer)

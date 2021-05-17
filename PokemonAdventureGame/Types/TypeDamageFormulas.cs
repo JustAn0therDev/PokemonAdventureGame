@@ -29,7 +29,7 @@ namespace PokemonAdventureGame.Types
             }
         }
 
-        // The immune damage value comes from a method so we can use the Strategy Pattern at runtime for all other values as well.
+        // The immune damage value comes from a method so we can use the Strategy Pattern (changing the algorithm at runtime without conditional statements) for all other values as well.
         private static float ImmuneDamageValue() => 0;
 
         private static float SuperEffectiveDamage(InitialDamageParameter initialDamageParameter)

@@ -296,7 +296,9 @@ namespace PokemonAdventureGame.Types
         public static bool PokemonTypeDoesNotMakeContactWithMove(List<Type> pokemonTypes, IMove move)
         {
             if (pokemonTypes.Contains(Type.GHOST) && !move.Special)
+            {
                 return true;
+            }
 
             return false;
         }

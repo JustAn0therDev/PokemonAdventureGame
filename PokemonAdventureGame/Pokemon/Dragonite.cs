@@ -1,10 +1,10 @@
-﻿using PokemonAdventureGame.Enums;
+﻿using System.Collections.Generic;
+using PokemonAdventureGame.Enums;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.Moves.Dragon;
-using PokemonAdventureGame.Moves.Electric;
 using PokemonAdventureGame.Moves.Flying;
 using PokemonAdventureGame.Moves.Normal;
-using System.Collections.Generic;
+using PokemonAdventureGame.Moves.Electric;
 
 namespace PokemonAdventureGame.Pokemon
 {

@@ -30,9 +30,13 @@ namespace PokemonAdventureGame.BattleSystem
         private void TrainerDrawsbackPokemon(bool isEnemyTrainer)
         {
             if (isEnemyTrainer)
+            {
                 EnemyAction.EnemyTrainerDrawsbackPokemon(EnemyTrainer.GetCurrentPokemon());
+            }
             else
+            {
                 PlayerAction.PlayerDrawsbackPokemon(Player.GetCurrentPokemon());
+            }
         }
 
         private bool TrainerIsOutOfPokemonToBattle(bool isEnemyTrainer)
@@ -75,14 +79,19 @@ namespace PokemonAdventureGame.BattleSystem
             ITrainer trainer = isEnemyTrainer ? EnemyTrainer : Player;
 
             if (isEnemyTrainer)
+            {
                 EnemyAction.EnemyTrainerSendsPokemon(trainer);
+            }
             else
+            {
                 PlayerAction.PlayerSendsPokemon(Player.GetCurrentPokemon());
+            }
         }
 
         public int KeepPlayerChoosingMove(int movesLimit)
         {
             int chosenMove = -1;
+            
             IPokemon currentPokemon = Player.GetCurrentPokemon();
 
             while (chosenMove <= -1 || chosenMove > movesLimit)
@@ -97,6 +106,7 @@ namespace PokemonAdventureGame.BattleSystem
         public int KeepPlayerChoosingItem(int limitOfItemStacksInTheInventory)
         {
             int chosenItem = -1;
+            
             while (chosenItem <= -1 || chosenItem > limitOfItemStacksInTheInventory)
             {
                 ConsoleBattleInfo.WriteAllAvailableItemsOnConsole(Player);
@@ -109,6 +119,7 @@ namespace PokemonAdventureGame.BattleSystem
         public int KeepPlayerChoosingPokemon()
         {
             int chosenPokemonIndex = -1;
+            
             while (chosenPokemonIndex <= -1 || IsNotValidPokemonIndex(chosenPokemonIndex))
             {
                 ConsoleBattleInfoTrainer.ShowAllTrainersPokemon(Player);
@@ -144,9 +155,13 @@ namespace PokemonAdventureGame.BattleSystem
             StatusMove[] pokemonAlteredStatuses = StatusMoveManager.ProcessStatusMove(attackingPokemon, targetPokemon, move);
 
             if (move.MoveTarget.Value == StatusMoveTarget.SELF)
+            {
                 ConsoleBattleInfoStatuses.ShowInflictedStatuses(attackingPokemon, pokemonAlteredStatuses);
+            }
             else
+            {
                 ConsoleBattleInfoStatuses.ShowInflictedStatuses(targetPokemon, pokemonAlteredStatuses);
+            }
         }
     }
 }

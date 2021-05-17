@@ -19,7 +19,8 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 
         public static void ShowBothPokemonStats(IPokemon playerPokemon, IPokemon enemyPokemon)
         {
-            //TODO: Show status ailments in front of the Pokémon's HP.
+            // TODO: Show status ailments in front of the Pokémon's HP.
+            // this should be developed along with the ailment system
             ConsoleUtils.TrainerAction<EnemyAction>($"{enemyPokemon.GetType().Name} - HP: {enemyPokemon.CurrentHealthPoints}/{enemyPokemon.TotalHealthPoints}");
             ConsoleUtils.TrainerAction<PlayerAction>($"{playerPokemon.GetType().Name} - HP: {playerPokemon.CurrentHealthPoints}/{playerPokemon.TotalHealthPoints}");
         }

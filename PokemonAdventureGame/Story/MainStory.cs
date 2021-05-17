@@ -110,7 +110,7 @@ namespace PokemonAdventureGame.Story
             ConsoleUtils.WaitTwoSeconds();
             ConsoleUtils.EndGame();
         }
-
+        
         #endregion
 
         #region Final Dialogue
@@ -118,12 +118,15 @@ namespace PokemonAdventureGame.Story
         private void EnemyTrainerFinalDialogue(bool playerWonBattle)
         {
             var didNotComeFromFinalBattle = _enemyTrainer.GetType().Name != "Red";
+            
             if (playerWonBattle)
             {
                 _enemyTrainer.ShowFinalDialogueForVictory();
 
                 if (didNotComeFromFinalBattle)
+                {
                     HealPlayerTeamAndReward();
+                }
             }
             else
             {
