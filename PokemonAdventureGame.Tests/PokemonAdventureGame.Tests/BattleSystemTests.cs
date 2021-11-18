@@ -15,7 +15,7 @@ namespace PokemonAdventureGame.Tests
         public void BattleObjectShouldNotBeNull()
         {
             Battle battle = new Battle(_trainer, _enemyTrainer);
-            Assert.NotNull(battle);
+            Assert.NotNull(null);
         }
     }
 }
