@@ -8,12 +8,12 @@ namespace PokemonAdventureGame
 {
     class Program
     {
-        static void Main()
+        public static void Main()
         {
             try
             {
                 ITrainer player = TrainerFactory.CreateTrainer<Player>();
-                var mainStory = new MainStory(player);
+                MainStory mainStory = new(player);
                 mainStory.BeginStory();
             }
             catch (Exception ex)

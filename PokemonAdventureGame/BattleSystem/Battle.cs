@@ -86,6 +86,7 @@ namespace PokemonAdventureGame.BattleSystem
 
                         if (output == PlayerMoveOutput.SelectedInvalidOption)
                         {
+                            // NOTES(Ruan): I am NOT proud of this.
                             goto ShowPokemonStatsAndMovementSelection;
                         }
 
@@ -138,9 +139,10 @@ namespace PokemonAdventureGame.BattleSystem
             return keepBattleGoing ? PlayerMoveOutput.KeepBattleGoing : PlayerMoveOutput.EndBattle;
         }
 
-        private static bool PlayerChoseAnInvalidCommand(Command chosenCommand) => chosenCommand != Command.ITEMS &&
-                                                                           chosenCommand != Command.ATTACK &&
-                                                                           chosenCommand != Command.SWITCH_POKEMON;
+        private static bool PlayerChoseAnInvalidCommand(Command chosenCommand) 
+            => chosenCommand != Command.ITEMS  &&
+               chosenCommand != Command.ATTACK &&
+               chosenCommand != Command.SWITCH_POKEMON;
 
         #region Player Commands
 
