@@ -3,7 +3,7 @@ using PokemonAdventureGame.Interfaces;
 
 namespace PokemonAdventureGame.BattleSystem.ConsoleUI
 {
-    public class ConsoleBattleInfoPokemon
+    public static class ConsoleBattleInfoPokemon
     {
         public static void ShowPokemonUsedMove(IPokemon pokemon, string moveName)
         {
@@ -31,6 +31,12 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         public static void ShowChosenPokemonIsAlreadyInBattle()
         {
             ConsoleUtils.ShowMessageAndWaitOneSecond("The chosen pokemon is already in battle!");
+            ConsoleUtils.ClearScreen();
+        }
+
+        public static void ShowInvalidCommandMessage()
+        {
+            ConsoleUtils.ShowMessageAndWaitTwoSeconds("Invalid command. Please select another!");
             ConsoleUtils.ClearScreen();
         }
     }
