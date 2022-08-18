@@ -365,3 +365,4 @@ PokemonAdventureGame/.vscode/
 
 # Ignoring emacs temp files
 *#*
+.idea/
