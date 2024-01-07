@@ -48,7 +48,7 @@ namespace PokemonAdventureGame.Trainers
                     pkmn.Current = false;
                 }
 
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name)
+                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && !pkmn.Pokemon.HasFainted())
                 {
                     pkmn.Current = true;
                 }
