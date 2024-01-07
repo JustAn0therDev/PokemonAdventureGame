@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using PokemonAdventureGame.Factories;
 using PokemonAdventureGame.Pokemon;
 using PokemonAdventureGame.Interfaces;
 using PokemonAdventureGame.PokemonTeam;
 using PokemonAdventureGame.BattleSystem.ConsoleUI;
+using PokemonAdventureGame.Trainers.Utils;
 
 namespace PokemonAdventureGame.Trainers
 {
@@ -41,18 +41,8 @@ namespace PokemonAdventureGame.Trainers
 
         public void SetPokemonAsCurrent(IPokemon pokemon)
         {
-            Parallel.ForEach(PokemonTeam, pkmn =>
-            {
-                if (pkmn.Current)
-                {
-                    pkmn.Current = false;
-                }
-
-                if (pkmn.Pokemon.GetType().Name == pokemon.GetType().Name && !pkmn.Pokemon.HasFainted())
-                {
-                    pkmn.Current = true;
-                }
-            });
+            // Prevent setting a Pokemon as current if it has fainted.
+            TrainerUtils.UpdateCurrentBattlePokemon(PokemonTeam, pokemon);
         }
 
         public IPokemon GetNextAvailablePokemon()
