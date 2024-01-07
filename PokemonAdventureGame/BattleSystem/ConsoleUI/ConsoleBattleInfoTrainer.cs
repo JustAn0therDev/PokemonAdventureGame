@@ -7,13 +7,19 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
     {
         public static void ShowAllTrainersPokemon(ITrainer trainer)
         {
+            var previousColor = Console.ForegroundColor;
+
             for (int i = 0; i < trainer.PokemonTeam.Count; i++)
             {
+                Console.ForegroundColor = trainer.PokemonTeam[i].Fainted ? ConsoleColor.DarkGray : previousColor;
+
                 Console.WriteLine(
                     $"{i} - {trainer.PokemonTeam[i].Pokemon.GetType().Name} " +
                     $"- HP: {trainer.PokemonTeam[i].Pokemon.CurrentHealthPoints}/{trainer.PokemonTeam[i].Pokemon.TotalHealthPoints}"
                     );
             }
+
+            Console.ForegroundColor = previousColor;
         }
 
         public static void ShowPlayerThereAreNoPokemonLeftToSwitch()
