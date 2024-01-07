@@ -37,10 +37,10 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                 if (move.CurrentPowerPoints <= 0)
                 {
                     Console.ForegroundColor = UnavailableMove;
-            }
+                }
 
                 Console.WriteLine($"{i}: {typeName} {moveName}   {move.CurrentPowerPoints}/{move.PowerPoints}");
-        }
+            }
 
             Console.ForegroundColor = previousColor;
         }
