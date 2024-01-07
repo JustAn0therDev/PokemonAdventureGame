@@ -129,6 +129,15 @@ namespace PokemonAdventureGame.BattleSystem
             return chosenPokemonIndex;
         }
 
+        public void ShowPlayerCurrentPokemonStatus()
+        {
+            IPokemon currentPokemon = Player.GetCurrentPokemon();
+            ConsoleBattleInfo.WritePokemonStats(currentPokemon);
+
+            Console.WriteLine("Press Enter to continue battle...");
+            Console.ReadLine();
+        }
+
         // This method uses a "try-catch" structure so if the player chooses an index that's outside
         // the bounds of the array, it doesn't break the game. The other methods
         // have constant or customizable limit of array indexes when choosing.

@@ -4,6 +4,7 @@
     {
         ATTACK,
         SWITCH_POKEMON,
-        ITEMS
+        ITEMS,
+        POKEMON_STATUS
     }
 }
