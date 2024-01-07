@@ -25,9 +25,9 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
                 var move = pokemon.Moves.ElementAtOrDefault(i);
                 string typeName = $"[{move.Type}]".PadRight(maxTypeNameLength);
                 string moveName = move.GetType().Name.PadRight(maxMoveNameLength);
-            }
 
                 Console.WriteLine($"{i}: {typeName} {moveName}   {move.CurrentPowerPoints}/{move.PowerPoints}");
+            }
         }
 
         public static void WriteAllAvailableItemsOnConsole(ITrainer player)
