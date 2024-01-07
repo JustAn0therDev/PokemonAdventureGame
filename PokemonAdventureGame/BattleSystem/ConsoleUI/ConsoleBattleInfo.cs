@@ -23,10 +23,26 @@ namespace PokemonAdventureGame.BattleSystem.ConsoleUI
         {
             ConsoleUtils.ShowMessageBetweenEmptyLines("Choose your attack!");
 
+            ConsoleColor previousColor = Console.ForegroundColor;
+
+            int maxMoveNameLength = pokemon.Moves.Max(m => m.GetType().Name.Length);
+            int maxTypeNameLength = pokemon.Moves.Max(m => m.Type.ToString().Length) + 2;
             for (int i = 0; i < pokemon.Moves.Count; i++)
             {
-                Console.WriteLine($"{i}: {pokemon.Moves.ElementAtOrDefault(i).GetType().Name} | PP: {pokemon.Moves.ElementAtOrDefault(i).CurrentPowerPoints}");
+                var move = pokemon.Moves.ElementAtOrDefault(i);
+                string typeName = $"[{move.Type}]".PadRight(maxTypeNameLength);
+                string moveName = move.GetType().Name.PadRight(maxMoveNameLength);
+
+                Console.ForegroundColor = move.Special ? SpecialAttackColor : AttackColor;
+                if (move.CurrentPowerPoints <= 0)
+                {
+                    Console.ForegroundColor = UnavailableMove;
             }
+
+                Console.WriteLine($"{i}: {typeName} {moveName}   {move.CurrentPowerPoints}/{move.PowerPoints}");
+        }
+
+            Console.ForegroundColor = previousColor;
         }
 
         public static void WriteAllAvailableItemsOnConsole(ITrainer player)
