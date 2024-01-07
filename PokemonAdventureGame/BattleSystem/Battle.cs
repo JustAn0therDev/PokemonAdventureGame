@@ -37,12 +37,14 @@ namespace PokemonAdventureGame.BattleSystem
             PokemonAttackDelegate firstMethodForAttackDelegate = PromptTrainerForPokemonMove;
             SwitchPokemonDelegate switchPokemonDelegate = PromptPlayerToSelectPokemon;
             UseItemDelegate chooseItemDelegate = PromptPlayerToChooseItem;
+            UseItemDelegate pokemonStatusDelegate = PromptPokemonStatus;
 
             Commands = new Dictionary<Command, Delegate>
             {
                 { Command.ATTACK, firstMethodForAttackDelegate },
                 { Command.SWITCH_POKEMON, switchPokemonDelegate },
-                { Command.ITEMS, chooseItemDelegate }
+                { Command.ITEMS, chooseItemDelegate },
+                { Command.POKEMON_STATUS, pokemonStatusDelegate }
             };
         }
 
@@ -77,20 +79,18 @@ namespace PokemonAdventureGame.BattleSystem
                 }
                 else
                 {
-                    ShowPokemonStatsAndMovementSelection:
+                    PlayerMoveOutput output;
+
+                    do
+                    {
                         ConsoleBattleInfoPokemon.ShowBothPokemonStats(
-                            Player.GetCurrentPokemon(), EnemyTrainer.GetCurrentPokemon()
+                            Player.GetCurrentPokemon(),
+                            EnemyTrainer.GetCurrentPokemon()
                         );
-                        
-                        PlayerMoveOutput output = PlayerMove();
 
-                        if (output == PlayerMoveOutput.SelectedInvalidOption)
-                        {
-                            // NOTES(Ruan): I am NOT proud of this.
-                            goto ShowPokemonStatsAndMovementSelection;
-                        }
-
+                        output = PlayerMove();
                         keepBattleGoing = output == PlayerMoveOutput.KeepBattleGoing;
+                    } while (output == PlayerMoveOutput.SelectedInvalidOption);
                 }
 
                 if (!keepBattleGoing || isChangingToNextAvailablePokemon) 
@@ -135,6 +135,11 @@ namespace PokemonAdventureGame.BattleSystem
             }
 
             bool keepBattleGoing = (bool)Commands[chosenCommand].DynamicInvoke()!;
+            if (chosenCommand == Command.POKEMON_STATUS)
+            {
+                ConsoleUtils.ClearScreen();
+                return PlayerMoveOutput.SelectedInvalidOption;
+            }
 
             return keepBattleGoing ? PlayerMoveOutput.KeepBattleGoing : PlayerMoveOutput.EndBattle;
         }
@@ -142,7 +147,8 @@ namespace PokemonAdventureGame.BattleSystem
         private static bool PlayerChoseAnInvalidCommand(Command chosenCommand) 
             => chosenCommand != Command.ITEMS  &&
                chosenCommand != Command.ATTACK &&
-               chosenCommand != Command.SWITCH_POKEMON;
+               chosenCommand != Command.SWITCH_POKEMON &&
+               chosenCommand != Command.POKEMON_STATUS;
 
         #region Player Commands
 
@@ -248,6 +254,13 @@ namespace PokemonAdventureGame.BattleSystem
             IItem chosenItem = Player.Items.ElementAt(chosenStackedItemsIndex).Value.FirstOrDefault()!;
 
             return CheckIfShouldKeepBattleGoingAfterItemSelection(chosenItem, chosenStackedItemsIndex, chosenPokemon);
+        }
+
+        private bool PromptPokemonStatus()
+        {
+            BattleAux.ShowPlayerCurrentPokemonStatus();
+
+            return true;
         }
 
         private bool CheckIfShouldKeepBattleGoingAfterItemSelection(IItem chosenItem, int chosenStackedItemsIndex, IPokemon chosenPokemon)
